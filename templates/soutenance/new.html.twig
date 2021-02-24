@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>			{% if editMode %}
+			Modification
+			{%  else %}
+			Ajout
+			{%  endif %} d'une soutenance</h1>
+
+{{ form_start(formSoutenance) }}
+
+		{{ form_row(formSoutenance.titre,{'attr' : {'placeholder': 'Titre de la soutenance'}}) }}
+		{{ form_row(formSoutenance.description,{'attr' : {'placeholder': 'Description de la soutenance'}}) }}
+		{{ form_row(formSoutenance.session,{'attr' : {'placeholder': 'Session de la soutenance'}}) }}
+		{{ form_row(formSoutenance.image,{'attr' : {'placeholder': 'Image de la soutenance'}}) }}
+		{{ form_row(formSoutenance.dateSoutenance,{'attr' : {'placeholder': 'Date de la soutenance'}}) }}
+		{{ form_row(formSoutenance.note,{'attr' : {'placeholder': 'Note final de la soutenance'}}) }}
+		<button type="submit" class="btn btn-success">
+			{% if editMode %}
+			Modifier
+			{%  else %}
+			Ajouter la soutenance
+			{%  endif %}
+		</button>
+{{ form_end(formSoutenance) }}
+
+{% endblock %}

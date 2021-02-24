@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Bienvenue</h1>
+<section class="soutenance">
+
+<article>
+	{% for session in sessions %}
+	
+	<div class="alert alert-dismissible alert-info">
+	
+	<h2>{{ session.nom }}</h2>
+	<div class="metadata">{{ session.date | date ('d/m/Y') }} à {{ session.date | date('H:i') }}</div>
+	
+     
+			
+		
+		<a href="{{ path('session_show', {'id': session.id}) }}" class="btn btn-primary">Voir la {{ session.nom }}</a>
+	</div>
+			{% endfor %}
+</article>
+</section>
+{% endblock %}

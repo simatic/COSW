@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>	
+			Ajout
+			d'une session</h1>
+
+{{ form_start(formSession) }}
+
+{{ form_widget(formSession) }}
+
+		<button type="submit" class="btn btn-success">
+			Ajouter la soutenance
+		</button>
+{{ form_end(formSession) }}
+
+{% endblock %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+  <link href="https://bootswatch.com/4/solar/bootstrap.min.css" rel="stylesheet">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+           {% block stylesheets %}
+           {#{{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/session">Application</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+    {% if is_granted('ROLE_ADMIN') %}
+          <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">	
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path("Session_new") }}">Création d'une session
+                </a>
+              </li>
+        
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path("soutenance_new") }}">Création d'une soutenance
+                </a>
+              </li>
+        
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path("users") }}">Users
+                </a>
+              </li>
+ {% endif %}
+            </ul>
+            <ul class="navbar-nav mr-auto">	
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path("security_deco") }}">Déconnexion
+                </a>
+              </li>
+            </ul>
+ 	</div>
+  </nav>
+        {% block javascripts %}
+        
+        {% endblock %}
+    </head>
+    <body>
+    <div class="container">
+        
+        {% block body %}
+        	<h1>Hello</h1>
+        {% endblock %}
+    </div>
+    </body>
+</html>

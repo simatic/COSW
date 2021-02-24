@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Bienvenue</h1>
+<section class="soutenance">
+
+<article>
+	{% for soutenance in soutenances %}
+	<div class="jumbotron">
+	
+	<h2 class="display-3">{{ soutenance.titre }}</h2>
+	<div class="metadata">{{ soutenance.dateSoutenance | date ('d/m/Y') }} à {{ soutenance.dateSoutenance | date('H:i') }}</div>
+	<div class="content">
+		<img src="{{ soutenance.image }}" alt="">
+		<p>Description : {{ soutenance.description }}</p>
+		<p>Note : {{ soutenance.note|round(2, 'floor') }}</p>	
+		{% for commentaire in soutenance.commentaires %}
+		<div class="card text-white bg-success mb-3">
+          <div class="card-header">{{ commentaire.auteur }}</div>
+          <div class="card-body">
+            <h4 class="card-title">Note: {{ commentaire.note | round(2, 'floor') }}</h4>
+            <p class="card-text">{{ commentaire.contenu }}</p>
+          </div>
+        </div>
+        
+			{% endfor %}
+			
+		
+		<a href="{{ path('soutenance_show', {'id': soutenance.id}) }}" class="btn btn-primary">Voir la {{ soutenance.titre }}</a>
+	</div>
+	</div>
+</article>
+</section>
+	{% endfor %}
+{% endblock %}

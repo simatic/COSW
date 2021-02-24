@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs!{% endblock %}
+
+{% block body %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Nom de l'utilisateur</th>
+      <th scope="col">Email de l'utilisateur</th>
+      <th scope="col">Role de l'utilisateur</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+ <tbody>
+ 		{% for user in users %}
+ 	
+    <tr class="table-active">
+      <th scope="row">{{   user.username }}</th>
+      <td>{{ user.email }}</td>
+      <td>{{ user.getRoles() | join(' , ') }}</td>
+      <td> 
+<a href="{{ path('edit_user', {id: user.id}) }}"><button type="button" class="btn btn-info">Modifier</button></a>
+<a><button type="button" class="btn btn-danger">Supprimer</button></td></a>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
