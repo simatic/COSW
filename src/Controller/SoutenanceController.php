@@ -139,6 +139,31 @@ class SoutenanceController extends AbstractController
             'formCommentaire'=> $formCommentaire->createView()
         ]);
     }
+    
+    /**
+     * @isGranted("ROLE_USER")
+     * @Route("/Session/new", name="Session_new")
+     */
+    public function NewSession(Request $request, EntityManagerInterface $manager, Security $security){
+        
+        $session = new Session();
+        
+        
+        $formSession = $this->createForm(SessionType::class,$session);
+        $formSession->handleRequest($request);
+        
+        if($formSession->isSubmitted() && $formSession->isValid()){
+            
+            $manager->persist($session);
+            $manager->flush();
+            
+            return $this->redirectToRoute('session_show', ['id'=>$session->getId()]);
+        }
+        return $this->render('soutenance/newSession.html.twig',[
+            'formSession'=> $formSession->createView()
+        ]);
+    }
+    
     /**
      *
      * @Route("/Soutenance/{id}",name="soutenance_show")
@@ -176,27 +201,4 @@ class SoutenanceController extends AbstractController
     }
     
 
-    /**
-     * @isGranted("ROLE_USER")
-     * @Route("/Session/new", name="Session_new")
-     */
-    public function NewSession(Request $request, EntityManagerInterface $manager, Security $security){
-        
-            $session = new Session();
-        
-        
-        $formSession = $this->createForm(SessionType::class,$session);
-        $formSession->handleRequest($request);
-        
-        if($formSession->isSubmitted() && $formSession->isValid()){
-            
-            $manager->persist($session);
-            $manager->flush();
-
-            return $this->redirectToRoute();
-        }
-        return $this->render('soutenance/newSession.html.twig',[
-            'formSession'=> $formSession->createView()
-        ]);
-    }
 }
