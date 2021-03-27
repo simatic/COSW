@@ -1,11 +1,25 @@
 <?php
+// bootstrap.php
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
 
-use Symfony\Component\Dotenv\Dotenv;
+require_once "vendor/autoload.php";
 
-require dirname(__DIR__).'/vendor/autoload.php';
+// Create a simple "default" Doctrine ORM configuration for Annotations
+$isDevMode = true;
+$proxyDir = null;
+$cache = null;
+$useSimpleAnnotationReader = false;
+$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+// or if you prefer yaml or XML
+//$config = Setup::createXMLMetadataConfiguration(array(__DIR__."/config/xml"), $isDevMode);
+//$config = Setup::createYAMLMetadataConfiguration(array(__DIR__."/config/yaml"), $isDevMode);
 
-if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
-    require dirname(__DIR__).'/config/bootstrap.php';
-} elseif (method_exists(Dotenv::class, 'bootEnv')) {
-    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
-}
+// database configuration parameters
+$conn = array(
+    'driver' => 'pdo_sqlite',
+    'path' => __DIR__ . '/db.sqlite',
+);
+
+// obtaining the entity manager
+$entityManager = EntityManager::create($conn, $config);
