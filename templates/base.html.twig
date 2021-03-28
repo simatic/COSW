@@ -19,11 +19,15 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
                 <a href="{{ path('home') }}" style="color:white">COS</a>
+                {% if app.user %}
+                <a href="{{ path('logout') }}" style="color:white">Se déconnecter</a>
+                {% else %}
                 <a href="{{ path('login', {type: "log-in"}) }}" style="color:white">Se connecter</a>
+                {% endif %}
             </div>
         </nav>
         {% endblock %}
-        <div class="container">
+        <div class="container-fluid">
             {% block main %}{% endblock %}
             {% block footer %}{% endblock %}
         </div>
