@@ -65,9 +65,9 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/login/{type}", name="login", defaults={"type": "log-in-or-sign-in"})
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(String $type, AuthenticationUtils $authenticationUtils): Response
     {
         // Get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -77,8 +77,18 @@ class HomeController extends AbstractController
 
         return $this->render('home/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error
+            'error' => $error,
+            'type' => $type
         ]);
+    }
+
+    /**
+     * @Route("/creator/dashboard", name="creator_dashboard")
+     */
+    public function greetCreator(): Response {
+
+        return new Response("<h1>Hello man!</h1>");
+
     }
 
 }

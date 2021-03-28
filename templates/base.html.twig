@@ -19,11 +19,13 @@
         <nav class="navbar navbar-dark bg-dark">
             <div class="container-fluid">
                 <a href="{{ path('home') }}" style="color:white">COS</a>
-                <a href="{{ path('login') }}" style="color:white">Se connecter</a>
+                <a href="{{ path('login', {type: "log-in"}) }}" style="color:white">Se connecter</a>
             </div>
         </nav>
         {% endblock %}
-        {% block main %}{% endblock %}
-        {% block footer %}{% endblock %}
+        <div class="container">
+            {% block main %}{% endblock %}
+            {% block footer %}{% endblock %}
+        </div>
     </body>
 </html>
