@@ -55,6 +55,13 @@ class Soutenance
      */
     private $session;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="soutenances")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $modele;
+    
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -166,4 +173,28 @@ class Soutenance
 
         return $this;
     }
+    
+    public function getSoutenance(): ?Soutenance
+    {
+        return $this;
+    }
+
+
+    public function __toString() {
+        return $this->titre;
+    }
+
+    public function getModele(): ?Modele
+    {
+        return $this->modele;
+    }
+
+    public function setModele(?Modele $modele): self
+    {
+        $this->modele = $modele;
+
+        return $this;
+    }
+
+    
 }

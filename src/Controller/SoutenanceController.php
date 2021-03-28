@@ -2,31 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\Soutenance;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use App\Repository\SoutenanceRepository;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Egulias\EmailValidator\Warning\Comment;
 use App\Entity\Commentaire;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use App\Repository\CommentaireRepository;
-use Symfony\Component\Security\Core\Security;
+use App\Entity\Modele;
 use App\Entity\Session;
+use App\Entity\Soutenance;
 use App\Form\SessionType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Repository\SessionRepository;
+use App\Repository\SoutenanceRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SoutenanceController extends AbstractController
 {
@@ -50,13 +40,12 @@ class SoutenanceController extends AbstractController
     {
         $soutenance = $repo->findAll();
         return $this->render('soutenance/home.html.twig', [
-            
             'soutenances'=>$soutenance
         ]
             
             );
     }
-    
+
     /**
      *
      * @isGranted("ROLE_USER")
@@ -66,11 +55,8 @@ class SoutenanceController extends AbstractController
     {
         $sessions = $repo->findAll();
         return $this->render('soutenance/session.html.twig', [
-            
             'sessions'=>$sessions
-        ]
-            
-            );
+        ]);
     }
     
     /**
@@ -78,7 +64,7 @@ class SoutenanceController extends AbstractController
      * @Route("/Soutenance/new", name="soutenance_new")
      * @Route("/Soutenance/{id}/edit", name="soutenance_edit")
      */
-    public function form(Soutenance $soutenance = null, Request $request, EntityManagerInterface $manager, Security $security){
+    public function form(Request $request, EntityManagerInterface $manager, Soutenance $soutenance = null){
 
         if(!$soutenance){
             $soutenance = new Soutenance();
@@ -86,8 +72,10 @@ class SoutenanceController extends AbstractController
         $formSoutenance = $this->createFormBuilder($soutenance)
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
             'choice_label'=>'nom'
-            
-        ])->add('description')->add('image')->add('dateSoutenance')->add('note')->getForm();
+        ])->add('description')->add('image')->add('dateSoutenance')
+        ->add('modele', EntityType::class,['class'=> Modele::class,
+            'choice_label'=>'Modele'
+        ])->getForm();
         
         $formSoutenance->handleRequest($request);
         
@@ -144,7 +132,7 @@ class SoutenanceController extends AbstractController
      * @isGranted("ROLE_USER")
      * @Route("/Session/new", name="Session_new")
      */
-    public function NewSession(Request $request, EntityManagerInterface $manager, Security $security){
+    public function NewSession(Request $request, EntityManagerInterface $manager){
         
         $session = new Session();
         

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,6 +40,16 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(type="array")
      */
     private $role = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=FicheEvaluation::class, mappedBy="evaluateur")
+     */
+    private $ficheEvaluations;
+
+    public function __construct()
+    {
+        $this->ficheEvaluations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +114,36 @@ class User implements UserInterface, EncoderAwareInterface
     public function getEncoderName()
     {
         return 'harsh';
+    }
+
+    /**
+     * @return Collection|FicheEvaluation[]
+     */
+    public function getFicheEvaluations(): Collection
+    {
+        return $this->ficheEvaluations;
+    }
+
+    public function addFicheEvaluation(FicheEvaluation $ficheEvaluation): self
+    {
+        if (!$this->ficheEvaluations->contains($ficheEvaluation)) {
+            $this->ficheEvaluations[] = $ficheEvaluation;
+            $ficheEvaluation->setEvaluateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFicheEvaluation(FicheEvaluation $ficheEvaluation): self
+    {
+        if ($this->ficheEvaluations->removeElement($ficheEvaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($ficheEvaluation->getEvaluateur() === $this) {
+                $ficheEvaluation->setEvaluateur(null);
+            }
+        }
+
+        return $this;
     }
 
 }

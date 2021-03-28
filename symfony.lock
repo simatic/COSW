@@ -117,6 +117,9 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "ninsuo/symfony-collection": {
+        "version": "2.1.33"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },

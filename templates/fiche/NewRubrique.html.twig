@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{% if fiche %}
+			
+			{%  else %}
+			Erreur !
+			{%  endif %}</h1>
+
+{{ form_start(form_fiche) }}
+
+{{ form_widget(form_fiche) }}
+
+
+		<button type="submit" class="btn btn-success">
+			Ajouter la fiche
+		</button>
+{{ form_end(form_fiche) }}
+
+{% endblock %}
