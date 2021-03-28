@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Faire une demande de compte organisateur</h1>
+
+    {{ include('account_request/_form.html.twig') }}
+
+    <a href="{{ path('account_request_index') }}">back to list</a>
+{% endblock %}

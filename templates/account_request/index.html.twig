@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Demandes de création de compte organisateur</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Identifiant</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Adresse mail</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for account_request in account_requests %}
+            <tr>
+                <td>{{ account_request.id }}</td>
+                <td>{{ account_request.firstName }}</td>
+                <td>{{ account_request.lastName }}</td>
+                <td>{{ account_request.email }}</td>
+                <td>
+                    <a href="{{ path('account_request_validate', {'id': account_request.id}) }}">Valider</a>
+                    <a href="{{ path('account_request_show', {'id': account_request.id}) }}">Détails</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('account_request_new') }}">Envoyer une invitation</a>
+{% endblock %}
