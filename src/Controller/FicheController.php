@@ -129,6 +129,8 @@ class FicheController extends AbstractController
         
         $rubrique = new Rubrique();
         
+        $rubrique->setCommentaire("");
+        
         $form = $this->createForm(RubriqueType::class, $rubrique);
         
         $form->handleRequest($request);

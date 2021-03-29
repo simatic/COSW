@@ -16,6 +16,7 @@ class ItemType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('note')
             ->add('rubrique', EntityType::class,[
                 'class' => Rubrique::class
             ])
