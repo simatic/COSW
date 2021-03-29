@@ -4,8 +4,11 @@ namespace App\Form;
 
 use App\Entity\AccountRequest;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use App\Security\Status;
 
 class AccountRequestType extends AbstractType
 {
@@ -15,6 +18,7 @@ class AccountRequestType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email')
+            ->add('status', HiddenType::class, ['empty_data' => Status::PENDING])
         ;
     }
 

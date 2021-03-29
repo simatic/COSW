@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Security\Status;
 
+use App\Repository\UserRepository;
+
 class AccountRequestController extends AbstractController
 {
     /**
@@ -20,20 +22,23 @@ class AccountRequestController extends AbstractController
     public function index(AccountRequestRepository $accountRequestRepository): Response
     {
         return $this->render('account_request/index.html.twig', [
-            'account_requests' => $accountRequestRepository->findAll(),
+            'account_requests' => $accountRequestRepository->findBy(["status" => Status::PENDING]),
         ]);
     }
 
     /**
      * @Route("register/account-request", name="account_request_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(UserRepository $userRepository, Request $request): Response
     {
         $accountRequest = new AccountRequest();
         $form = $this->createForm(AccountRequestType::class, $accountRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if($userRepository->findBy(['email' => $form->get("email")->getData()])) {throw new \Exception("user already exists");}
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($accountRequest);
             $entityManager->flush();
