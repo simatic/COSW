@@ -16,6 +16,7 @@ use App\Form\RubriqueType;
 use App\Entity\Rubrique;
 use App\Entity\Modele;
 use App\Form\ModeleType;
+use App\Repository\RubriqueRepository;
 
 class FicheController extends AbstractController
 {
@@ -166,5 +167,19 @@ class FicheController extends AbstractController
             'form' => $form->createView(),
             'titre' => "Ajout d'un item"
         ]);
+    }
+    
+    /**
+     * @Route("/rubrique", name="rubrique")
+     */
+    public function rubrique(RubriqueRepository $repo ,Request $request, EntityManagerInterface $manager, Security $security)
+    {
+        
+        $rubrique = $repo->findAll();
+        return $this->render('fiche/home.html.twig', [
+            'rubriques'=>$rubrique
+        ]
+            
+        );
     }
 }

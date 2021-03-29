@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Bienvenue</h1>
+<section class="soutenance">
+
+<article>
+	{% for rubrique in rubriques %}
+	<div class="jumbotron">
+	
+	<h2 class="display-3">{{ rubrique.nom }}</h2>
+	
+	<div class="content">	
+	
+	<ul class="list-group">
+	{% for item in rubrique.items %}
+  <li class="list-group-item list-group-item-action active">
+    {{ item.nom }}
+  </li>
+    {% endfor %}
+    
+    </ul>
+<a href="#" data-id="{{ item.id }}"><button type="button" class="btn btn-danger">Supprimer</button></td></a>
+    </div>
+        </div>
+	{% endfor %}
+			
+		
+</article>
+</section>
+{% endblock %}
