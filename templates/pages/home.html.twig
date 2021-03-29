@@ -1,13 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {%  block body %}
+    {% for message in app.flashes('echec') %}
+        <p></p>
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('succes') %}
+        <p></p>
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
     <div class="jumbotron text-center">
         <h1>Homepage</h1>
-        <p>Paragraphe paragraphe paragraphe paragraphe paragraphe paragraphe paragraphe.</p>
-    </div>
-
-    <div class="alert alert-primary" role="alert">
-        A simple primary alert—check it out!
+        <a href="{{ path('rubriques') }}">Voir les rubriques</a>
     </div>
 
 

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container mt-4">
+        <h1>Gérer les items</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td><a href="{{ path('item', {id: item.id}) }}">{{ item.title }}</a></td>
+                    <td><a href="{{ path('item.edit', {id: item.id}) }}" class="btn btn-secondary">Éditer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

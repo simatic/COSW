@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container">
+        <p>Item : {{ item.title }}</p>
+    </div>
+    <div class="container">
+        <a href="{{ path('item.edit', {id: item.id}) }}" class="btn btn-secondary">Éditer</a>
+    </div>
+{% endblock %}
