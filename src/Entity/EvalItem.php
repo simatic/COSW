@@ -23,11 +23,6 @@ class EvalItem
     private $note;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $relation;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Soutenance::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -61,17 +56,6 @@ class EvalItem
         return $this;
     }
 
-    public function getRelation(): ?string
-    {
-        return $this->relation;
-    }
-
-    public function setRelation(string $relation): self
-    {
-        $this->relation = $relation;
-
-        return $this;
-    }
 
     public function getSoutenance(): ?Soutenance
     {

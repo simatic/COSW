@@ -26,6 +26,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\EvalItem;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Form\EvalItemType;
 
 class FicheController extends AbstractController
 {
@@ -209,7 +210,7 @@ class FicheController extends AbstractController
         
         $items = $soutenance->getModele()->getItems();
         $rubriques = $soutenance->getModele()->getRubriques();
-        $eval = new Evaluation();
+        $eval = new EvalItem();
         
         $eval->setUser($security->getUser());
         $eval->setSoutenance($soutenance);
@@ -219,7 +220,7 @@ class FicheController extends AbstractController
             $eval->setItem($item);
             $evals->add($eval);
         }
-        $form = $this->createForm(EvaluationType::class, $eval);
+        $form = $this->createForm(EvalItemType::class, $eval);
         
         
         $form->handleRequest($request);
