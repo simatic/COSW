@@ -10,16 +10,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemType extends AbstractType
+class ItemTypeRubrique extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('nom')
             ->add('note')
-            ->add('rubrique', EntityType::class,[
-                'class' => Rubrique::class
-            ])
         ;
     }
 

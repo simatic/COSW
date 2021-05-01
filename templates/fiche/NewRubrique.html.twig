@@ -1,20 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>{% if fiche %}
-			
-			{%  else %}
-			Erreur !
-			{%  endif %}</h1>
+<h1>{{ titre }}</h1>
 
-{{ form_start(form_fiche) }}
+{{ form_start(form) }}
 
-{{ form_widget(form_fiche) }}
+{{ form_row(form.nom) }}
+        {# render each row and field in the embedded form, in this example it's rendering the experience (Exp) fiels as rows #}
+        <div class="col-sm-8 col-sm-offset-2" id="exp_list" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+            {% for row in form.items %}
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <strong>{{ row.vars.value.nom }}</strong>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_row(row) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{{ form_end(form) }}
+        <script
+                src="https://code.jquery.com/jquery-2.2.4.min.js"
+                integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+                crossorigin="anonymous"></script>
 
-
-		<button type="submit" class="btn btn-success">
-			Ajouter la fiche
-		</button>
-{{ form_end(form_fiche) }}
-
+        <script src="{{ asset('app.js') }}"></script>
 {% endblock %}

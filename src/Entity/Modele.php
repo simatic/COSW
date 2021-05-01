@@ -34,10 +34,16 @@ class Modele
      */
     private $soutenances;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=item::class, inversedBy="modeles")
+     */
+    private $items;
+
     public function __construct()
     {
         $this->rubriques = new ArrayCollection();
         $this->soutenances = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +120,30 @@ class Modele
     public function getModele(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|item[]
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(item $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+        }
+
+        return $this;
+    }
+
+    public function removeItem(item $item): self
+    {
+        $this->items->removeElement($item);
+
+        return $this;
     }
    
 }

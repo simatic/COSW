@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{{ soutenance.titre }}
+
+{{ form_start(form_eval) }}
+{{ eval.item.nom }}
+{{ form_widget(form_eval) }}
+		<button type="submit" class="btn btn-success">
+			Enregistrer
+		</button>
+{{ form_end(form_eval) }}
+{% endblock %}
+{# 
+{{ item.rubrique.nom |nl2br }}
+{{ item.nom }}<br><br>#}

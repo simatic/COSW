@@ -46,9 +46,15 @@ class User implements UserInterface, EncoderAwareInterface
      */
     private $ficheEvaluations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="User")
+     */
+    private $evaluations;
+
     public function __construct()
     {
         $this->ficheEvaluations = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +146,36 @@ class User implements UserInterface, EncoderAwareInterface
             // set the owning side to null (unless already changed)
             if ($ficheEvaluation->getEvaluateur() === $this) {
                 $ficheEvaluation->setEvaluateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Evaluation[]
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): self
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations[] = $evaluation;
+            $evaluation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): self
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getUser() === $this) {
+                $evaluation->setUser(null);
             }
         }
 

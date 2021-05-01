@@ -60,11 +60,17 @@ class Soutenance
      * @ORM\JoinColumn(nullable=false)
      */
     private $modele;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="Soutenance")
+     */
+    private $evaluations;
     
 
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +198,36 @@ class Soutenance
     public function setModele(?Modele $modele): self
     {
         $this->modele = $modele;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Evaluation[]
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): self
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations[] = $evaluation;
+            $evaluation->setSoutenance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): self
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getSoutenance() === $this) {
+                $evaluation->setSoutenance(null);
+            }
+        }
 
         return $this;
     }

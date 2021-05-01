@@ -17,6 +17,15 @@ use App\Entity\Rubrique;
 use App\Entity\Modele;
 use App\Form\ModeleType;
 use App\Repository\RubriqueRepository;
+use App\Repository\SoutenanceRepository;
+use App\Entity\Soutenance;
+use App\Repository\ItemRepository;
+use App\Entity\Evaluation;
+use App\Form\EvaluationType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Entity\EvalItem;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class FicheController extends AbstractController
 {
@@ -106,14 +115,22 @@ class FicheController extends AbstractController
         $modele = new Modele();
                 
         $form = $this->createForm(ModeleType::class, $modele);
-        
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData()->getRubriques();
+            dump($data);
+            foreach($data as $d){
+                $items = $d->getItems();
+                dump($items);
+                foreach($items as $item){
+                    dump($item);
+                    $modele->addItem($item);
+                }
+            }
             dump($modele);
             $manager->persist($modele);
             $manager->flush();
-            
         }
         return $this->render('fiche/NewModele.html.twig', [
             'form' => $form->createView(),
@@ -141,7 +158,7 @@ class FicheController extends AbstractController
             $manager->flush();
             
         }
-        return $this->render('fiche/NewModele.html.twig', [
+        return $this->render('fiche/NewRubrique.html.twig', [
             'form' => $form->createView(),
             'titre' => "Ajout d'une rubrique"
         ]);
@@ -181,7 +198,45 @@ class FicheController extends AbstractController
         return $this->render('fiche/home.html.twig', [
             'rubriques'=>$rubrique
         ]
-            
         );
+    }
+    
+    /**
+     * @Route("/evaluation/{id}", name="evaluation")
+     */ 
+    public function evaluation (ItemRepository $repo, Request $request, EntityManagerInterface $manager, Security $security, Soutenance $soutenance = null)
+    {
+        
+        $items = $soutenance->getModele()->getItems();
+        $rubriques = $soutenance->getModele()->getRubriques();
+        $eval = new Evaluation();
+        
+        $eval->setUser($security->getUser());
+        $eval->setSoutenance($soutenance);
+        $evals = new ArrayCollection();
+        
+        foreach ($items as $item){
+            $eval->setItem($item);
+            $evals->add($eval);
+        }
+        $form = $this->createForm(EvaluationType::class, $eval);
+        
+        
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            dump($eval);
+            $manager->persist($eval);
+            $manager->flush();
+        }
+        return $this->render('fiche/evaluation.html.twig', [
+            'rubriques'=>$rubriques,
+            'soutenance'=>$soutenance,
+            'eval'=>$eval,
+            //'items'=>$items,
+            'form_eval'=>$form->createView()
+        ]
+            
+            );
     }
 }

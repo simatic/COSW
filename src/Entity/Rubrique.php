@@ -20,7 +20,7 @@ class Rubrique
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Item::class, mappedBy="rubrique")
+     * @ORM\OneToMany(targetEntity=Item::class, mappedBy="rubrique", cascade={"persist"})
      */
     private $items;
 

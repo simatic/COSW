@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Commentaire;
+use League\Csv\Reader;
 use App\Entity\Modele;
 use App\Entity\Session;
 use App\Entity\Soutenance;
@@ -17,6 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpParser\Node\Scalar\MagicConst\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use App\Entity\Upload;
+use App\Form\UploadType;
 
 class SoutenanceController extends AbstractController
 {
@@ -68,6 +73,7 @@ class SoutenanceController extends AbstractController
 
         if(!$soutenance){
             $soutenance = new Soutenance();
+            $soutenance->setNote(0);
         }
         $formSoutenance = $this->createFormBuilder($soutenance)
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
@@ -125,6 +131,36 @@ class SoutenanceController extends AbstractController
         }
         return $this->render('soutenance/newComment.html.twig',[
             'formCommentaire'=> $formCommentaire->createView()
+        ]);
+    }
+    
+    /**
+     * @isGranted("ROLE_USER")
+     * @Route("/test", name="test")
+     */
+    public function test( Request $request, EntityManagerInterface $manager){
+        
+        $file = new Upload();
+        $form = $this->createForm(UploadType::class, $file);
+        $form->handleRequest($request);
+        $row = '';
+        if($form->isSubmitted() && $form->isValid()){
+            $file->getName();
+            //$fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $files = $form->get('name')->getData();
+            $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
+            
+            foreach ($reader as $row) {
+                $modele = (new Modele())->setName($row['modele_name']);
+                $manager->persist($modele);
+                $manager->flush();
+                dump($modele);
+            }
+            
+            //return $this->redirectToRoute('soutenance');
+        }
+        return $this->render('fiche/UploadModele.html.twig',[
+            'form_fiche'=> $form->createView()
         ]);
     }
     

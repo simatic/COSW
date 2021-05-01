@@ -96,6 +96,9 @@
     "egulias/email-validator": {
         "version": "2.1.25"
     },
+    "egyg33k/csv-bundle": {
+        "version": "1.0.1"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
@@ -110,6 +113,9 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
+    },
+    "league/csv": {
+        "version": "9.6.2"
     },
     "monolog/monolog": {
         "version": "1.26.0"

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Ajout d'un Modèle d'évaluation</h1>
+
+{{ form_start(form_fiche) }}
+<div class="form-check">
+
+{{ form_widget(form_fiche) }}
+</div>
+{# {{ form_row(form_fiche.name,{'attr' : {'label.class': 'inputGroupFile02'}}) }} #}
+		<button type="submit" class="btn btn-success">
+			Ajouter le modèle
+		</button>
+
+
+{{ form_end(form_fiche) }}
+
+<script>
+//pour afficher le nom du fichier
+var elements = document.getElementsByClassName('custom-file-label');
+for (var i in elements) {
+  if (elements.hasOwnProperty(i)) {
+    elements[i].className = '';
+  }
+}
+var elements = document.getElementsByClassName('custom-file-input');
+for (var i in elements) {
+  if (elements.hasOwnProperty(i)) {
+    elements[i].className = '';
+  }
+}
+
+</script>
+{% endblock %}
