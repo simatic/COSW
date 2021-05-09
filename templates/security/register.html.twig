@@ -1,30 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-<div class="container-fluid">
-    <h1>Register</h1>
+<h1>Faire une demande de compte organisateur</h1>
 
-    {# If there are any errors on the form, display them #}
-    {% set formErrors = registrationForm.vars.errors.form.getErrors(true) %}
-    {% if formErrors|length %}
-        <div class="alert alert-danger">
-            <ul>
-                {% for error in formErrors %}
-                    <li>{{ error.message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {# Render the Form #}
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.firstName) }}
-        {{ form_row(registrationForm.lastName) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
+{# If there are any errors on the form, display them #}
+{% set formErrors = registrationForm.vars.errors.form.getErrors(true) %}
+{% if formErrors|length %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in formErrors %}
+        <li>{{ error.message }}</li>
+        {% endfor %}
+    </ul>
 </div>
+{% endif %}
+
+{# Render the Form #}
+{{ form_start(registrationForm) }}
+{{ form_row(registrationForm.firstName) }}
+{{ form_row(registrationForm.lastName) }}
+{{ form_row(registrationForm.email) }}
+{{ form_row(registrationForm.plainPassword) }}
+{{ form_row(registrationForm.agreeTerms) }}
+
+<button class="btn-primary">Register</button>
+{{ form_end(registrationForm) }}
 {% endblock %}

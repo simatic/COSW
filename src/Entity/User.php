@@ -73,7 +73,14 @@ abstract class User implements UserInterface {
     public function setEmail(string $email) {$this->email = $email;}
 
     // Required by the UserInterface interface
-    public function getRoles() {return array_unique($this->roles);}
+    public function getRoles() {
+        
+        $roles = $this->roles;
+        $roles[] = Role::USER;
+
+        return array_unique($roles);
+    
+    }
 
     // $role has to be a constant defined in the Role class (Security/Roles.php).
     public function addRole(String $role) {

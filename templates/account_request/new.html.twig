@@ -1,9 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Faire une demande de compte organisateur</h1>
-
-    {{ include('account_request/_form.html.twig') }}
-
-    <a href="{{ path('account_request_index') }}">back to list</a>
+{% if is_granted('ROLE_ADMIN') %}
+<h1>Envoyer une invitation de création de compte organisateur</h1>
+<p>
+    En tant qu'administrateur, vous pouvez inviter vous-même les personnes de votre choix 
+    à devenir organisateurs/organisatrices de soutenances !    
+</p>
+<p>Envoyez-leur une invitation par mail dès maintenant !</p>
+{{ include("account_request/_form.html.twig") }}
+<p>
+    Notez que l'invitation que vous envoyez peut être déclinée. 
+    Dans tous les cas, vous serez informé de la réponse de l'invité(e) 
+    via votre tableau de bord d'administrateur.
+</p>
+{% else %}
+<h1>Demander la création d'un compte d'organisateur de soutenances</h1>
+<p>
+    Créer un compte organisateur vous permet d'animer vos sessions 
+    de soutenances. Vous pouvez alors aussi créer vos propres critères 
+    d'évaluation, et collecter les avis de chacun sur les soutenances 
+    que vous encadrerez.
+</p>
+<p>
+    Pour éviter tout abus, la création de comptes d'organisateurs est 
+    soumise à une validation de la part des administrateurs de COS. 
+    Veillez donc à éviter les demandes fantaisistes, et à n'inclure 
+    que des informations exactes à votre propos.
+</p>
+<p>
+    Une fois votre demande étudiée, vous recevrez une notification vous 
+    informant de son acceptation ou déclin à l'adresse mail renseignée.
+    En cas d'acceptation, vous serez invité(e) à finaliser la création 
+    de votre compte en suivant un lien fourni avec la notification.
+</p>
+{{ include("account_request/_form.html.twig") }}
+{% endif %} {# Role admin #}
 {% endblock %}

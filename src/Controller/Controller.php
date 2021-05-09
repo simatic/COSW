@@ -26,6 +26,9 @@ use App\Repository\AccountRequestRepository;
 use App\Security\Status;
 use App\Repository\UserRepository;
 
+// URL access control
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 class Controller extends AbstractController
 {
     /**
@@ -73,33 +76,25 @@ class Controller extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response {
+    public function register(Request $request): Response {
         
-        $user = new Creator();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $accountRequest = new AccountRequest();
+        $form = $this->createForm(AccountRequestType::class, $accountRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
+            $entityManager->persist($accountRequest);
             $entityManager->flush();
 
-            
-            // do anything else you need here, like send an email
-            // in this example, we are just redirecting to the homepage
             return $this->redirectToRoute('home');
+
         }
 
-        return $this->render('security/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('account_request/new.html.twig', [
+            'form' => $form->createView(),
+            'button_label' => 'Envoyer ma demande'
         ]);
     }
 
@@ -114,17 +109,19 @@ class Controller extends AbstractController
     }
 
     /**
-     * @Route("register/account-request", name="account_request_new", methods={"GET","POST"})
+     * @Route("/invite", name="account_request_new", methods={"GET","POST"})
+     * 
      */
     public function newRequest(UserRepository $userRepository, Request $request): Response
     {
         $accountRequest = new AccountRequest();
-        $form = $this->createForm(AccountRequestType::class, $accountRequest);
+        $form = $this->createForm(AccountRequestType::class, $accountRequest, ['invite' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if($userRepository->findBy(['email' => $form->get("email")->getData()])) {throw new \Exception("user already exists");}
+            // Attention, ne rechercher que parmi les creators ici : code à modifier (UserRepository).
+            if($userRepository->findBy(['email' => $form->get("email")->getData()])) {throw new \Exception("Cette adresse email est déjà associée à un compte organisateur.");}
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($accountRequest);
@@ -134,8 +131,8 @@ class Controller extends AbstractController
         }
 
         return $this->render('account_request/new.html.twig', [
-            'account_request' => $accountRequest,
             'form' => $form->createView(),
+            'button_label' => 'Envoyer une invitation'
         ]);
     }
 
