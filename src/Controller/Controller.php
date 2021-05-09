@@ -61,8 +61,8 @@ class Controller extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'type' => $type]);
+
     }
 
     /**
@@ -76,13 +76,15 @@ class Controller extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request): Response {
+    public function register(Request $request, AccountRequestRepository $accountRequestRepository): Response {
         
         $accountRequest = new AccountRequest();
         $form = $this->createForm(AccountRequestType::class, $accountRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if($accountRequestRepository->findBy(['email' => $form->get("email")->getData()])) {throw new \Exception("Une demande a déjà été formulée pour cette adresse mail.");}
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($accountRequest);
