@@ -37,8 +37,6 @@
 {% if type == "log-in-or-sign-in" %}
 <h3>Vous n'avez pas encore de compte ?</h3>
 <p>Faîtes la demande d'un compte pour pouvoir organiser des sessions de soutenances et définir vos critères d'évaluation</p>
-<button class="btn btn-lg btn-primary" href="{{ path('register') }}">
-    Demander un compte organisateur
-</button>
+<button><a href="{{ path('register') }}">Demander un compte organisateur</a></button>
 {% endif %}
 {% endblock %}
