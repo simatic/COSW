@@ -25,9 +25,14 @@ use App\Form\AccountRequestType;
 use App\Repository\AccountRequestRepository;
 use App\Security\Status;
 use App\Repository\UserRepository;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use App\Form\CreatorType;
 
 // URL access control
 // use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Controller extends AbstractController
 {
@@ -185,17 +190,67 @@ class Controller extends AbstractController
     /**
      * @Route("admin-dashboard/account-requests/{id}/validate", name="account_request_validate", methods={"GET"})
      */
-    public function validateRequest(Request $request, AccountRequest $accountRequest): Response {
+    public function validateRequest(Request $request, AccountRequest $accountRequest, MailerInterface $mailer): Response {
 
+        // dd($this->generateUrl('complete_registration', ['id' => $accountRequest->getId()], true));
         $accountRequest->setStatus(Status::VALIDATED);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($accountRequest);
         $entityManager->flush();
-        
-        // Send a mail here
+
+        $email = new Email();
+        $email
+            ->from('ne-pas-repondre@COS.com')
+            ->to($accountRequest->getEmail())
+            ->subject('COS : Réponse à votre demande de création de compte organisateur')
+            ->text(
+                "Votre demande de création de compte organisateur a été validée !\n\n".
+                "Suivez le lien suivant pour finaliser la création de votre compte :\n".
+                $this->generateUrl('complete_registration', ['id' => $accountRequest->getId()], false)
+                );
+            //->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
 
         return $this->redirectToRoute('account_request_index');
+
+    }
+
+    /**
+     * @Route("register/complete-registration/{id}", name="complete_registration")
+     */
+    public function completeRegistration(Request $request, AccountRequest $accountRequest, UserPasswordEncoderInterface $encoder) {
+        
+        if($accountRequest->getStatus() != Status::VALIDATED) {
+
+            return $this->render('account_request/not_yet_validated.html.twig');
+
+        }
+
+        $creator = new Creator();
+
+        $creator->setFirstName($accountRequest->getFirstName());
+        $creator->setLastName($accountRequest->getLastName());
+        $creator->setEmail($accountRequest->getEmail());
+
+        $form = $this->createForm(CreatorType::class, $creator);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $creator->setPassword($encoder->encodePassword($creator, $form->get('password')->getData()));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($creator);
+            $entityManager->remove($accountRequest);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home');
+
+        }
+
+        return $this->render('account_request/_form.html.twig', ['form' => $form->createView(), 'button_label' => 'Valider']);
 
     }
 
