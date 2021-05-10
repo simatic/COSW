@@ -38,7 +38,7 @@ class HomeController extends AbstractController {
     /**
      * @Route("/login", name="login")
      */
-    public function login(String $type, AuthenticationUtils $authenticationUtils): Response {
+    public function login(AuthenticationUtils $authenticationUtils): Response {
 
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
@@ -48,7 +48,7 @@ class HomeController extends AbstractController {
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('home/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'type' => $type]);
+        return $this->render('home/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
 
     }
 
