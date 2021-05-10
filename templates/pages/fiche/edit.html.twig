@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container mt-4">
+        <h2>Éditer la fiche</h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Sauvegarder</button>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="container mt-4">
+        <h4>Les rubriques de cette fiche</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rubrique in rubriques %}
+                <tr>
+                    <td>{{ rubrique.id }}</td>
+                    <td><a href="{{ path('rubrique', {id: rubrique.id}) }}">{{ rubrique.title }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="padding-top:30px"></div>
+
+    <div class="container mt-4">
+        <h4>Ajouter une rubrique</h4>
+        {{ form_start(formRubrique) }}
+        {{ form_widget(formRubrique) }}
+        <button class="btn btn-primary">+</button>
+        {{ form_end(formRubrique) }}
+
+    </div>
+
+{% endblock %}

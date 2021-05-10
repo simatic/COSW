@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container mt-4">
+        <h1>Gérer les évaluations</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for evaluation in evaluations %}
+                <tr>
+                    <td>{{ evaluation.id }}</td>
+                    <td><a href="{{ path('evaluation', {id: evaluation.id}) }}">Évaluation {{ evaluation.id }}</a></td>
+                    <td>
+                        {% if evaluation.noteFinale==null %} <a href="{{ path('evaluation.evaluate', {id: evaluation.id}) }}" class="btn btn-primary">Évaluer</a> {% endif %}
+                        <a href="{{ path('evaluation.edit', {id: evaluation.id}) }}" class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('evaluation.delete', {id: evaluation.id}) }}" style="display: inline-block">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <a href="{{ path('evaluations.new') }}" class="btn btn-primary">Créer une évaluation</a>
+        </div>
+    </div>
+{% endblock %}

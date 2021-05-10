@@ -7,22 +7,22 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AddItemType extends AbstractType
+class AddRubriqueType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('Item', ChoiceType::class, ['label'=>'Item',
-            'choices'=> $this->getChoixItem($options['items'])]);
+        $builder->add('Rubrique', ChoiceType::class, ['label'=>'Rubrique',
+            'choices'=> $this->getChoixRubrique($options['rubriques'])]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             // Configure your form options here
-            'items'=>null,
+            'rubriques'=>null,
         ]);
     }
-    private function getChoixItem($tableau)
+    private function getChoixRubrique($tableau)
     {
         $output = [];
         $i = 0;

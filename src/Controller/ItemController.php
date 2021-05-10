@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Item;
 use App\Form\ItemType;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,17 +50,38 @@ class ItemController extends AbstractController {
      * @return Response
      */
     public function show(Request $request, $id) :Response {
-
-
         $item = $this->itemRepository->find($id);
         return $this->render('pages/item/item.html.twig', [
-            'current_page'=>'item',
-            'item'=>$item,
+            'current_page' => 'item',
+            'item' => $item,
         ]);
     }
 
     /**
-     * @Route (path="/edit/item/{id}",name="item.edit")
+     * @Route (path="/items/new",name="items.new")
+     * @param Request $request
+     * @return Response
+     */
+    public function new(Request $request) :Response {
+        $item = new Item();
+
+        $form = $this->createForm(ItemType::class,$item);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($item);
+            $this->em->flush();
+            return $this->redirectToRoute('items');
+        }
+
+        return $this->render('pages/item/new.html.twig', [
+            'current_page'=>'item.new',
+            'item'=>$item,
+            'form'=>$form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route (path="/edit/item/{id}",name="item.edit",methods="GET|POST")
      * @param Request $request
      * @param $id
      * @return Response
@@ -81,5 +103,20 @@ class ItemController extends AbstractController {
             'form'=>$form->createView(),
         ]);
     }
+
+    /**
+     * @Route (path="/edit/item/{id}",name="item.delete",methods="DELETE")
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function delete(Request $request, $id) :Response {
+        $item = $this->itemRepository->find($id);
+        $this->em->remove($item);
+        $this->em->flush();
+        return $this->redirectToRoute('items');
+    }
+
+
 
 }

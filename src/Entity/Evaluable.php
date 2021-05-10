@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EvaluableRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EvaluableRepository::class)
@@ -30,7 +31,7 @@ class Evaluable
     /**
      * @ORM\Column(type="float")
      */
-    private $note;
+    private ?float $note;
 
     public function getId(): ?int
     {

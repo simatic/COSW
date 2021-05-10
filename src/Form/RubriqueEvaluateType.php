@@ -2,19 +2,22 @@
 
 namespace App\Form;
 
+use App\Entity\Evaluate;
 use App\Entity\Rubrique;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RubriqueType extends AbstractType
+class RubriqueEvaluateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('title', null, ['label'=>'Titre'])
-            ->add('ficheEvaluation', null, ['label'=>'Fiche'])
-        ;
+        $builder->add('items', CollectionType::class, [
+            'entry_type' => ItemEvaluateType::class,
+            'entry_options' => ['label' => false],
+            'label'=>false,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

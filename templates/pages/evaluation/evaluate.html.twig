@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container mt-4">
+        <h2>Évaluer</h2>
+        <div style="float: left;">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary">Terminer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

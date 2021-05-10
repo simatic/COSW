@@ -29,6 +29,11 @@ class Rubrique
      */
     private $items;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=FicheEvaluation::class, inversedBy="rubriques")
+     */
+    private $ficheEvaluation;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -85,5 +90,17 @@ class Rubrique
     public function __toString()
     {
         return $this->getTitle();
+    }
+
+    public function getFicheEvaluation(): ?FicheEvaluation
+    {
+        return $this->ficheEvaluation;
+    }
+
+    public function setFicheEvaluation(?FicheEvaluation $ficheEvaluation): self
+    {
+        $this->ficheEvaluation = $ficheEvaluation;
+
+        return $this;
     }
 }

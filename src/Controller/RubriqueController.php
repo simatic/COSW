@@ -65,7 +65,29 @@ class RubriqueController extends AbstractController { //classe définie pour aff
     }
 
     /**
-     * @Route (path="/edit/rubrique/{id}",name="rubrique.edit")
+     * @Route (path="/rubriques/new",name="rubriques.new")
+     * @param Request $request
+     * @return Response
+     */
+    public function new(Request $request) :Response {
+        $rubrique = new Rubrique();
+        $form = $this->createForm(RubriqueType::class,$rubrique);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($rubrique);
+            $this->em->flush();
+            return $this->redirectToRoute('rubriques');
+        }
+
+        return $this->render('pages/rubrique/new.html.twig', [
+            'current_page'=>'rubriques.new',
+            'rubrique'=>$rubrique,
+            'form'=>$form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route (path="/edit/rubrique/{id}",name="rubrique.edit",methods="GET|POST")
      * @param Request $request
      * @param $id
      * @return Response
@@ -100,6 +122,19 @@ class RubriqueController extends AbstractController { //classe définie pour aff
             'form'=>$form->createView(),
             'formItem'=>$formItem->createView(),
         ]);
+    }
+
+    /**
+     * @Route (path="/edit/rubrique/{id}",name="rubrique.delete", methods="DELETE")
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function delete(Request $request, $id) :Response {
+        $rubrique = $this->rubriqueRepository->find($id);
+        $this->em->remove($rubrique);
+        $this->em->flush();
+        return $this->redirectToRoute('rubriques');
     }
 
 

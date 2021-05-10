@@ -2,25 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Item;
+use App\Entity\Evaluation;
+use App\Entity\FicheEvaluation;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemType extends AbstractType
+class EvaluationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', null, ['label'=>'Titre'])
-            ->add('rubrique', null, ['label'=>'Rubrique'])
+            ->add('fiche', EntityType::class, ['class' => FicheEvaluation::class, 'label' => 'Fiche référence'])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Item::class,
+            'data_class' => Evaluation::class,
+            'fiches' => null,
         ]);
     }
 }

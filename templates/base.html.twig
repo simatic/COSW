@@ -18,6 +18,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
+                <a class="nav-link {% if current_page is defined and current_page =='evaluations'  %}font-weight-bold {% endif %}" href="/evaluations">Évaluations<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link {% if current_page is defined and current_page =='fiches'  %}font-weight-bold {% endif %}" href="/fiches">Fiches<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link {% if current_page is defined and current_page =='rubriques'  %}font-weight-bold {% endif %}" href="/rubriques">Rubriques<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">

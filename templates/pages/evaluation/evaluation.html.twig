@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <div class="container mt-4">
+        <p>Évaluation {{ evaluation.id }}</p>
+        <p>Note finale : {{ evaluation.noteFinale }}</p>
+        <a href="{{ path('evaluation.edit', {id: evaluation.id}) }}" class="btn btn-secondary">Éditer</a>
+    </div>
+
+{% endblock %}

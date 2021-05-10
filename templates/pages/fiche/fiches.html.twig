@@ -2,7 +2,7 @@
 
 {%  block body %}
     <div class="container mt-4">
-        <h1>Gérer les rubriques</h1>
+        <h1>Gérer les fiches</h1>
 
         <table class="table table-striped">
             <thead>
@@ -13,13 +13,13 @@
             </tr>
             </thead>
             <tbody>
-            {% for rubrique in rubriques %}
+            {% for fiche in fiches %}
                 <tr>
-                    <td>{{ rubrique.id }}</td>
-                    <td><a href="{{ path('rubrique', {id: rubrique.id}) }}">{{ rubrique.title }}</a></td>
+                    <td>{{ fiche.id }}</td>
+                    <td><a href="{{ path('fiche', {id: fiche.id}) }}">{{ fiche.title }}</a></td>
                     <td>
-                        <a href="{{ path('rubrique.edit', {id: rubrique.id}) }}" class="btn btn-secondary">Éditer</a>
-                        <form method="post" action="{{ path('rubrique.delete', {id: rubrique.id}) }}" style="display: inline-block">
+                        <a href="{{ path('fiche.edit', {id: fiche.id}) }}" class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('fiche.delete', {id: fiche.id}) }}" style="display: inline-block">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger">Supprimer</button>
                         </form>
@@ -30,7 +30,7 @@
         </table>
 
         <div class="text-right">
-            <a href="{{ path('rubriques.new') }}" class="btn btn-primary">Créer une rubrique</a>
+            <a href="{{ path('fiches.new') }}" class="btn btn-primary">Créer une fiche</a>
         </div>
     </div>
 {% endblock %}

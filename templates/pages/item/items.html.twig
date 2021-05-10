@@ -17,10 +17,20 @@
                 <tr>
                     <td>{{ item.id }}</td>
                     <td><a href="{{ path('item', {id: item.id}) }}">{{ item.title }}</a></td>
-                    <td><a href="{{ path('item.edit', {id: item.id}) }}" class="btn btn-secondary">Éditer</a></td>
+                    <td>
+                        <a href="{{ path('item.edit', {id: item.id}) }}" class="btn btn-secondary">Éditer</a>
+                        <form method="post" action="{{ path('item.delete', {id: item.id}) }}" style="display: inline-block">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+
+        <div class="text-right">
+            <a href="{{ path('items.new') }}" class="btn btn-primary">Créer un item</a>
+        </div>
     </div>
 {% endblock %}

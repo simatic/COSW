@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ItemRepository::class)
@@ -27,6 +28,11 @@ class Item
      * @ORM\JoinColumn(nullable=false)
      */
     private $rubrique;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $note;
 
     public function getId(): ?int
     {
@@ -53,6 +59,18 @@ class Item
     public function setRubrique(?Rubrique $rubrique): self
     {
         $this->rubrique = $rubrique;
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?int $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }
