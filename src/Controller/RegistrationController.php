@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController {
 
         }
 
-        return $this->render('account_request/new.html.twig', ['form' => $form->createView(), 'button_label' => 'Envoyer ma demande']);
+        return $this->render('registration/request.html.twig', ['form' => $form->createView(), 'button_label' => 'Envoyer ma demande']);
 
     }
 
@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController {
         
         if($accountRequest->getStatus() != Status::VALIDATED) {
 
-            return $this->render('account_request/not_yet_validated.html.twig');
+            return $this->render('registration/pending_request.html.twig');
 
         }
 
@@ -95,7 +95,7 @@ class RegistrationController extends AbstractController {
 
         }
 
-        return $this->render('account_request/_form.html.twig', ['form' => $form->createView(), 'button_label' => 'Valider']);
+        return $this->render('registration/complete.html.twig', ['form' => $form->createView(), 'button_label' => 'Valider']);
 
     }
 
