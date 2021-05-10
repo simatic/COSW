@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 *
 * /logout : "logout" (Pour se déconnecter)
 */
-class RegistrationController extends AbstractController {
+class HomeController extends AbstractController {
 
     /**
      * @Route("", name="home")
