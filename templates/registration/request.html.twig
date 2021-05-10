@@ -1,20 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-{% if is_granted('ROLE_ADMIN') %}
-<h1>Envoyer une invitation de création de compte organisateur</h1>
-<p>
-    En tant qu'administrateur, vous pouvez inviter vous-même les personnes de votre choix 
-    à devenir organisateurs/organisatrices de soutenances !    
-</p>
-<p>Envoyez-leur une invitation par mail dès maintenant !</p>
-{{ include("account_request/_form.html.twig") }}
-<p>
-    Notez que l'invitation que vous envoyez peut être déclinée. 
-    Dans tous les cas, vous serez informé de la réponse de l'invité(e) 
-    via votre tableau de bord d'administrateur.
-</p>
-{% else %}
+
 <h1>Demander la création d'un compte d'organisateur de soutenances</h1>
 <p>
     Créer un compte organisateur vous permet d'animer vos sessions 
@@ -34,6 +21,7 @@
     En cas d'acceptation, vous serez invité(e) à finaliser la création 
     de votre compte en suivant un lien fourni avec la notification.
 </p>
-{{ include("account_request/_form.html.twig") }}
-{% endif %} {# Role admin #}
+
+{{ include("registration/form.html.twig") }}
+
 {% endblock %}

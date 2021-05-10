@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>AccountRequest</h1>
 
-    <table class="table">
+    <h1>Demande de compte organisateur</h1>
+
+    <table>
+
         <tbody>
             <tr>
                 <th>Identifiant</th>
@@ -18,15 +20,15 @@
                 <td>{{ account_request.lastName }}</td>
             </tr>
             <tr>
-                <th>Adresse mmail</th>
+                <th>Adresse mail</th>
                 <td>{{ account_request.email }}</td>
             </tr>
         </tbody>
+
     </table>
 
-    <a href="{{ path('account_request_index') }}">back to list</a>
+    <a href="{{ path('admin') }}">Retour</a>
+    <a href="{{ path('validate_account_request') }}">Valider</a>
+    <a href="{{ path('decline_account_request') }}">Décliner</a>
 
-    <a href="{{ path('account_request_edit', {'id': account_request.id}) }}">edit</a>
-
-    {{ include('account_request/_delete_form.html.twig') }}
 {% endblock %}
