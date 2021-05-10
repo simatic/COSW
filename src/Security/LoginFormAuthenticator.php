@@ -31,50 +31,47 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder) {
+        
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+
     }
 
-    public function supports(Request $request)
-    {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+    public function supports(Request $request) {
+
+        return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST');
+
     }
 
-    public function getCredentials(Request $request)
-    {
+    public function getCredentials(Request $request) {
+
         $credentials = [
             'email' => $request->request->get('email'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['email']
-        );
+
+        $request->getSession()->set(Security::LAST_USERNAME, $credentials['email']);
 
         return $credentials;
+
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
+    public function getUser($credentials, UserProviderInterface $userProvider) {
+
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
-        }
+
+        if (!$this->csrfTokenManager->isTokenValid($token)) {throw new InvalidCsrfTokenException();}
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
-        if (!$user) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
-        }
+        if (!$user) {throw new CustomUserMessageAuthenticationException('Email could not be found.');}
 
         return $user;
+
     }
 
     public function checkCredentials($credentials, UserInterface $user)
@@ -85,22 +82,26 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function getPassword($credentials): ?string
-    {
-        return $credentials['password'];
-    }
+    public function getPassword($credentials): ?string {return $credentials['password'];}
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey) {
+
+        // Gérer les redirections après login ici.
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
-        if(in_array(Role::ADMIN, $user->getRoles())) {return new RedirectResponse($this->urlGenerator->generate('account_request_index'));}
+
+        if(in_array(Role::ADMIN, $user->getRoles())) {return new RedirectResponse($this->urlGenerator->generate('admin'));}
+        else if(in_array(Role::CREATOR, $user->getRoles())) {return new RedirectResponse($this->urlGenerator->generate('creator'));}
+
         return new RedirectResponse($this->urlGenerator->generate('home'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+
+        throw new \Exception('Pas de redirection valide');
+
     }
 
-    protected function getLoginUrl()
-    {
+    protected function getLoginUrl() {
+
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+
     }
+
 }
