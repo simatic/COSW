@@ -2,6 +2,10 @@
 
 namespace App\Security;
 
+/**
+ * Définit les rôles des utilisateurs sous forme 
+ * de constantes statiques.
+ */
 abstract class Role {
 
     public const USER = "ROLE_USER";
