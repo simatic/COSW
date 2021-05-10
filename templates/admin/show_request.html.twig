@@ -28,7 +28,7 @@
     </table>
 
     <a href="{{ path('admin') }}">Retour</a>
-    <a href="{{ path('validate_account_request') }}">Valider</a>
-    <a href="{{ path('decline_account_request') }}">Décliner</a>
+    <a href="{{ path('validate_account_request', {'id': account_request.id}) }}">Valider</a>
+    <a href="{{ path('decline_account_request', {'id': account_request.id}) }}">Décliner</a>
 
 {% endblock %}
