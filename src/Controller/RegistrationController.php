@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 * mot de passe.)
 * -------------------------------------
 *
-* @Route("/register", name="register_")
+* @Route("/register")
 */
 class RegistrationController extends AbstractController {
 

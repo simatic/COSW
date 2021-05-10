@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 * /creator : "creator" (La porte d'entrée de la partie de l'application réservée aux organisateurs de soutenances)
 * -------------------------------------
 *
-* @Route("/creator", name="creator_")
+* @Route("/creator")
 */
 class CreatorController extends AbstractController {
 

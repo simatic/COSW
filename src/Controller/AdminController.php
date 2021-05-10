@@ -36,7 +36,7 @@ use Symfony\Component\Mime\Email;
 * de compte organisateur)
 * -------------------------------------
 *
-* @Route("/admin", name="admin_")
+* @Route("/admin")
 */
 class AdminController extends AbstractController {
 
