@@ -28,7 +28,7 @@ class CreatorController extends AbstractController {
      */
     public function index(): Response {
 
-        return new Response("<h1>Hello man!</h1>");
+        return $this->render('creator/index.html.twig');
 
     }
 
