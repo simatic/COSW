@@ -45,7 +45,7 @@ class AdminController extends AbstractController {
      */
     public function index(AccountRequestRepository $accountRequestRepository): Response {
 
-        return $this->render('account_request/index.html.twig', ['account_requests' => $accountRequestRepository->findBy(["status" => Status::PENDING])]);
+        return $this->render('admin/index.html.twig', ['account_requests' => $accountRequestRepository->findBy(["status" => Status::PENDING])]);
 
     }
 
@@ -54,14 +54,14 @@ class AdminController extends AbstractController {
      */
     public function showRequest(AccountRequest $accountRequest): Response {
 
-        return $this->render('account_request/show.html.twig', ['account_request' => $accountRequest]);
+        return $this->render('admin/show_request.html.twig', ['account_request' => $accountRequest]);
 
     }
 
     /**
      * @Route("/account-request/{id}/validate", name="validate_account_request")
      */
-    public function validateRequest(Request $request, AccountRequest $accountRequest, MailerInterface $mailer): Response {
+    public function validateRequest(AccountRequest $accountRequest, MailerInterface $mailer): Response {
 
         $accountRequest->setStatus(Status::VALIDATED);
 
