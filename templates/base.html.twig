@@ -14,7 +14,7 @@
             {% if app.user %}
             <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             {% else %}
-            <li><a href="{{ path('login', {type: "log-in"}) }}">Se connecter</a></li>
+            <li><a href="{{ path('login') }}">Se connecter</a></li>
             {% endif %}
         </ul>
         {% endblock %}
