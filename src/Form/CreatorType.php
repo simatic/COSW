@@ -1,12 +1,10 @@
 <?php
 
-// app/src/Form/RegistrationFormType.php
 namespace App\Form;
 
 use App\Entity\Creator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,8 +12,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\IsTrue;
 
+/**
+ * Modèle de formulaire utilisé pour la finalisation de la création 
+ * de comptes d'organisateurs de soutenances.
+ * Ce modèle de formulaire est utilisé à "/register/complete-registration/{id}" (route "complete_registration").
+ */
 class CreatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -25,6 +27,7 @@ class CreatorType extends AbstractType
             ->add('lastName', TextType::class,  ['label' => 'Votre nom', 'disabled' => true])
             ->add('email', EmailType::class,  ['label' => 'Votre adresse mail', 'disabled' => true])
             ->add('password', RepeatedType::class, 
+            /* Toutes les contraintes sur le choix du mot de passe ci-dessous */
             [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
@@ -41,7 +44,7 @@ class CreatorType extends AbstractType
                     ]),
                     new Length([
                         // à modifier...
-                        'min' => 6,
+                        'min' => 4,
                         'minMessage' => 'Votre mot de passe doit contenir plus de 8 caractères.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,

@@ -12,6 +12,11 @@ use App\Security\Status;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * Modèle de formulaire utilisé pour les demandes de création de comptes
+ * d'organisateurs de soutenances.
+ * Ce modèle de formulaire est utilisé à "/register" (route "register").
+ */
 class AccountRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
