@@ -1,0 +1,25 @@
+{% include "base.html.twig" %}
+
+{% block main %}
+
+<h1>Point d'entrée de la partie de l'application permettant de rejoindre des sessions de soutenances.</h1>
+<p>
+    Permet aux pairs et aux membres de jurys, d'assister aux sessions de soutenances auxquelles ils ont 
+    été invités.
+</p>
+<p>
+    Le terme "guest" (utilisateurs non-authentifiés) fait référence aux pairs et aux membres 
+    de jurys.
+</p>
+<p>Je vois bien un truc du genre :</p>
+
+<ul>
+    <li>"Entrez l'identifiant de la session (qui vous a été communiqué par mail)"</li>
+    <li>"Entrez le mot de passe permettant d'accéder à la session (qui vous a été communiqué par mail)"</li>
+</ul>
+
+<p>
+    En ayant aussi la possibilité de rediriger directement vers une session de soutenances avec un lien fourni par mail.
+</p>
+
+{% endblock %}
