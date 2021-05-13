@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-// Routes annotations
+// Doctrine annotations
 use Doctrine\ORM\Mapping as ORM;
 
 // Other dependencies
