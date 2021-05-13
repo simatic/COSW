@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 *
 * @Route("/guest")
 */
-class CreatorController extends AbstractController {
+class GuestController extends AbstractController {
 
     /**
      * @Route("", name="guest")
