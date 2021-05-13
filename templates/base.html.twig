@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <!-- link type="text/css" rel="stylesheet" href="{{ asset('css/base.css') }}"-->
-        <title>
-            {% block title %}COS{% endblock %}
-        </title>
-    </head>
-    <body>
-        {% block header %}
-        <ul>
-            <li><a href="{{ path('home') }}">COS</a></li>
-            {% if app.user %}
+
+<head>
+    <meta charset="UTF-8">
+    <!-- link type="text/css" rel="stylesheet" href="{{ asset('css/base.css') }}"-->
+    <title>
+        {% block title %}COS{% endblock %}
+    </title>
+</head>
+
+<body>
+    {% block header %}
+    <ul>
+        <li><a href="{{ path('home') }}">COS</a></li>
+        {% if app.user %}
             <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                {% set url = 'admin' %}
+            {% elseif is_granted('ROLE_CREATOR') %}
+                {% set url = 'creator' %}
             {% else %}
-            <li><a href="{{ path('login') }}">Se connecter</a></li>
+                {% set url = 'home' %}
             {% endif %}
-        </ul>
-        {% endblock %}
-        {% block main %}{% endblock %}
-        {% block footer %}{% endblock %}
-    </body>
+            <li><a href="{{ path(url) }}">Mon espace</a></li>
+        {% else %}
+            <li><a href="{{ path('login') }}">Se connecter</a></li>
+        {% endif %}
+    </ul>
+    {% endblock %}
+    {% block main %}{% endblock %}
+    {% block footer %}{% endblock %}
+</body>
+
 </html>
