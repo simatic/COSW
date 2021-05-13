@@ -10,7 +10,9 @@
 </head>
 
 <body>
+
     {% block header %}
+
     <ul>
         <li><a href="{{ path('home') }}">COS</a></li>
         {% if app.user %}
@@ -27,9 +29,13 @@
             <li><a href="{{ path('login') }}">Se connecter</a></li>
         {% endif %}
     </ul>
+
     {% endblock %}
+
     {% block main %}{% endblock %}
+
     {% block footer %}{% endblock %}
+    
 </body>
 
 </html>
