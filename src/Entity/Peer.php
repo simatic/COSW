@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+// Doctrine annotations
 use Doctrine\ORM\Mapping as ORM;
+
+// Other dependencies
+use App\Security\Role;
 
 /**
  * @ORM\Entity
  * 
- * Class for peers
+ * Classe représentant les pairs/étudiants.
+ * Les pairs sont des utilisateurs non authentifiés ("guests").
  */
 class Peer extends Guest {
 
@@ -17,7 +22,12 @@ class Peer extends Guest {
      */
     private $username;
 
-    public function __construct() {parent::__construct();}
+    public function __construct() {
+        
+        parent::__construct();
+        $this->addRole(Role::PEER);
+    
+    }
 
     /**
      * Overrides User::getUsername()
