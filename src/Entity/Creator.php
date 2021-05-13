@@ -12,6 +12,7 @@ use App\Security\Role;
  * @ORM\Entity
  * 
  * Classe représentant les organisateurs de soutenances.
+ * Les organisateurs de soutenances sont des utilisateurs authentifiés.
  */
 class Creator extends LoggedUser {
 
