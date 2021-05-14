@@ -18,10 +18,10 @@ use Symfony\Component\Validator\Constraints\Length;
  * de comptes d'organisateurs de soutenances.
  * Ce modèle de formulaire est utilisé à "/register/complete-registration/{id}" (route "complete_registration").
  */
-class CreatorType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class CreatorType extends AbstractType {
+
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+
         $builder
             ->add('firstName', TextType::class,  ['label' => 'Votre prénom', 'disabled' => true])
             ->add('lastName', TextType::class,  ['label' => 'Votre nom', 'disabled' => true])
@@ -54,10 +54,10 @@ class CreatorType extends AbstractType
 
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Creator::class,
-        ]);
+    public function configureOptions(OptionsResolver $resolver) {
+
+        $resolver->setDefaults(['data_class' => Creator::class]);
+
     }
+
 }

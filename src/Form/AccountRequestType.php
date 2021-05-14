@@ -17,10 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  * d'organisateurs de soutenances.
  * Ce modèle de formulaire est utilisé à "/register" (route "register").
  */
-class AccountRequestType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class AccountRequestType extends AbstractType {
+
+    public function buildForm(FormBuilderInterface $builder, array $options) {
 
         $builder
             ->add('firstName', TextType::class, ['label' => 'Votre prénom'])
@@ -30,13 +29,12 @@ class AccountRequestType extends AbstractType
 
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
 
         $resolver
             ->setDefaults(['data_class' => AccountRequest::class])
             ->setAllowedTypes('invite', 'bool');
 
     }
-    
+
 }
