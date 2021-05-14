@@ -22,31 +22,21 @@ class AccountRequestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        if($options['invite']) {
-
-            $builder
-            ->add('email', EmailType::class, ['label' => 'Adresse mail'])
-            ->add('status', HiddenType::class, ['empty_data' => Status::PENDING]);
-
-        } else {
-
-            $builder
+        $builder
             ->add('firstName', TextType::class, ['label' => 'Votre prénom'])
             ->add('lastName', TextType::class, ['label' => 'Votre nom'])
             ->add('email', EmailType::class, ['label' => 'Votre adresse mail'])
             ->add('status', HiddenType::class, ['empty_data' => Status::PENDING]);
 
-        }
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
+
         $resolver
-        ->setDefaults([
-            'data_class' => AccountRequest::class,
-            'invite' => false
-        ])
-        ->setAllowedTypes('invite', 'bool');
+            ->setDefaults(['data_class' => AccountRequest::class])
+            ->setAllowedTypes('invite', 'bool');
+
     }
+    
 }
