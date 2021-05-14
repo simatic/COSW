@@ -90,7 +90,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/account-request/{id}/decline", name="decline_account_request")
      */
-    public function declineRequest(Request $request, AccountRequest $accountRequest): Response
+    public function declineRequest(AccountRequest $accountRequest): Response
     {
 
         $entityManager = $this->getDoctrine()->getManager();
