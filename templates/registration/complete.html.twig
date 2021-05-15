@@ -1,0 +1,11 @@
+{% include "base.html.twig" %}
+
+{% block main %}
+
+<h1>Finalisez la création de votre compte</h1>
+<p>Votre de demande de création de compte a été validée.</p>
+<p>Il ne vous reste plus qu'à définir votre mot de passe.</p>
+
+{{ include("registration/form.html.twig") }}
+
+{% endblock %}

@@ -119,19 +119,22 @@ class FicheController extends AbstractController
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData()->getRubriques();
-            dump($data);
-            foreach($data as $d){
-                $items = $d->getItems();
-                dump($items);
+            $rubriques = $form->getData()->getRubriques();
+            //dump($rubriques);
+            foreach($rubriques as $rubrique){
+                $items = $rubrique->getItems();
+                $modele->addRubrique($rubrique);
                 foreach($items as $item){
-                    dump($item);
                     $modele->addItem($item);
                 }
             }
-            dump($modele);
+            //dump($modele);
             $manager->persist($modele);
             $manager->flush();
+            return $this->render('fiche/NewModele.html.twig', [
+                'form' => $form->createView(),
+                'titre' => "Ajout d'un modèle de fiche d'évaluation"
+            ]);
         }
         return $this->render('fiche/NewModele.html.twig', [
             'form' => $form->createView(),
@@ -154,9 +157,25 @@ class FicheController extends AbstractController
         $form->handleRequest($request);
         
         if($form->isSubmitted() && $form->isValid()){
+            $items = $rubrique->getItems();
+            
+            $note = 0;
+            foreach($items as $item){
+                $note = $note + $item->getNote();
+            }
+            if($note != 20){
+                return $this->render('fiche/NewRubrique.html.twig', [
+                    'form' => $form->createView(),
+                    'titre' => "Erreur"
+                ]);
+            }
             dump($rubrique);
             $manager->persist($rubrique);
             $manager->flush();
+            return $this->render('fiche/NewRubrique.html.twig', [
+                'form' => $form->createView(),
+                'titre' => "Ajout d'une rubrique"
+            ]);
             
         }
         return $this->render('fiche/NewRubrique.html.twig', [

@@ -1,31 +1,30 @@
 security:
-    encoders:
-        harsh:
-            algorithm: auto
-            cost: 15
-
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
     providers:
-        users_in_memory: { memory: null }
-        in_database: 
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
             entity:
-              class: App\Entity\User
-              property: email
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            provider: in_database
-
-            form_login: 
-                login_path: security_connect
-                check_path: security_connect
-                
+            anonymous: lazy
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             logout:
-                path: security_deco
+                path: logout
+                # where to redirect after logout
                 target: home
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -37,4 +36,3 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-              

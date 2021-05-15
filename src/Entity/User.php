@@ -2,19 +2,27 @@
 
 namespace App\Entity;
 
+// See /Security/Users.php
+use App\Security\Role;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="Users")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"logged" = "LoggedUser", "guest" = "Guest", "admin" = "Admin", "creator" = "Creator", "peer" = "Peer", "jury" = "JuryMember"})
+ * 
+ * Generic user class
  */
-class User implements UserInterface, EncoderAwareInterface
-{
+abstract class User implements UserInterface {
+
     /**
+     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,164 +30,106 @@ class User implements UserInterface, EncoderAwareInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     * @ORM\Column(type="string", length=50)
      */
-    private $username;
+    private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     * @ORM\Column(type="string", length=50)
      */
-    private $password;
+    private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     * @ORM\Column(type="string", unique=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="json")
      */
-    private $role = [];
+    private $roles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=FicheEvaluation::class, mappedBy="evaluateur")
-     */
-    private $ficheEvaluations;
+    public function __construct() {
 
-    /**
-     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="User")
-     */
-    private $evaluations;
-
-    public function __construct()
-    {
-        $this->ficheEvaluations = new ArrayCollection();
-        $this->evaluations = new ArrayCollection();
+        $this->roles = array(Role::USER);
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId() {return $this->id;}
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
+    public function getFirstName() {return $this->firstName;}
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
+    public function setFirstName(String $name) {$this->firstName = $name;}
 
-        return $this;
-    }
+    public function getLastName() {return $this->lastName;}
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
+    public function setLastName(String $name) {$this->lastName = $name;}
 
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+    public function getEmail() {return $this->email;}
 
-        return $this;
-    }
+    public function setEmail(string $email) {$this->email = $email;}
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
+    // Required by the UserInterface interface
+    public function getRoles() {
+        
+        $roles = $this->roles;
+        $roles[] = Role::USER;
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getRoles(): ?array
-    {
-        return $this->role;
-    }
-
-    public function setRoles(array $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
+        return array_unique($roles);
     
-    public function getSalt(): ?string{
-        return $this->getPassword();
-    }
-    
-    public function eraseCredentials(){
-        return ;
-    }
-    public function getEncoderName()
-    {
-        return 'harsh';
     }
 
+    // $role has to be a constant defined in the Role class (Security/Roles.php).
+    public function addRole(String $role) {
+
+        // Ensures every user is at least granted a user role.
+        $this->roles[] = Role::USER;
+
+        $this->roles[] = $role;
+
+        $this->roles = array_unique($this->roles);
+
+    }
+
+    // $role has to be a constant defined in the Role class (Security/Roles.php).
+    public function removeRole(String $role) {
+
+        if($role !== Role::USER) {$this->roles = array_diff($this->roles, array($role));}
+
+    }
+
+    // Required by the UserInterface interface
+    public function getPassword() {}
+
+    // Required by the UserInterface interface
     /**
-     * @return Collection|FicheEvaluation[]
+     * Returns the salt that was originally used to hash the password.
+     *
+     * This can return null if the password was not hashed using a salt.
+     *
+     * This method is deprecated since Symfony 5.3, implement it from {@link LegacyPasswordAuthenticatedUserInterface} instead.
+     *
+     * @return string|null The salt
      */
-    public function getFicheEvaluations(): Collection
-    {
-        return $this->ficheEvaluations;
-    }
+    public function getSalt() {}
 
-    public function addFicheEvaluation(FicheEvaluation $ficheEvaluation): self
-    {
-        if (!$this->ficheEvaluations->contains($ficheEvaluation)) {
-            $this->ficheEvaluations[] = $ficheEvaluation;
-            $ficheEvaluation->setEvaluateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFicheEvaluation(FicheEvaluation $ficheEvaluation): self
-    {
-        if ($this->ficheEvaluations->removeElement($ficheEvaluation)) {
-            // set the owning side to null (unless already changed)
-            if ($ficheEvaluation->getEvaluateur() === $this) {
-                $ficheEvaluation->setEvaluateur(null);
-            }
-        }
-
-        return $this;
-    }
-
+    // Required by the UserInterface interface
     /**
-     * @return Collection|Evaluation[]
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
      */
-    public function getEvaluations(): Collection
-    {
-        return $this->evaluations;
-    }
+    public function getUsername() {}
 
-    public function addEvaluation(Evaluation $evaluation): self
-    {
-        if (!$this->evaluations->contains($evaluation)) {
-            $this->evaluations[] = $evaluation;
-            $evaluation->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvaluation(Evaluation $evaluation): self
-    {
-        if ($this->evaluations->removeElement($evaluation)) {
-            // set the owning side to null (unless already changed)
-            if ($evaluation->getUser() === $this) {
-                $evaluation->setUser(null);
-            }
-        }
-
-        return $this;
-    }
+    // Required by the UserInterface interface
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials() {}
 
 }

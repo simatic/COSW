@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+<div>
+    <h1>Bienvenue sur COS</h1>
+    <br>
+    <p>
+        Vous êtes professeur, membre d'un jury et à la recherche d'un outil simple pour évaluer projets étudiants,
+        exposés, soutenances et bien plus encore ? COS est là pour vous. Utilisez COS pour créer vos propres
+        fiches d'évaluation et les partager avec les autres membres du jury ! Avec COS, chaque évaluateur
+        peut facilement donner son avis et sa notation. L'application se charge ensuite de tout compiler
+        pour vous !
+    </p>
+</div>
+
+{% if app.user %}
+{% set url = path('creator') %}
+{% else %}
+{% set url = path('login') %}
+{% endif %}
+
+<div>
+    <p>Organisez vos premières soutenances dès maintenant !</p>
+
+    <button><a href="{{ url }}" role="button">Organiser une session de soutenances</a></button>
+</div>
+
+<div>
+    <p>Vous êtes invité(e) à donner votre avis sur des soutenances ? C'est par ici !</p>
+
+    <button><a href="{{ path('guest') }}" role="button">Assister à une session de soutenances</a></button>
+</div>
+
+{% endblock %}

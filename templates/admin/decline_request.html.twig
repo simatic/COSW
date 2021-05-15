@@ -1,0 +1,7 @@
+{% include "base.html.twig" %}
+
+<form method="post" action="{{ path('decline_account_request', {'id': account_request.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ account_request.id) }}">
+    <button class="btn">Delete</button>
+</form>

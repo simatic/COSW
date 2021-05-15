@@ -35,7 +35,7 @@ class Modele
     private $soutenances;
 
     /**
-     * @ORM\ManyToMany(targetEntity=item::class, inversedBy="modeles")
+     * @ORM\ManyToMany(targetEntity=Item::class, inversedBy="modeles")
      */
     private $items;
 
@@ -130,7 +130,7 @@ class Modele
         return $this->items;
     }
 
-    public function addItem(item $item): self
+    public function addItem(Item $item): self
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
@@ -139,7 +139,7 @@ class Modele
         return $this;
     }
 
-    public function removeItem(item $item): self
+    public function removeItem(Item $item): self
     {
         $this->items->removeElement($item);
 

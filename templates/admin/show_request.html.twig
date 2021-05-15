@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    <h1>Demande de compte organisateur</h1>
+
+    <table>
+
+        <tbody>
+            <tr>
+                <th>Identifiant</th>
+                <td>{{ account_request.id }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ account_request.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ account_request.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Adresse mail</th>
+                <td>{{ account_request.email }}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a href="{{ path('admin') }}">Retour</a>
+    <a href="{{ path('validate_account_request', {'id': account_request.id}) }}">Valider</a>
+    <a href="{{ path('decline_account_request', {'id': account_request.id}) }}">Décliner</a>
+
+{% endblock %}

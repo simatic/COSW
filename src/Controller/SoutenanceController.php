@@ -22,6 +22,7 @@ use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Entity\Upload;
 use App\Form\UploadType;
+use App\Entity\Rubrique;
 
 class SoutenanceController extends AbstractController
 {
@@ -79,9 +80,7 @@ class SoutenanceController extends AbstractController
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
             'choice_label'=>'nom'
         ])->add('description')->add('image')->add('dateSoutenance')
-        ->add('modele', EntityType::class,['class'=> Modele::class,
-            'choice_label'=>'Modele'
-        ])->getForm();
+        ->getForm();
         
         $formSoutenance->handleRequest($request);
         
@@ -151,7 +150,11 @@ class SoutenanceController extends AbstractController
             $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
             
             foreach ($reader as $row) {
-                $modele = (new Modele())->setName($row['modele_name']);
+                $rubrique = (new Rubrique())->setNom($row['rubrique_name']);
+                $rubrique->setCommentaire('');
+                $modele = (new Modele())->addRubrique($rubrique);
+                $modele->setName($row['modele_name']);
+                $manager->persist($rubrique);
                 $manager->persist($modele);
                 $manager->flush();
                 dump($modele);

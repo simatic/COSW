@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+<form method="post">
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <h3>Connectez-vous !</h3>
+    <p>Connectez-vous pour pouvoir organiser des sessions de soutenances</p>
+
+    <label for="inputEmail">Adresse mail</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+    <label for="inputPassword">Mot de passe</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" required>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    <br>
+
+    <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
+
+</form>
+
+<br><br>
+
+<h3>Vous n'avez pas encore de compte ?</h3>
+<p>Faîtes la demande d'un compte pour pouvoir organiser des sessions de soutenances et définir vos critères d'évaluation</p>
+
+<button><a href="{{ path('register') }}">Demander un compte organisateur</a></button>
+
+{% endblock %}

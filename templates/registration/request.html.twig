@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+<h1>Demander la création d'un compte d'organisateur de soutenances</h1>
+<p>
+    Créer un compte organisateur vous permet d'animer vos sessions 
+    de soutenances. Vous pouvez alors aussi créer vos propres critères 
+    d'évaluation, et collecter les avis de chacun sur les soutenances 
+    que vous encadrerez.
+</p>
+<p>
+    Pour éviter tout abus, la création de comptes d'organisateurs est 
+    soumise à une validation de la part des administrateurs de COS. 
+    Veillez donc à éviter les demandes fantaisistes, et à n'inclure 
+    que des informations exactes à votre propos.
+</p>
+<p>
+    Une fois votre demande étudiée, vous recevrez une notification vous 
+    informant de son acceptation ou déclin à l'adresse mail renseignée.
+    En cas d'acceptation, vous serez invité(e) à finaliser la création 
+    de votre compte en suivant un lien fourni avec la notification.
+</p>
+
+{{ include("registration/form.html.twig") }}
+
+{% endblock %}
