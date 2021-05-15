@@ -1,21 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 5.0.2
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1:3306
--- Généré le : sam. 15 mai 2021 à 15:03
--- Version du serveur :  5.7.31
--- Version de PHP : 7.2.33
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+BEGIN TRANSACTION;
 
 --
 -- Base de données : `soutenance`
@@ -34,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `account_request` (
   `last_name` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'PENDING',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id` AUTOINCREMENT)
+);
 
 --
 -- Déchargement des données de la table `account_request`
@@ -43,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `account_request` (
 
 INSERT INTO `account_request` (`id`, `first_name`, `last_name`, `email`, `status`) VALUES
 (1, 'Albert', 'Einstein', 'albert.einstein@gmail.com', 'PENDING'),
-(9, 'Jack', 'O\'Lantern', 'jack.olantern@gmail.com', 'VALIDATED');
+(9, 'Jack', 'OLantern', 'jack.olantern@gmail.com', 'VALIDATED');
 
 -- --------------------------------------------------------
 
@@ -53,14 +36,14 @@ INSERT INTO `account_request` (`id`, `first_name`, `last_name`, `email`, `status
 
 DROP TABLE IF EXISTS `commentaire`;
 CREATE TABLE IF NOT EXISTS `commentaire` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `soutenance_id` int(11) NOT NULL,
+  `id` INTEGER NOT NULL,
+  `soutenance_id` INTEGER NOT NULL,
   `auteur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contenu` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` double NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id` AUTOINCREMENT),
   KEY `IDX_67F068BCA59B3775` (`soutenance_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- --------------------------------------------------------
 
