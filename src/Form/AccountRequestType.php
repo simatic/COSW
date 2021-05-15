@@ -32,8 +32,7 @@ class AccountRequestType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
 
         $resolver
-            ->setDefaults(['data_class' => AccountRequest::class])
-            ->setAllowedTypes('invite', 'bool');
+            ->setDefaults(['data_class' => AccountRequest::class]);
 
     }
 
