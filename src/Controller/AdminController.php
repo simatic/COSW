@@ -97,7 +97,7 @@ class AdminController extends AbstractController
 
         $email = new Email();
         $email
-            ->from('ne-pas-repondre@COS.com')
+            ->from('ne-pas-repondre@COS.com') // A ajouter dans le .env
             ->to($accountRequest->getEmail())
             ->subject('COS : Réponse à votre demande de création de compte organisateur')
             ->text(

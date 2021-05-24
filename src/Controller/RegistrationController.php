@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController {
             $entityManager->flush();
 
             $email = (new Email())
-            ->from('youzasama@gmail.com') //mettre email application
+            ->from('ne-pas-repondre@COS.com') //mettre email application
             ->to($accountRequest->getEmail())
 
             ->subject('COS : Notification suite à votre demande de création de compte organisateur')
