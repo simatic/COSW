@@ -19,6 +19,8 @@ use App\Security\Status;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
+
+
 /**
  * Ce contrôleur gère les routes suivantes : (toutes les routes commençant par "/admin", soit tout ce qui concerne les 
  * administrateurs de COS)
@@ -90,8 +92,19 @@ class AdminController extends AbstractController
     /**
      * @Route("/account-request/{id}/decline", name="decline_account_request")
      */
-    public function declineRequest(AccountRequest $accountRequest): Response
+    public function declineRequest(AccountRequest $accountRequest, MailerInterface $mailer): Response
     {
+
+        $email = new Email();
+        $email
+            ->from('ne-pas-repondre@COS.com')
+            ->to($accountRequest->getEmail())
+            ->subject('COS : Réponse à votre demande de création de compte organisateur')
+            ->text(
+                "Votre demande de création de compte organisateur a été déclinée !\n\n"
+            );
+
+        $mailer->send($email);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($accountRequest);

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+{% for message in app.flashes('notice') %}
+    <div class="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<h1>Connectez vous à votre adresse Zimbra pour pouvoir notifier les étudiants de la soutenance</h1>
+
+<p>
+    Nous n'enregistrerons jamais les informations concernant votre adresse mail
+</p>
+
+{{ include("registration/form.html.twig") }}
+
+{% endblock %}

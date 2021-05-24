@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+{% for message in app.flashes('notice') %}
+    <div class="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<h1>Uploadez le fichier excel contenant la liste des étudiants à contacter pour la soutenance</h1>
+
+<p>Upload button in progress</p>
+
+{% endblock %}

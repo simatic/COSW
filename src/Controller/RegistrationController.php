@@ -21,6 +21,10 @@ use App\Repository\AccountRequestRepository;
 use App\Security\Status;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+//Mailing depedencies
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 /**
 * Ce contrôleur gère les routes suivantes : (toutes les routes commençant par "/register")
 * Notation : <chemin> : "<nom_de_la_route>" (<explications>)
@@ -39,7 +43,7 @@ class RegistrationController extends AbstractController {
     /**
      * @Route("", name="register")
      */
-    public function register(Request $request, AccountRequestRepository $accountRequestRepository): Response {
+    public function register(Request $request, AccountRequestRepository $accountRequestRepository, MailerInterface $mailer): Response {
         
         $accountRequest = new AccountRequest();
 
@@ -53,6 +57,15 @@ class RegistrationController extends AbstractController {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($accountRequest);
             $entityManager->flush();
+
+            $email = (new Email())
+            ->from('youzasama@gmail.com') //mettre email application
+            ->to($accountRequest->getEmail())
+
+            ->subject('COS : Notification suite à votre demande de création de compte organisateur')
+            ->text('Votre demande de création de compte organisateur a bien été prise en compte, un administrateur traitera votre demande bientôt !');
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('home');
 
