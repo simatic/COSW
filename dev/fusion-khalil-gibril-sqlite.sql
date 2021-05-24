@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS "commentaire" (
 
 DROP TABLE IF EXISTS "evaluation";
 CREATE TABLE IF NOT EXISTS "evaluation" (
-  "id" INT NOT NULL,
-  "soutenance_id" INT DEFAULT NULL,
-  "user_id" INT DEFAULT NULL,
+  "id" INTEGER NOT NULL,
+  "soutenance_id" INTEGER DEFAULT NULL,
+  "user_id" INTEGER DEFAULT NULL,
   "note" REAL DEFAULT NULL,
-  "item_id" INT NOT NULL,
+  "item_id" INTEGER NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT),
   FOREIGN KEY("soutenance_id") REFERENCES "soutenance"("id"),
   FOREIGN KEY("user_id") REFERENCES "Users"("id"),
@@ -71,10 +71,10 @@ CREATE TABLE IF NOT EXISTS "evaluation" (
 
 DROP TABLE IF EXISTS "eval_item";
 CREATE TABLE IF NOT EXISTS "eval_item" (
-  "id" INT NOT NULL,
-  "soutenance_id" INT NOT NULL,
-  "user_id" INT DEFAULT NULL,
-  "item_id" INT NOT NULL,
+  "id" INTEGER NOT NULL,
+  "soutenance_id" INTEGER NOT NULL,
+  "user_id" INTEGER DEFAULT NULL,
+  "item_id" INTEGER NOT NULL,
   "note" REAL NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT),
   FOREIGN KEY("item_id") REFERENCES "item"("id"),
@@ -88,9 +88,9 @@ INSERT INTO "eval_item" ("id", "soutenance_id", "user_id", "item_id", "note") VA
 
 DROP TABLE IF EXISTS "fiche_evaluation";
 CREATE TABLE IF NOT EXISTS "fiche_evaluation" (
-  "id" INT NOT NULL,
-  "evaluateur_id" INT DEFAULT NULL,
-  "soutenance_id" INT DEFAULT NULL,
+  "id" INTEGER NOT NULL,
+  "evaluateur_id" INTEGER DEFAULT NULL,
+  "soutenance_id" INTEGER DEFAULT NULL,
   "note_final" REAL NOT NULL,
   "ponderation" REAL NOT NULL,
   "nom" VARCHAR(255)  NOT NULL,
@@ -105,8 +105,8 @@ INSERT INTO "fiche_evaluation" ("id", "evaluateur_id", "soutenance_id", "note_fi
 
 DROP TABLE IF EXISTS "item";
 CREATE TABLE IF NOT EXISTS "item" (
-  "id" INT NOT NULL,
-  "rubrique_id" INT DEFAULT NULL,
+  "id" INTEGER NOT NULL,
+  "rubrique_id" INTEGER DEFAULT NULL,
   "nom" VARCHAR(255)  NOT NULL,
   "note" REAL NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT),
@@ -140,7 +140,7 @@ INSERT INTO "item" ("id", "rubrique_id", "nom", "note") VALUES
 
 DROP TABLE IF EXISTS "modele";
 CREATE TABLE IF NOT EXISTS "modele" (
-  "id" INT NOT NULL,
+  "id" INTEGER NOT NULL,
   "name" VARCHAR(255)  NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT)
 );
@@ -174,8 +174,8 @@ INSERT INTO "modele" ("id", "name") VALUES
 
 DROP TABLE IF EXISTS "modele_item";
 CREATE TABLE IF NOT EXISTS "modele_item" (
-  "modele_id" INT NOT NULL,
-  "item_id" INT NOT NULL,
+  "modele_id" INTEGER NOT NULL,
+  "item_id" INTEGER NOT NULL,
   PRIMARY KEY ("modele_id", "item_id"),
   FOREIGN KEY("modele_id") REFERENCES "modele"("id"),
   FOREIGN KEY("item_id") REFERENCES "item"("id")
@@ -232,8 +232,8 @@ INSERT INTO "modele_item" ("modele_id", "item_id") VALUES
 
 DROP TABLE IF EXISTS "modele_rubrique";
 CREATE TABLE IF NOT EXISTS "modele_rubrique" (
-  "modele_id" INT NOT NULL,
-  "rubrique_id" INT NOT NULL,
+  "modele_id" INTEGER NOT NULL,
+  "rubrique_id" INTEGER NOT NULL,
   PRIMARY KEY ("modele_id", "rubrique_id"),
   FOREIGN KEY("modele_id") REFERENCES "modele"("id"),
   FOREIGN KEY("rubrique_id") REFERENCES "rubrique"("id")
@@ -296,7 +296,7 @@ INSERT INTO "modele_rubrique" ("modele_id", "rubrique_id") VALUES
 
 DROP TABLE IF EXISTS "rubrique";
 CREATE TABLE IF NOT EXISTS "rubrique" (
-  "id" INT NOT NULL,
+  "id" INTEGER NOT NULL,
   "commentaire" TEXT NOT NULL,
   "nom" VARCHAR(255)  NOT NULL,
   PRIMARY KEY ("id", AUTOINCREMENT)
@@ -322,7 +322,7 @@ INSERT INTO "rubrique" ("id", "commentaire", "nom") VALUES
 
 DROP TABLE IF EXISTS "session";
 CREATE TABLE IF NOT EXISTS "session" (
-  "id" INT NOT NULL,
+  "id" INTEGER NOT NULL,
   "date" TEXT NOT NULL,
   "nom" VARCHAR(255) NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT)
@@ -334,14 +334,14 @@ INSERT INTO "session" ("id", "date", "nom") VALUES (1, '2016-01-01 00:00:00', 'S
 
 DROP TABLE IF EXISTS "soutenance";
 CREATE TABLE IF NOT EXISTS "soutenance" (
-  "id" INT NOT NULL,
-  "session_id" INT DEFAULT NULL,
+  "id" INTEGER NOT NULL,
+  "session_id" INTEGER DEFAULT NULL,
   "titre" VARCHAR(255)  NOT NULL,
   "description" TEXT  NOT NULL,
   "image" VARCHAR(255)  NOT NULL,
   "date_soutenance" TEXT NOT NULL,
   "note" REAL NOT NULL,
-  "modele_id" INT NOT NULL,
+  "modele_id" INTEGER NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT),
   FOREIGN KEY("session_id") REFERENCES "session"("id"),
   FOREIGN KEY("modele_id") REFERENCES "modele"("id")
@@ -359,7 +359,7 @@ INSERT INTO "soutenance" ("id", "session_id", "titre", "description", "image", "
 
 DROP TABLE IF EXISTS "upload";
 CREATE TABLE IF NOT EXISTS "upload" (
-  "id" INT NOT NULL,
+  "id" INTEGER NOT NULL,
   "name" VARCHAR(255)  NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT)
 );
