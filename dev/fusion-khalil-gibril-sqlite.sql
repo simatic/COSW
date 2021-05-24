@@ -168,14 +168,6 @@ INSERT INTO "account_request" ("id","first_name","last_name","email","status") V
 
 INSERT INTO "session" ("id", "date", "nom") VALUES (1, '2016-01-01 00:00:00', 'Session du 05/05/2021');
 
-INSERT INTO "soutenance" ("id", "session_id", "titre", "description", "image", "date_soutenance", "note", "modele_id") VALUES
-(1, 1, 'Soutenance test', 'Soutenance', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 1),
-(2, 1, 'Soutenance test 2', 'Test', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 11),
-(3, 1, 'Soutenance test 25', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 15),
-(4, 1, 'Soutenance test', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 15),
-(5, 1, 'Soutenance test 1000', 'bla bla', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 16),
-(6, 1, 'Soutenance', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 17);
-
 INSERT INTO "modele" ("id", "name") VALUES
 (1, 'Classique'),
 (2, 'Iot'),
@@ -200,6 +192,56 @@ INSERT INTO "modele" ("id", "name") VALUES
 (23, 'mdele'),
 (24, 'amaaaaan'),
 (25, 'trah');
+
+INSERT INTO "soutenance" ("id", "session_id", "titre", "description", "image", "date_soutenance", "note", "modele_id") VALUES
+(1, 1, 'Soutenance test', 'Soutenance', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 1),
+(2, 1, 'Soutenance test 2', 'Test', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 11),
+(3, 1, 'Soutenance test 25', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 15),
+(4, 1, 'Soutenance test', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 15),
+(5, 1, 'Soutenance test 1000', 'bla bla', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 16),
+(6, 1, 'Soutenance', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 17);
+
+INSERT INTO "fiche_evaluation" ("id", "evaluateur_id", "soutenance_id", "note_final", "ponderation", "nom") VALUES (1, 11, 1, 0, 1, 'Fiche 1');
+
+INSERT INTO "rubrique" ("id", "commentaire", "nom") VALUES
+(1, '', 'Code'),
+(2, '', 'Pitch'),
+(3, '', 'Vidéo'),
+(4, '', 'Objet connecté'),
+(6, '', 'Présentation oral'),
+(7, '', 'Rubrique'),
+(8, '', 'LOOl'),
+(9, '', 'LOOl'),
+(10, '', 'LOOl'),
+(11, '', 'rubrique111'),
+(12, '', 'rubrique111'),
+(13, '', 'LOOL'),
+(14, '', 'HAHAAHHAHAHA'),
+(15, '', 'HAHAAHHAHAHAHEHEHEHEHEH');
+
+INSERT INTO "item" ("id", "rubrique_id", "nom", "note") VALUES
+(1, 1, "Qualité", 20),
+(2, 4, "Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli", 5),
+(3, 4, 'Est-ce que l’objet et l’appli répondent à la problématique?', 5),
+(4, 4, 'Originalité de l’objet l’appli', 5),
+(5, 4, "Facilité d’utilisation de l\'objet de l’appli", 5),
+(6, 6, 'Fond', 10),
+(7, 6, 'Forme', 10),
+(8, 2, 'Pitch', 20),
+(10, 3, 'vidéo', 20),
+(11, 7, 'item1', 10),
+(12, 7, 'item2', 10),
+(13, 8, 'LOL1', 5),
+(14, 8, 'LOL2', 5),
+(15, 9, 'LOL1', 5),
+(16, 9, 'LOL2', 5),
+(17, 10, 'LOL1', 5),
+(18, 10, 'LOL2', 5),
+(19, 13, 'haha', 10),
+(20, 13, 'lul', 10),
+(21, 14, 'iteeems', 20),
+(22, 15, 'iteeems', 10),
+(23, 15, 'tezst', 10);
 
 INSERT INTO "modele_rubrique" ("modele_id", "rubrique_id") VALUES
 (1, 1),
@@ -300,48 +342,6 @@ INSERT INTO "modele_item" ("modele_id", "item_id") VALUES
 (24, 4),
 (24, 5),
 (24, 10);
-
-INSERT INTO "fiche_evaluation" ("id", "evaluateur_id", "soutenance_id", "note_final", "ponderation", "nom") VALUES (1, 11, 1, 0, 1, 'Fiche 1');
-
-INSERT INTO "rubrique" ("id", "commentaire", "nom") VALUES
-(1, '', 'Code'),
-(2, '', 'Pitch'),
-(3, '', 'Vidéo'),
-(4, '', 'Objet connecté'),
-(6, '', 'Présentation oral'),
-(7, '', 'Rubrique'),
-(8, '', 'LOOl'),
-(9, '', 'LOOl'),
-(10, '', 'LOOl'),
-(11, '', 'rubrique111'),
-(12, '', 'rubrique111'),
-(13, '', 'LOOL'),
-(14, '', 'HAHAAHHAHAHA'),
-(15, '', 'HAHAAHHAHAHAHEHEHEHEHEH');
-
-INSERT INTO "item" ("id", "rubrique_id", "nom", "note") VALUES
-(1, 1, "Qualité", 20),
-(2, 4, "Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli", 5),
-(3, 4, 'Est-ce que l’objet et l’appli répondent à la problématique?', 5),
-(4, 4, 'Originalité de l’objet l’appli', 5),
-(5, 4, "Facilité d’utilisation de l\'objet de l’appli", 5),
-(6, 6, 'Fond', 10),
-(7, 6, 'Forme', 10),
-(8, 2, 'Pitch', 20),
-(10, 3, 'vidéo', 20),
-(11, 7, 'item1', 10),
-(12, 7, 'item2', 10),
-(13, 8, 'LOL1', 5),
-(14, 8, 'LOL2', 5),
-(15, 9, 'LOL1', 5),
-(16, 9, 'LOL2', 5),
-(17, 10, 'LOL1', 5),
-(18, 10, 'LOL2', 5),
-(19, 13, 'haha', 10),
-(20, 13, 'lul', 10),
-(21, 14, 'iteeems', 20),
-(22, 15, 'iteeems', 10),
-(23, 15, 'tezst', 10);
 
 INSERT INTO "eval_item" ("id", "soutenance_id", "user_id", "item_id", "note") VALUES (1, 6, 11, 12, 2);
 
