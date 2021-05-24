@@ -108,7 +108,7 @@ class CreatorController extends AbstractController {
         
             //Recipients
             $mail->setFrom('ne-pas-repondre@COS.com', 'Mailer');
-            $mail->addAddress('biroumzaki@gmail.com');
+            $mail->addAddress('personne@test.com');
         
         
             //Content
