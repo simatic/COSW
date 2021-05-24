@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
 
 -- Table "Users"
 
-DROP TABLE IF EXISTS "Users"
+DROP TABLE IF EXISTS "Users";
 CREATE TABLE IF NOT EXISTS "Users" (
 	"id"	INTEGER NOT NULL,
 	"first_name"	VARCHAR(50) NOT NULL,
@@ -26,7 +26,7 @@ INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","passw
 
 -- Table "account_request"
 
-DROP TABLE IF EXISTS "account_request"
+DROP TABLE IF EXISTS "account_request";
 CREATE TABLE IF NOT EXISTS "account_request" (
 	"id"	INTEGER NOT NULL,
 	"first_name"	VARCHAR(50) NOT NULL,
@@ -38,16 +38,6 @@ CREATE TABLE IF NOT EXISTS "account_request" (
 
 INSERT INTO "account_request" ("id","first_name","last_name","email","status") VALUES (1,'Albert','Einstein','albert.einstein@gmail.com','PENDING');
 INSERT INTO "account_request" ("id","first_name","last_name","email","status") VALUES (9,'Jack','O''Lantern','jack.olantern@gmail.com','VALIDATED');
-
-
--- Contraintes
-
-CREATE UNIQUE INDEX IF NOT EXISTS "UNIQ_D5428AEDE7927C74" ON "Users" (
-	"email"
-);
-CREATE UNIQUE INDEX IF NOT EXISTS "UNIQ_F2BC9BD7E7927C74" ON "account_request" (
-	"email"
-);
 
 -- Table "commentaire"
 
