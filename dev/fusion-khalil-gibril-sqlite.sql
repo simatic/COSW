@@ -1,30 +1,19 @@
 BEGIN TRANSACTION;
 
--- Création des tables
+-- Table "Users"
 
 DROP TABLE IF EXISTS "Users"
 CREATE TABLE IF NOT EXISTS "Users" (
 	"id"	INTEGER NOT NULL,
 	"first_name"	VARCHAR(50) NOT NULL,
 	"last_name"	VARCHAR(50) NOT NULL,
-	"email"	VARCHAR(255) NOT NULL,
+	"email"	VARCHAR(255) UNIQUE NOT NULL,
 	"roles"	CLOB NOT NULL,
 	"type"	VARCHAR(255) NOT NULL,
 	"password"	VARCHAR(255) DEFAULT NULL,
 	"username"	VARCHAR(30) DEFAULT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
-
-CREATE TABLE IF NOT EXISTS "account_request" (
-	"id"	INTEGER NOT NULL,
-	"first_name"	VARCHAR(50) NOT NULL,
-	"last_name"	VARCHAR(50) NOT NULL,
-	"email"	VARCHAR(255) NOT NULL,
-	"status"	VARCHAR(255) NOT NULL DEFAULT 'PENDING',
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-
--- Remplissage des tables
 
 INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","password","username") VALUES (1,'Gibril','Gunder','gibril.gunder@telecom-sudparis.eu','["ROLE_ADMIN"]','admin','$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E',NULL);
 INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","password","username") VALUES (2,'Michel','Simatic','michel.simatic@telecom-sudparis.eu','["ROLE_CREATOR"]','creator','$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM',NULL);
@@ -35,8 +24,21 @@ INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","passw
 INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","password","username") VALUES (12,'Maxime','Verchain','maxime.verchain@telecom-sudparis.eu','{"0":"ROLE_USER","1":"ROLE_ADMIN"}','admin','$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc',NULL);
 INSERT INTO "Users" ("id","first_name","last_name","email","roles","type","password","username") VALUES (13,'a','b','a.b@hello.com','{"0":"ROLE_USER","2":"ROLE_CREATOR"}','creator','$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY',NULL);
 
+-- Table "account_request"
+
+DROP TABLE IF EXISTS "account_request"
+CREATE TABLE IF NOT EXISTS "account_request" (
+	"id"	INTEGER NOT NULL,
+	"first_name"	VARCHAR(50) NOT NULL,
+	"last_name"	VARCHAR(50) NOT NULL,
+	"email"	VARCHAR(255) UNIQUE NOT NULL,
+	"status"	VARCHAR(255) NOT NULL DEFAULT 'PENDING',
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
 INSERT INTO "account_request" ("id","first_name","last_name","email","status") VALUES (1,'Albert','Einstein','albert.einstein@gmail.com','PENDING');
 INSERT INTO "account_request" ("id","first_name","last_name","email","status") VALUES (9,'Jack','O''Lantern','jack.olantern@gmail.com','VALIDATED');
+
 
 -- Contraintes
 
@@ -47,143 +49,85 @@ CREATE UNIQUE INDEX IF NOT EXISTS "UNIQ_F2BC9BD7E7927C74" ON "account_request" (
 	"email"
 );
 
---
--- Structure de la table "commentaire"
---
+-- Table "commentaire"
 
 DROP TABLE IF EXISTS "commentaire";
 CREATE TABLE IF NOT EXISTS "commentaire" (
   "id" INTEGER NOT NULL,
   "soutenance_id" INTEGER NOT NULL,
   "auteur" VARCHAR(255) NOT NULL,
-  "contenu" TEXT  NOT NULL,
+  "contenu" TEXT NOT NULL,
   "note" REAL NOT NULL,
   PRIMARY KEY ("id" AUTOINCREMENT),
-  KEY "IDX_67F068BCA59B3775" ("soutenance_id")
+  FOREIGN KEY("soutenance_id") REFERENCES "soutenance"("id")
 );
 
--- --------------------------------------------------------
-
---
--- Structure de la table "doctrine_migration_versions"
---
-
-DROP TABLE IF EXISTS "doctrine_migration_versions";
-CREATE TABLE IF NOT EXISTS "doctrine_migration_versions" (
-  "version" VARCHAR(191) COLLATE utf8_unicode_ci NOT NULL,
-  "executed_at" datetime DEFAULT NULL,
-  "execution_time" INT DEFAULT NULL,
-  PRIMARY KEY ("version")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Déchargement des données de la table "doctrine_migration_versions"
---
-
-INSERT INTO "doctrine_migration_versions" ("version", "executed_at", "execution_time") VALUES
-('DoctrineMigrations\\Version20210323140152', '2021-03-23 14:04:39', 485),
-('DoctrineMigrations\\Version20210323140709', '2021-03-23 14:07:15', 399),
-('DoctrineMigrations\\Version20210328101836', '2021-03-28 10:18:48', 1752),
-('DoctrineMigrations\\Version20210328121632', '2021-03-28 12:16:48', 1569),
-('DoctrineMigrations\\Version20210423100650', '2021-04-23 10:06:53', 2105);
-
--- --------------------------------------------------------
-
---
--- Structure de la table "evaluation"
---
+-- Table "evaluation"
 
 DROP TABLE IF EXISTS "evaluation";
 CREATE TABLE IF NOT EXISTS "evaluation" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "soutenance_id" INT DEFAULT NULL,
   "user_id" INT DEFAULT NULL,
   "note" REAL DEFAULT NULL,
   "item_id" INT NOT NULL,
-  PRIMARY KEY ("id"),
-  KEY "IDX_1323A575A59B3775" ("soutenance_id"),
-  KEY "IDX_1323A575A76ED395" ("user_id"),
-  KEY "IDX_1323A575126F525E" ("item_id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY ("id" AUTOINCREMENT),
+  FOREIGN KEY("soutenance_id") REFERENCES "soutenance"("id"),
+  FOREIGN KEY("user_id") REFERENCES "Users"("id"),
+  FOREIGN KEY("item_id") REFERENCES "item"("id")
+);
 
--- --------------------------------------------------------
-
---
--- Structure de la table "eval_item"
---
+-- Table "eval_item"
 
 DROP TABLE IF EXISTS "eval_item";
 CREATE TABLE IF NOT EXISTS "eval_item" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "soutenance_id" INT NOT NULL,
   "user_id" INT DEFAULT NULL,
   "item_id" INT NOT NULL,
   "note" REAL NOT NULL,
-  PRIMARY KEY ("id"),
-  UNIQUE KEY "UNIQ_4C29623A126F525E" ("item_id"),
-  KEY "IDX_4C29623AA59B3775" ("soutenance_id"),
-  KEY "IDX_4C29623AA76ED395" ("user_id")
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY ("id" AUTOINCREMENT),
+  FOREIGN KEY("item_id") REFERENCES "item"("id"),
+  FOREIGN KEY("soutenance_id") REFERENCES "soutenance"("id"),
+  FOREIGN KEY("user_id") REFERENCES "Users"("id")
+);
 
---
--- Déchargement des données de la table "eval_item"
---
+INSERT INTO "eval_item" ("id", "soutenance_id", "user_id", "item_id", "note") VALUES (1, 6, 11, 12, 2);
 
-INSERT INTO "eval_item" ("id", "soutenance_id", "user_id", "item_id", "note") VALUES
-(1, 6, 11, 12, 2);
-
--- --------------------------------------------------------
-
---
--- Structure de la table "fiche_evaluation"
---
+-- Table "fiche_evaluation"
 
 DROP TABLE IF EXISTS "fiche_evaluation";
 CREATE TABLE IF NOT EXISTS "fiche_evaluation" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "evaluateur_id" INT DEFAULT NULL,
   "soutenance_id" INT DEFAULT NULL,
   "note_final" REAL NOT NULL,
   "ponderation" REAL NOT NULL,
   "nom" VARCHAR(255)  NOT NULL,
-  PRIMARY KEY ("id"),
-  KEY "IDX_BD75A182231F139" ("evaluateur_id"),
-  KEY "IDX_BD75A182A59B3775" ("soutenance_id")
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY ("id" AUTOINCREMENT),
+  FOREIGN KEY("evaluateur_id") REFERENCES "Users"("id"),
+  FOREIGN KEY("soutenance_id") REFERENCES "soutenance"("id")
+);
 
---
--- Déchargement des données de la table "fiche_evaluation"
---
+INSERT INTO "fiche_evaluation" ("id", "evaluateur_id", "soutenance_id", "note_final", "ponderation", "nom") VALUES (1, 11, 1, 0, 1, 'Fiche 1');
 
-INSERT INTO "fiche_evaluation" ("id", "evaluateur_id", "soutenance_id", "note_final", "ponderation", "nom") VALUES
-(1, 11, 1, 0, 1, 'Fiche 1');
-
--- --------------------------------------------------------
-
---
--- Structure de la table "item"
---
+-- Table "item"
 
 DROP TABLE IF EXISTS "item";
 CREATE TABLE IF NOT EXISTS "item" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "rubrique_id" INT DEFAULT NULL,
   "nom" VARCHAR(255)  NOT NULL,
   "note" REAL NOT NULL,
-  PRIMARY KEY ("id"),
-  KEY "IDX_1F1B251E3BD38833" ("rubrique_id")
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "item"
---
+  PRIMARY KEY ("id" AUTOINCREMENT),
+);
 
 INSERT INTO "item" ("id", "rubrique_id", "nom", "note") VALUES
-(1, 1, 'Qualité', 20),
-(2, 4, 'Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli', 5),
+(1, 1, "Qualité", 20),
+(2, 4, "Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli", 5),
 (3, 4, 'Est-ce que l’objet et l’appli répondent à la problématique?', 5),
 (4, 4, 'Originalité de l’objet l’appli', 5),
-(5, 4, 'Facilité d’utilisation de l\'objet de l’appli', 5),
+(5, 4, "Facilité d’utilisation de l\'objet de l’appli", 5),
 (6, 6, 'Fond', 10),
 (7, 6, 'Forme', 10),
 (8, 2, 'Pitch', 20),
@@ -202,22 +146,14 @@ INSERT INTO "item" ("id", "rubrique_id", "nom", "note") VALUES
 (22, 15, 'iteeems', 10),
 (23, 15, 'tezst', 10);
 
--- --------------------------------------------------------
-
---
--- Structure de la table "modele"
---
+-- Table "modele"
 
 DROP TABLE IF EXISTS "modele";
 CREATE TABLE IF NOT EXISTS "modele" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "name" VARCHAR(255)  NOT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "modele"
---
+  PRIMARY KEY ("id" AUTOINCREMENT)
+);
 
 INSERT INTO "modele" ("id", "name") VALUES
 (1, 'Classique'),
@@ -244,24 +180,16 @@ INSERT INTO "modele" ("id", "name") VALUES
 (24, 'amaaaaan'),
 (25, 'trah');
 
--- --------------------------------------------------------
-
---
--- Structure de la table "modele_item"
---
+-- Table "modele_item"
 
 DROP TABLE IF EXISTS "modele_item";
 CREATE TABLE IF NOT EXISTS "modele_item" (
   "modele_id" INT NOT NULL,
   "item_id" INT NOT NULL,
-  PRIMARY KEY ("modele_id","item_id"),
-  KEY "IDX_D99C5139AC14B70A" ("modele_id"),
-  KEY "IDX_D99C5139126F525E" ("item_id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "modele_item"
---
+  PRIMARY KEY ("modele_id", "item_id"),
+  FOREIGN KEY("modele_id") REFERENCES "modele"("id"),
+  FOREIGN KEY("item_id") REFERENCES "item"("id")
+);
 
 INSERT INTO "modele_item" ("modele_id", "item_id") VALUES
 (13, 2),
@@ -310,24 +238,16 @@ INSERT INTO "modele_item" ("modele_id", "item_id") VALUES
 (24, 5),
 (24, 10);
 
--- --------------------------------------------------------
-
---
--- Structure de la table "modele_rubrique"
---
+-- Table "modele_rubrique"
 
 DROP TABLE IF EXISTS "modele_rubrique";
 CREATE TABLE IF NOT EXISTS "modele_rubrique" (
   "modele_id" INT NOT NULL,
   "rubrique_id" INT NOT NULL,
-  PRIMARY KEY ("modele_id","rubrique_id"),
-  KEY "IDX_E77C377EAC14B70A" ("modele_id"),
-  KEY "IDX_E77C377E3BD38833" ("rubrique_id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "modele_rubrique"
---
+  PRIMARY KEY ("modele_id", "rubrique_id"),
+  FOREIGN KEY("modele_id") REFERENCES "modele"("id"),
+  FOREIGN KEY("rubrique_id") REFERENCES "rubrique"("id")
+);
 
 INSERT INTO "modele_rubrique" ("modele_id", "rubrique_id") VALUES
 (1, 1),
@@ -382,23 +302,15 @@ INSERT INTO "modele_rubrique" ("modele_id", "rubrique_id") VALUES
 (25, 2),
 (25, 3);
 
--- --------------------------------------------------------
-
---
--- Structure de la table "rubrique"
---
+-- Table "rubrique"
 
 DROP TABLE IF EXISTS "rubrique";
 CREATE TABLE IF NOT EXISTS "rubrique" (
   "id" INT NOT NULL,
   "commentaire" TEXT NOT NULL,
   "nom" VARCHAR(255)  NOT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "rubrique"
---
+  PRIMARY KEY ("id", AUTOINCREMENT)
+);
 
 INSERT INTO "rubrique" ("id", "commentaire", "nom") VALUES
 (1, '', 'Code'),
@@ -416,51 +328,34 @@ INSERT INTO "rubrique" ("id", "commentaire", "nom") VALUES
 (14, '', 'HAHAAHHAHAHA'),
 (15, '', 'HAHAAHHAHAHAHEHEHEHEHEH');
 
--- --------------------------------------------------------
-
---
--- Structure de la table "session"
---
+-- Table "session"
 
 DROP TABLE IF EXISTS "session";
 CREATE TABLE IF NOT EXISTS "session" (
-  "id" INT NOT NULL AUTO_INCREMENT,
-  "date" datetime NOT NULL,
+  "id" INT NOT NULL,
+  "date" TEXT NOT NULL,
   "nom" VARCHAR(255) NOT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY ("id" AUTOINCREMENT)
+);
 
---
--- Déchargement des données de la table "session"
---
+INSERT INTO "session" ("id", "date", "nom") VALUES (1, '2016-01-01 00:00:00', 'Session du 05/05/2021');
 
-INSERT INTO "session" ("id", "date", "nom") VALUES
-(1, '2016-01-01 00:00:00', 'Session du 05/05/2021');
-
--- --------------------------------------------------------
-
---
--- Structure de la table "soutenance"
---
+-- Table "soutenance"
 
 DROP TABLE IF EXISTS "soutenance";
 CREATE TABLE IF NOT EXISTS "soutenance" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "session_id" INT DEFAULT NULL,
   "titre" VARCHAR(255)  NOT NULL,
   "description" TEXT  NOT NULL,
   "image" VARCHAR(255)  NOT NULL,
-  "date_soutenance" datetime NOT NULL,
+  "date_soutenance" TEXT NOT NULL,
   "note" REAL NOT NULL,
   "modele_id" INT NOT NULL,
-  PRIMARY KEY ("id"),
-  KEY "IDX_4D59FF6E613FECDF" ("session_id"),
-  KEY "IDX_4D59FF6EAC14B70A" ("modele_id")
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table "soutenance"
---
+  PRIMARY KEY ("id" AUTOINCREMENT),
+  FOREIGN KEY("session_id") REFERENCES "session"("id"),
+  FOREIGN KEY("modele_id") REFERENCES "modele"("id")
+);
 
 INSERT INTO "soutenance" ("id", "session_id", "titre", "description", "image", "date_soutenance", "note", "modele_id") VALUES
 (1, 1, 'Soutenance test', 'Soutenance', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 1),
@@ -470,111 +365,11 @@ INSERT INTO "soutenance" ("id", "session_id", "titre", "description", "image", "
 (5, 1, 'Soutenance test 1000', 'bla bla', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 16),
 (6, 1, 'Soutenance', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0, 17);
 
--- --------------------------------------------------------
-
---
--- Structure de la table "upload"
---
+-- Table "upload"
 
 DROP TABLE IF EXISTS "upload";
 CREATE TABLE IF NOT EXISTS "upload" (
-  "id" INT NOT NULL AUTO_INCREMENT,
+  "id" INT NOT NULL,
   "name" VARCHAR(255)  NOT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table "users"
---
-
-DROP TABLE IF EXISTS "users";
-CREATE TABLE IF NOT EXISTS "users" (
-  "id" INT NOT NULL AUTO_INCREMENT,
-  "first_name" VARCHAR(50) NOT NULL,
-  "last_name" VARCHAR(50) NOT NULL,
-  "email" VARCHAR(255) NOT NULL,
-  "roles" json NOT NULL COMMENT '(DC2Type:array)',
-  "type" VARCHAR(255) NOT NULL,
-  "password" VARCHAR(255) DEFAULT NULL,
-  "username" VARCHAR(30) DEFAULT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table "users"
---
-
-INSERT INTO "users" ("id", "first_name", "last_name", "email", "roles", "type", "password", "username") VALUES
-(1, 'Gibril', 'Gunder', 'gibril.gunder@telecom-sudparis.eu', '{\"0\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E', NULL),
-(2, 'Michel', 'Simatic', 'michel.simatic@telecom-sudparis.eu', '{\"0\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM', NULL),
-(7, 'John', 'Doe', 'john.doe@gmail.com', '{\"0\": \"ROLE_USER\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$aDlFMkdhN1IvUW9YUjhJcA$xO7gBGxpers0D/ppTD3t3MrddJAvhzQaxQOTR5iiMtA', NULL),
-(9, 'Hello', 'World', 'hello.world@gmail.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$VVRjcUF0cFBJYXJHdEpsRg$vdaD8mMOCjFUvmuhBT1aKPQUObKlAJWQJ1+Q/RZRe+0', NULL),
-(10, 'Zaki', 'Biroum', 'zaki.biroum@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$WW1JUmZraHQ4a3huZ1h5bA$uweXy9doHQKoTDn4Flne2VjZLHqoLPgVx1L9yotS728', NULL),
-(11, 'Khalil Mehdi', 'Meziou', 'khalil.meziou@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$UGJzYkhyajRxYmVENGs2bQ$1dD52WNy7+RJBcouaAnVSQgo1Q7qKA4HP4bf+xG3yQA', NULL),
-(12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL),
-(13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL),
-(14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL);
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table "commentaire"
---
-ALTER TABLE "commentaire"
-  ADD CONSTRAINT "FK_67F068BCA59B3775" FOREIGN KEY ("soutenance_id") REFERENCES "soutenance" ("id");
-
---
--- Contraintes pour la table "evaluation"
---
-ALTER TABLE "evaluation"
-  ADD CONSTRAINT "FK_1323A575126F525E" FOREIGN KEY ("item_id") REFERENCES "item" ("id"),
-  ADD CONSTRAINT "FK_1323A575A59B3775" FOREIGN KEY ("soutenance_id") REFERENCES "soutenance" ("id");
-
---
--- Contraintes pour la table "eval_item"
---
-ALTER TABLE "eval_item"
-  ADD CONSTRAINT "FK_4C29623A126F525E" FOREIGN KEY ("item_id") REFERENCES "item" ("id"),
-  ADD CONSTRAINT "FK_4C29623AA59B3775" FOREIGN KEY ("soutenance_id") REFERENCES "soutenance" ("id");
-
---
--- Contraintes pour la table "fiche_evaluation"
---
-ALTER TABLE "fiche_evaluation"
-  ADD CONSTRAINT "FK_BD75A182A59B3775" FOREIGN KEY ("soutenance_id") REFERENCES "soutenance" ("id");
-
---
--- Contraintes pour la table "item"
---
-ALTER TABLE "item"
-  ADD CONSTRAINT "FK_1F1B251E3BD38833" FOREIGN KEY ("rubrique_id") REFERENCES "rubrique" ("id");
-
---
--- Contraintes pour la table "modele_item"
---
-ALTER TABLE "modele_item"
-  ADD CONSTRAINT "FK_D99C5139126F525E" FOREIGN KEY ("item_id") REFERENCES "item" ("id") ON DELETE CASCADE,
-  ADD CONSTRAINT "FK_D99C5139AC14B70A" FOREIGN KEY ("modele_id") REFERENCES "modele" ("id") ON DELETE CASCADE;
-
---
--- Contraintes pour la table "modele_rubrique"
---
-ALTER TABLE "modele_rubrique"
-  ADD CONSTRAINT "FK_E77C377E3BD38833" FOREIGN KEY ("rubrique_id") REFERENCES "rubrique" ("id") ON DELETE CASCADE,
-  ADD CONSTRAINT "FK_E77C377EAC14B70A" FOREIGN KEY ("modele_id") REFERENCES "modele" ("id") ON DELETE CASCADE;
-
---
--- Contraintes pour la table "soutenance"
---
-ALTER TABLE "soutenance"
-  ADD CONSTRAINT "FK_4D59FF6E613FECDF" FOREIGN KEY ("session_id") REFERENCES "session" ("id"),
-  ADD CONSTRAINT "FK_4D59FF6EAC14B70A" FOREIGN KEY ("modele_id") REFERENCES "modele" ("id");
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  PRIMARY KEY ("id" AUTOINCREMENT)
+);
