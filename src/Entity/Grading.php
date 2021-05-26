@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+// Doctrine annotations.
+use Doctrine\ORM\Mapping\Annotation as ORM;
+
 /**
  * 
  * Classe représentant l'évaluation d'un évaluable 
