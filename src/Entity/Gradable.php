@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * évaluables, mais aussi le nombre de points sur lequel ces évaluables sont 
  * notés.
  */
-class Gradable {
+abstract class Gradable {
 
     /**
      * 
