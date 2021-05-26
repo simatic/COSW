@@ -18,15 +18,56 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Gradable {
 
+    /**
+     * 
+     * L'identifiant de l'évaluable.
+     * Clé primaire dans la BDD.
+     */
     private int $id;
 
+    /**
+     * 
+     * Le nom de l'évaluable.
+     */
     private string $name;
 
+    /**
+     * 
+     * La description textuelle de 
+     * l'évaluable.
+     */
     private string $description;
 
+    /**
+     * 
+     * Le barême de l'évaluable
+     * (nombre de point sur lequel il est noté).
+     */
     private float $highestGrade;
 
-    private float $averageGrade;
+    /**
+     * 
+     * La moyenne des notes données à l'évaluable
+     * par les membres du jury.
+     * Peut être null.
+     * Si vaut null, soit aucune note n'a été donnée, soit 
+     * la notation des sous-évaluables de l'évaluable (items dans une rubrique par exemple) 
+     * ne répond pas aux contraintes imposées par la completionPolicy de la fiche 
+     * d'évaluation (classe GradingGrid).
+     */
+    private float $JuryAverageGrade;
+
+    /**
+     * 
+     * La moyenne des notes données à l'évaluable
+     * par les pairs.
+     * Peut être null.
+     * Si vaut null, soit aucune note n'a été donnée, soit 
+     * la notation des sous-évaluables de l'évaluable (items dans une rubrique par exemple) 
+     * ne répond pas aux contraintes imposées par la completionPolicy de la fiche 
+     * d'évaluation (classe GradingGrid).
+     */
+    private float $PeerAverageGrade;
 
     public function __construct() {}
 
