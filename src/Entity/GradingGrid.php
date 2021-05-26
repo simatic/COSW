@@ -24,6 +24,7 @@ class GradingGrid extends Gradable {
      * Définit la stratégie à adopter pour considérer qu'une fiche 
      * d'évaluation est complète ou non.
      * cf. CompletionPolicy.php.
+     * Doit être une constante définie dans /src/Utilities/CompletionPolicy.php.
      */
     private int $completionPolicy;
 
