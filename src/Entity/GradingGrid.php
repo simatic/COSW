@@ -11,15 +11,33 @@ use Doctrine\ORM\Mapping as ORM;
  * Classe représentant les fiches d'évaluation 
  * (qui sont des évaluables).
  */
-class Creator extends Gradable {
+class GradingGrid extends Gradable {
 
-    // La soutenance à laquelle est rattachée la fiche d'évaluation
+    /**
+     * 
+     * La session de soutenances à laquelle est rattachée la fiche d'évaluation.
+     */
     private $oral;
 
-    // Définit la stratégie à adopter pour considérer qu'une fiche 
-    // d'évaluation est complète ou non.
-    // cf. CompletionPolicy.php.
+    /**
+     * 
+     * Définit la stratégie à adopter pour considérer qu'une fiche 
+     * d'évaluation est complète ou non.
+     * cf. CompletionPolicy.php.
+     */
     private int $completionPolicy;
+
+    /**
+     * 
+     * La part de l'évaluation des pairs dans la 
+     * note finale attribuée aux soutenances d'une 
+     * même session.
+     * Il s'agit d'une proportion (nombre réel compris entre 0 et 1).
+     * La part de l'évaluation des membres du jury comptant 
+     * dans la note finale des soutenances d'une même session est donc 
+     * 1 - $peerWeighting.
+     */
+    private float $peerWeighting;
 
     public function __construct()
     {
