@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * Modèle de formulaire utilisé pour la connexion au mail zimbra
@@ -20,6 +21,8 @@ class EmailConnectionType extends AbstractType {
 
         $builder
             ->add('email', EmailType::class, ['label' => 'Votre adresse mail'])
+            ->add('texte_email_jury', TextareaType::class, ['label' => 'Texte mail jury'])
+            ->add('texte_email_etudiant', TextareaType::class, ['label' => 'Texte mail etudiant'])
             ->add('password',PasswordType::class);
 
     }

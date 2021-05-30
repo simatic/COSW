@@ -25,10 +25,14 @@ use PHPMailer\PHPMailer\Exception;
 use App\Entity\Creator;
 use App\Form\CreatorType;
 use App\Entity\AccountRequest;
+use App\Entity\User;
 use App\Form\AccountRequestType;
 use App\Form\EmailConnectionType;
 use App\Repository\AccountRequestRepository;
 use App\Security\Status;
+use Exception as GlobalException;
+use FFI\Exception as FFIException;
+use Symfony\Component\Config\Definition\Exception\Exception as ExceptionException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -48,7 +52,7 @@ class CreatorController extends AbstractController {
      * @Route("", name="creator")
      */
     public function index(): Response {
-
+        
         return $this->render('creator/index.html.twig');
 
     }
@@ -59,28 +63,79 @@ class CreatorController extends AbstractController {
      */
     public function Connectionmailing(SessionInterface $session, Request $request): Response {
 
-        
-        
+        $usertest = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findBy(['email' => "zaki.biroum@telecom-sudparis.eu"])[0];
+
+        dump($usertest);
+        //$Balises = ["{{Debut_objet_courriel}}", "{{Fin_objet_courriel}}", "{{Prenom}}", "{{Nom}}", "{{Lien}}"];
         $form = $this->createForm(EmailConnectionType::class);
         $form->handleRequest($request);
+
+        dump($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             
             
             $creator = $session->get("creator",[]);
-
             $creator["email"] = $form->get("email")->getData();
             $creator["password"] = $form->get("password")->getData();
+            
+            $creator["texte_email_etudiant"] = $form->get("texte_email_etudiant")->getData();
+
+            /**
+             * Traitement de la chaïne de caractère où l'on remplace les balise par les éléments des Users
+             */
+            try{
+
+            //on récupère l'objet du mail
+            $objet = $form->get("texte_email_jury")->getData();
+            $objet = explode("{{Debut_objet_courriel}}", $objet)[1];
+            $objet = explode("{{Fin_objet_courriel}}", $objet)[0];
+            $creator["objet"] = $objet;
+
+            // on récupère le body du mail jury 
+            $texte_mail_jury = $form->get("texte_email_jury")->getData();
+            $texte_mail_jury = explode("{{Fin_objet_courriel}}", $form->get("texte_email_jury")->getData())[1];
+            
+
+            //on remplace les balises dans le body du mail jury 
+            $texte_mail_jury = str_replace("{{Prenom}}", $usertest->getFirstname(), $texte_mail_jury);
+            $texte_mail_jury = str_replace("{{Nom}}", $usertest->getLastname(), $texte_mail_jury);
+        
+            $creator["texte_email_jury"] = $texte_mail_jury;
+            
+
+            // on récupère le body du mail étudiant 
+            $texte_mail_etudiant = $form->get("texte_email_etudiant")->getData();
+            $texte_mail_etudiant = explode("{{Fin_objet_courriel}}", $form->get("texte_email_etudiant")->getData())[1];
+            $texte_mail_etudiant = str_replace("{{Prenom}}", $usertest->getFirstname(), $texte_mail_etudiant);
+            $texte_mail_etudiant = str_replace("{{Nom}}", $usertest->getLastname(), $texte_mail_etudiant);
+
+            $creator["texte_email_etudiant"] = $texte_mail_etudiant;
+
+
+            }
+            catch(GlobalException $e){
+                $this->addFlash("notice","Veuillez remplir les champs de mails correctements en faisaint attention aux balises");
+                return $this->redirectToRoute('mailing', ['request' => $request]);
+            }
+
+            
+
 
             $session->set('creator', $creator);
+            
+
+
             return $this->redirectToRoute('mailinglist', ['request' => $request]);
 
 
 
 
         }
-        return $this->render('creator/email.html.twig', ['form' => $form->createView(), 'button_label' => 'Connexion']);
+        return $this->render('creator/email.html.twig', ['form' => $form->createView(), 'button_label' => 'Connexion', '']);
 
     }
     
@@ -91,30 +146,33 @@ class CreatorController extends AbstractController {
      */
     public function MailingList(SessionInterface $session, Request $request): Response {
 
+        $date = ""; //to set
         $mail = new PHPMailer(true);
-
+        $mail->Encoding = 'base64';
+        $mail ->CharSet = "UTF-8";
         try{
             //Server settings
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'z.mines-telecom.fr';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $creator = $session->get("creator");
+            dump($creator);
             $array = array_values($creator);
-            $mail->Username   = $array[0];
-            $mail->Password   = $array[1];
+            dump($array);
+            $mail->Username   = $creator["email"];
+            $mail->Password   = $creator["password"];
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $mail->Port       = 587;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+            $mail->Port       = 587;           
         
             //Recipients
-            $mail->setFrom('ne-pas-repondre@COS.com', 'Mailer');
-            $mail->addAddress('personne@test.com');
+            $mail->setFrom('ne-pas-repondre@COS.com', 'Soutenance COS'.$date);
+            $mail->addAddress($creator["email"]);
         
         
             //Content
-            $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Test';
-            $mail->Body    = 'Test';
+            $mail->Subject = $creator["objet"];
+            $mail->Body    = $creator["texte_email_jury"];
         
             $mail->send();
             $this->addFlash("notice","vous êtes bien connecté au serveur Zimbra, uploader la liste des élèves à contacter pour la session de soutenance au format excel");
@@ -124,7 +182,7 @@ class CreatorController extends AbstractController {
             return $this->redirectToRoute('mailing', ['request' => $request]);
         }
 
-        return $this->render('creator/mailinglist.html.twig', ["mdp"=> $session->get("password"), "email"=> $session->get("email") ]);
+        return $this->render('creator/mailinglist.html.twig');
     }
 
 
