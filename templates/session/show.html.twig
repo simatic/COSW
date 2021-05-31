@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session{% endblock %}
+
+{% block body %}
+    <article>
+        <div class="jumbotron">
+
+            <h2 class="display-4">{{ session.nom }} : du {{ session.dateDebut | date ('d/m/Y') }} au {{ session.dateFin | date ('d/m/Y') }}</h2>
+            <h5>{{ session.description }}</h5>
+
+            <ul>
+            {% for soutenance in session.soutenances %}
+                    <li><a href="{{ path('soutenance_show', {'id': soutenance.id}) }}">{{ soutenance.titre }}</a></li>
+            {% endfor %}
+            </ul>
+
+            <ul>
+                <li style="margin-bottom: 30px"><h5>Liste des étudiants invités</h5>
+            {{ session.listeEtudiant }}</li>
+
+                <li style="margin-bottom: 30px"><h5>Liste des jurys invités</h5>
+            {{ session.listeJury }}</li>
+
+                <li style="margin-bottom: 30px"><h5>Texte du mail envoyé aux étudiants</h5>
+            {{ session.texteMailEtudiant }}</li>
+
+                <li style="margin-bottom: 30px"><h5>Texte du mail envoyé aux jurys</h5>
+            {{ session.texteMailJury }}</li>
+            </ul>
+
+        </div>
+
+
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-success" href="{{ path('session_edit', {'id': session.id}) }}">
+                Modifier
+            </a>
+        {% endif %}
+    </article>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="margin-bottom: 30px;">
+    <h1> Modification d'une session</h1>
+
+    {{ form_start(formSession) }}
+
+    {{ form_row(formSession.nom,{'attr' : {'placeholder': 'Nom de la session'}}) }}
+    {{ form_row(formSession.dateDebut,{'attr' : {'placeholder': 'Date de début de la session'}}) }}
+    {{ form_row(formSession.dateFin,{'attr' : {'placeholder': 'Date de fin de la session'}}) }}
+    {{ form_row(formSession.description,{'attr' : {'placeholder': 'Description de la session'}}) }}
+    {{ form_row(formSession.texteMailEtudiant,{'attr' : {'placeholder': 'Texte balisé envoyé aux étudiants'}}) }}
+    {{ form_row(formSession.texteMailJury,{'attr' : {'placeholder': 'Texte balisé envoyé aux jurys'}}) }}
+
+        <div class="col-sm-8 col-sm-offset-2" id="exp_list" data-prototype="{{ form_widget(formSession.soutenances.vars.prototype)|e('html_attr') }}" style="width: 30%">
+            {% for row in formSession.soutenances %}
+                <div class="panel panel-warning" style="margin-bottom: 10px;">
+                    <div class="panel-body">
+                        {{ form_row(row) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    <button type="submit" class="btn btn-success" style="margin-top: 20px;">
+            Valider
+    </button>
+    {{ form_end(formSession) }}
+    </div>
+
+    <div style="margin-bottom: 30px; margin-right: 30%;">
+        <h3>Upload liste des étudiants au format CSV</h3>
+        {{ form_start(formUploadListeEtudiant) }}
+        <button type="submit" class="btn btn-success">
+        Upload
+        </button>
+        {{ form_end(formUploadListeEtudiant) }}
+    </div>
+
+    <div style="margin-bottom: 30px; margin-right: 30%;">
+        <h3>Upload liste des jurys au format CSV</h3>
+        {{ form_start(formUploadListeJury) }}
+        <button type="submit" class="btn btn-success">
+            Upload
+        </button>
+        {{ form_end(formUploadListeJury) }}
+    </div>
+
+
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+
+    <script src="{{ asset('app.js') }}"></script>
+{% endblock %}

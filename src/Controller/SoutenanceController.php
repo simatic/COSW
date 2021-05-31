@@ -52,18 +52,6 @@ class SoutenanceController extends AbstractController
             );
     }
 
-    /**
-     *
-     * @isGranted("ROLE_USER")
-     * @Route("/session",name="session")
-     */
-    public function session(SessionRepository $repo)
-    {
-        $sessions = $repo->findAll();
-        return $this->render('soutenance/session.html.twig', [
-            'sessions'=>$sessions
-        ]);
-    }
     
     /**
      * @isGranted("ROLE_ADMIN")
@@ -167,29 +155,7 @@ class SoutenanceController extends AbstractController
         ]);
     }
     
-    /**
-     * @isGranted("ROLE_USER")
-     * @Route("/Session/new", name="Session_new")
-     */
-    public function NewSession(Request $request, EntityManagerInterface $manager){
-        
-        $session = new Session();
-        
-        
-        $formSession = $this->createForm(SessionType::class,$session);
-        $formSession->handleRequest($request);
-        
-        if($formSession->isSubmitted() && $formSession->isValid()){
-            
-            $manager->persist($session);
-            $manager->flush();
-            
-            return $this->redirectToRoute('session_show', ['id'=>$session->getId()]);
-        }
-        return $this->render('soutenance/newSession.html.twig',[
-            'formSession'=> $formSession->createView()
-        ]);
-    }
+
     
     /**
      *
@@ -208,24 +174,7 @@ class SoutenanceController extends AbstractController
             );
     }
     
-    
-    /**
-     *
-     * @Route("/Session/{id}",name="session_show")
-     */
-    public function show_session(Session $session, EntityManagerInterface $manager)
-    {
-        $repo = $manager->getRepository(Soutenance::class)->findBy([
-            'session'=>$session
-        ]);
-        
-        
-        return $this->render('soutenance/Session_show.html.twig',[
-            'soutenances'=> $repo,
-            'session'=>$session
-        ]
-            );
-    }
+
     
 
 }

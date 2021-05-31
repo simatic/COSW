@@ -20,19 +20,55 @@ class Session
     private $id;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateDebut;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateFin;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+
+    /**
      * @ORM\OneToMany(targetEntity=Soutenance::class, mappedBy="session")
      */
     private $soutenances;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="sessions")
      */
-    private $Date;
-    
+    private $users;
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
-    private $nom;
+    private $listeEtudiant;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $listeJury;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $texteMailEtudiant;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $texteMailJury;
     
     
     public function setNom(string $nom): self
@@ -50,6 +86,7 @@ class Session
     public function __construct()
     {
         $this->soutenances = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,14 +124,111 @@ class Session
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+
+    public function getDescription(): ?string
     {
-        return $this->Date;
+        return $this->description;
     }
 
-    public function setDate(\DateTimeInterface $Date): self
+    public function setDescription(?string $description): self
     {
-        $this->Date = $Date;
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getListeEtudiant(): ?string
+    {
+        return $this->listeEtudiant;
+    }
+
+    public function setListeEtudiant(?string $listeEtudiant): self
+    {
+        $this->listeEtudiant = $listeEtudiant;
+
+        return $this;
+    }
+
+    public function getListeJury(): ?string
+    {
+        return $this->listeJury;
+    }
+
+    public function setListeJury(?string $listeJury): self
+    {
+        $this->listeJury = $listeJury;
+
+        return $this;
+    }
+
+    public function getTexteMailEtudiant(): ?string
+    {
+        return $this->texteMailEtudiant;
+    }
+
+    public function setTexteMailEtudiant(?string $texteMailEtudiant): self
+    {
+        $this->texteMailEtudiant = $texteMailEtudiant;
+
+        return $this;
+    }
+
+    public function getTexteMailJury(): ?string
+    {
+        return $this->texteMailJury;
+    }
+
+    public function setTexteMailJury(?string $texteMailJury): self
+    {
+        $this->texteMailJury = $texteMailJury;
 
         return $this;
     }

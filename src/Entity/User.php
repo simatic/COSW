@@ -5,6 +5,8 @@ namespace App\Entity;
 // See /Security/Users.php
 use App\Security\Role;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
@@ -52,9 +54,15 @@ abstract class User implements UserInterface {
      */
     private $roles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Session::class, mappedBy="users")
+     */
+    private $sessions;
+
     public function __construct() {
 
         $this->roles = array(Role::USER);
+        $this->sessions = new ArrayCollection();
     }
 
     public function getId() {return $this->id;}
@@ -131,5 +139,32 @@ abstract class User implements UserInterface {
      * the plain-text password is stored on this object.
      */
     public function eraseCredentials() {}
+
+    /**
+     * @return Collection|Session[]
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): self
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions[] = $session;
+            $session->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): self
+    {
+        if ($this->sessions->removeElement($session)) {
+            $session->removeUser($this);
+        }
+
+        return $this;
+    }
 
 }

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1> Nouvelle session</h1>
+
+    {{ form_start(formSession) }}
+
+    {{ form_row(formSession.nom,{'attr' : {'placeholder': 'Nom de la session'}}) }}
+    {{ form_row(formSession.dateDebut,{'attr' : {'placeholder': 'Date de début de la session'}}) }}
+    {{ form_row(formSession.dateFin,{'attr' : {'placeholder': 'Date de fin de la session'}}) }}
+    {{ form_row(formSession.description,{'attr' : {'placeholder': 'Description de la session'}}) }}
+    {{ form_row(formSession.texteMailEtudiant,{'attr' : {'placeholder': 'Texte balisé envoyé aux étudiants'}}) }}
+    {{ form_row(formSession.texteMailJury,{'attr' : {'placeholder': 'Texte balisé envoyé aux jurys'}}) }}
+    <button type="submit" class="btn btn-success">
+        Sauvegarder
+    </button>
+    {{ form_end(formSession) }}
+
+{% endblock %}

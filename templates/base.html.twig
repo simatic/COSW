@@ -19,9 +19,9 @@
           <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav mr-auto">	
     {% if is_granted('ROLE_ADMIN') %}
-    <li><a href="{{ path('home') }}">COS</a></li>
+    <li style="padding:0 15px;"><a href="{{ path('home') }}">COS</a></li>
         {% if app.user %}
-            <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
+            <li style="padding:0 15px;"><a href="{{ path('logout') }}">Se déconnecter</a></li>
             {% if is_granted('ROLE_ADMIN') %}
                 {% set url = 'admin' %}
             {% elseif is_granted('ROLE_CREATOR') %}
@@ -29,18 +29,15 @@
             {% else %}
                 {% set url = 'home' %}
             {% endif %}
-            <li><a href="{{ path(url) }}">Mon espace</a></li>
+            <li style="padding:0 15px;"><a href="{{ path(url) }}">Mon espace</a></li>
         {% else %}
-            <li><a href="{{ path('login') }}">Se connecter</a></li>
+            <li style="padding:0 15px;"><a href="{{ path('login') }}">Se connecter</a></li>
         {% endif %}
-{% endif %}
+    {% endif %}
             </ul>
-            <ul class="navbar-nav mr-auto">	
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ path("security_deco") }}">Déconnexion
-                </a>
-              </li>
-            </ul>
+              {% if app.user %}
+                <a class="navbar-brand" href="{{ path("logout") }}">Déconnexion</a>
+              {% endif %}
  	</div>
   </nav>
         {% block javascripts %}
