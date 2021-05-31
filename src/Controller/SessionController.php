@@ -22,7 +22,7 @@ class SessionController extends AbstractController
 {
     /**
      * @isGranted("ROLE_USER")
-     * @Route("/session", name="sessions")
+     * @Route("/session", name="session")
      * @param SessionRepository $repo
      * @return Response
      */
