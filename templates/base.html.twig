@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-      <link href="https://bootswatch.com/4/solar/bootstrap.min.css" rel="stylesheet">
+       <link href="https://bootswatch.com/4/solar/bootstrap.min.css" rel="stylesheet">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
@@ -18,26 +18,48 @@
           
           <div class="collapse navbar-collapse" id="navbarColor03">
             <ul class="navbar-nav mr-auto">	
-    {% if is_granted('ROLE_ADMIN') %}
-    <li style="padding:0 15px;"><a href="{{ path('home') }}">COS</a></li>
-        {% if app.user %}
-            <li style="padding:0 15px;"><a href="{{ path('logout') }}">Se déconnecter</a></li>
-            {% if is_granted('ROLE_ADMIN') %}
-                {% set url = 'admin' %}
-            {% elseif is_granted('ROLE_CREATOR') %}
-                {% set url = 'creator' %}
-            {% else %}
-                {% set url = 'home' %}
-            {% endif %}
-            <li style="padding:0 15px;"><a href="{{ path(url) }}">Mon espace</a></li>
-        {% else %}
-            <li style="padding:0 15px;"><a href="{{ path('login') }}">Se connecter</a></li>
-        {% endif %}
-    {% endif %}
+             {% if app.user %}
+             <li class="nav-item active">
+                <a class="nav-link" href="{{ path('session') }}">Sessions
+                </a>
+              </li>
+             <li class="nav-item active">
+                <a class="nav-link" href="{{ path('soutenance_new') }}">Créer une soutenance
+                </a>
+              </li>
+             <li class="nav-item active">
+                <a class="nav-link" href="{{ path('modele_new') }}">Ajouter un modèle
+                </a>
+              </li>
             </ul>
-              {% if app.user %}
-                <a class="navbar-brand" href="{{ path("logout") }}">Déconnexion</a>
+            {% endif %}
+            <ul class="navbar-nav mr-auto">	
+             {% if app.user %}
+             {% if is_granted('ROLE_CREATOR') %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path('creator') }}">Creator
+                </a>
+              </li>
+             
+             {% endif %}
+             {% if is_granted('ROLE_ADMIN') %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path('admin') }}">Demandes de compte
+                </a>
+              </li>
+             
+             {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('logout') }}">Se déconnecter
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ path('login') }}">Se connecter
+                </a>
+              </li>
               {% endif %}
+            </ul>
  	</div>
   </nav>
         {% block javascripts %}

@@ -5,7 +5,16 @@
 {% block body %}
 
 <article>
+
 	<h2>{{ session.nom }}</h2>
+	<a href="{{ path('export_soutenance', {'id': session.id}) }}">
+		<button type="submit" class="btn btn-success" id="export_soutenance">
+	Exporter
+		</button>
+</a>
+
+		<a href="{{ path('soutenance_new') }}" class="btn btn-primary">Ajouter une soutenance</a><br><br>
+
 	{% for soutenance in soutenances %}
 	<div class="jumbotron">
 		<h2 class="display-3">{{ soutenance.titre }}</h2>

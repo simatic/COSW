@@ -26,14 +26,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 */
 class HomeController extends AbstractController {
 
-    /**
-     * @Route("", name="home")
-     */
-    public function home(): Response {
-        
-        return $this->render('home/index.html.twig');
-
-    }
 
     /**
      * @Route("/login", name="login")
