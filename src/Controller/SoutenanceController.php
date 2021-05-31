@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Commentaire;
 use League\Csv\Reader;
+use League\Csv\Writer;
 use App\Entity\Modele;
 use App\Entity\Session;
+use App\Entity\Item;
 use App\Entity\Soutenance;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
@@ -45,8 +47,7 @@ class SoutenanceController extends AbstractController
     public function home(SoutenanceRepository $repo)
     {
         $soutenance = $repo->findAll();
-        return $this->render('soutenance/home.html.twig', [
-            'soutenances'=>$soutenance
+        return $this->render('home/index.html.twig', [
         ]
             
             );
@@ -80,7 +81,9 @@ class SoutenanceController extends AbstractController
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
             'choice_label'=>'nom'
         ])->add('description')->add('image')->add('dateSoutenance')
-        ->getForm();
+        ->add('modele', EntityType::class,['class'=> Modele::class,
+            'choice_label'=>'Modele'
+        ])->getForm();
         
         $formSoutenance->handleRequest($request);
         
@@ -135,7 +138,7 @@ class SoutenanceController extends AbstractController
     
     /**
      * @isGranted("ROLE_USER")
-     * @Route("/test", name="test")
+     * @Route("/modele/upload", name="upload_modele")
      */
     public function test( Request $request, EntityManagerInterface $manager){
         
@@ -148,15 +151,33 @@ class SoutenanceController extends AbstractController
             //$fileName = md5(uniqid()).'.'.$file->guessExtension();
             $files = $form->get('name')->getData();
             $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
-            
+            $rubrique = new Rubrique();
+            $modele = new Modele();
             foreach ($reader as $row) {
-                $rubrique = (new Rubrique())->setNom($row['rubrique_name']);
-                $rubrique->setCommentaire('');
-                $modele = (new Modele())->addRubrique($rubrique);
-                $modele->setName($row['modele_name']);
+                if($row['modele_name'] != $modele->getName()){
+                    $modele = new Modele();
+                    $modele->setName($row['modele_name']);
+                }
+                if($row['rubrique_name'] != $rubrique->getNom()){
+                    $rubrique = new Rubrique();
+                    $rubrique->setNom($row['rubrique_name']);
+                    $rubrique->setCommentaire('');
+                    $modele->addRubrique($rubrique);
+                    $item = (new Item())->setNom($row['item_name']);
+                    $item->setNote($row['item_note']);
+                    $modele->addItem($item);
+                    $rubrique->addItem($item);
+                }
+                else{
+                    $item = (new Item())->setNom($row['item_name']);
+                    $item->setNote($row['item_note']);
+                    $modele->addItem($item);
+                    $rubrique->addItem($item);
+                }
+                $manager->persist($item);
                 $manager->persist($rubrique);
                 $manager->persist($modele);
-                $manager->flush();
+                $manager->flush();  
                 dump($modele);
             }
             
@@ -190,7 +211,39 @@ class SoutenanceController extends AbstractController
             'formSession'=> $formSession->createView()
         ]);
     }
+
+    /**
+     * @isGranted("ROLE_USER")
+     * @Route("/export", name="export")
+     */
+    public function Export1(Request $request, EntityManagerInterface $manager){
     
+        return $this->render('soutenance/export.html.twig',[
+        ]);
+    }
+    
+    /**
+     * @Route("/export_soutenance/{id}", name="export_soutenance")
+     */
+    public function export(EntityManagerInterface $manager, Session $session){
+        $em = $this->getDoctrine()->getManager();
+        if(!$session){
+            $soutenances = $em->getRepository(Soutenance::class)->findAll();
+        }else{
+            $soutenances = $em->getRepository(Soutenance::class)->findBy([
+                'session'=>$session
+            ]);
+        }
+        $csv = writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne(['Soutenance_name']);
+        foreach($soutenances as $soutenance){
+            $csv->insertOne([$soutenance->getTitre() , date_format($soutenance->getDateSoutenance(), 'Y-m-d H:i:s')]);
+        }
+        $csv->output("base.csv");
+        die('');
+        return $this->redirectToRoute('session_show', ['id'=>1]);
+        
+    }
     /**
      *
      * @Route("/Soutenance/{id}",name="soutenance_show")
