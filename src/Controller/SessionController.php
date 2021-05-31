@@ -120,6 +120,7 @@ class SessionController extends AbstractController
             }
             $manager->persist($session);
             $manager->flush();
+            return $this->redirectToRoute('session_show',['id'=>$session->getId()]);
         }
 
         //Upload listeJury
@@ -140,6 +141,7 @@ class SessionController extends AbstractController
             }
             $manager->persist($session);
             $manager->flush();
+            return $this->redirectToRoute('session_show',['id'=>$session->getId()]);
         }
 
 
