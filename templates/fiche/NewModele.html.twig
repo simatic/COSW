@@ -2,7 +2,8 @@
 
 {% block body %}
 <h1>{{ titre }}</h1>
-
+                <a class="btn btn-primary" href="{{ path('upload_modele') }}">Importer un modèle
+                </a>
 {{ form_start(form) }}
 
 {{ form_widget(form) }}
