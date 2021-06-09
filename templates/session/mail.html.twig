@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<h1>Entrez vos identifiants Zimbra</h1>
+{{ form_start(formmail) }}
+    <button type="submit" class="btn btn-success">
+        Envoi
+     </button>
+{{ form_end(formmail) }}
+{% endblock %}

@@ -135,6 +135,15 @@
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
     },
+    "phpmailer/phpmailer": {
+        "version": "v6.4.1"
+    },
+    "portphp/csv": {
+        "version": "1.1.0"
+    },
+    "portphp/portphp": {
+        "version": "1.4.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

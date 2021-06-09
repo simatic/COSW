@@ -17,10 +17,10 @@
 
             <ul>
                 <li style="margin-bottom: 30px"><h5>Liste des étudiants invités</h5>
-            {{ session.listeEtudiant }}</li>
+            {{ session.listeEtudiant |nl2br }}</li>
 
                 <li style="margin-bottom: 30px"><h5>Liste des jurys invités</h5>
-            {{ session.listeJury }}</li>
+            {{ session.listeJury  |nl2br }}</li>
 
                 <li style="margin-bottom: 30px"><h5>Texte du mail envoyé aux étudiants</h5>
             {{ session.texteMailEtudiant }}</li>
@@ -36,6 +36,10 @@
         {% if is_granted('ROLE_ADMIN') %}
             <a class="btn btn-success" href="{{ path('session_edit', {'id': session.id}) }}">
                 Modifier
+            </a>
+
+            <a class="btn btn-success" href="{{ path('session_mail', {'id': session.id}) }}">
+                Envoyer les mails
             </a>
         {% endif %}
     </article>

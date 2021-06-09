@@ -14,6 +14,8 @@
         "league/csv": "^9.6",
         "ninsuo/symfony-collection": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpmailer/phpmailer": "^6.4",
+        "portphp/csv": "^1.1",
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",

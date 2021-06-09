@@ -1,6 +1,17 @@
 {% extends 'base.html.twig' %}
 
+
+{% block main %}
+{% for message in app.flashes('notice') %}
+    <div class="alert-warning" style="border-radius:10px; padding:5px">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endblock main %}
+
 {% block body %}
+
+
     <div style="margin-bottom: 30px;">
     <h1> Modification d'une session</h1>
 
@@ -29,23 +40,8 @@
     {{ form_end(formSession) }}
     </div>
 
-    <div style="margin-bottom: 30px; margin-right: 30%;">
-        <h3>Upload liste des étudiants au format CSV</h3>
-        {{ form_start(formUploadListeEtudiant) }}
-        <button type="submit" class="btn btn-success">
-        Upload
-        </button>
-        {{ form_end(formUploadListeEtudiant) }}
-    </div>
 
-    <div style="margin-bottom: 30px; margin-right: 30%;">
-        <h3>Upload liste des jurys au format CSV</h3>
-        {{ form_start(formUploadListeJury) }}
-        <button type="submit" class="btn btn-success">
-            Upload
-        </button>
-        {{ form_end(formUploadListeJury) }}
-    </div>
+
 
 
     <script
