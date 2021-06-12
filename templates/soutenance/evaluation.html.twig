@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h2>Evaluation de {{ soutenance.titre }}</h2>
+{{ form_start(form) }}
+{% for rubrique in rubriques %}
+<div class="card text-white bg-dark mb-3">
+  <div class="card-header" style="color:#b58900";>{{ rubrique.nom }} /100%</div>
+{% for item in rubrique.items %}
+  <div class="card-body">
+{{ form_row(form[item.id], { 'label': item.nom ~ ' (' ~ (item.note) ~ '%)','attr':{
+    'placeholder':"Donnez une note entre 0 et 100",
+    'min':'0',
+    'max':'100'
+}
+}) 
+}}
+</div>
+{% endfor %}
+  </div>
+{% endfor %}
+
+{{ form_end(form) }}
+
+{% endblock %}

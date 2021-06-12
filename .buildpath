@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry kind="src" path="src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="src">
 		<attributes>
 			<attribute name="composer" value="source"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="tests">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="tests">
 		<attributes>
 			<attribute name="composer" value="source"/>
 		</attributes>
@@ -16,572 +16,587 @@
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/composer/package-versions-deprecated/src/PackageVersions">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/composer/package-versions-deprecated/src/PackageVersions">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/annotations/lib/Doctrine/Common/Annotations">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/annotations/lib/Doctrine/Common/Annotations">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/cache/lib/Doctrine/Common/Cache">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/cache/lib/Doctrine/Common/Cache">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/collections/lib/Doctrine/Common/Collections">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/collections/lib/Doctrine/Common/Collections">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/common/lib/Doctrine/Common">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/common/lib/Doctrine/Common">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/data-fixtures/lib/Doctrine/Common/DataFixtures">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/data-fixtures/lib/Doctrine/Common/DataFixtures">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/dbal/lib/Doctrine/DBAL">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/dbal/lib/Doctrine/DBAL">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/doctrine-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/doctrine-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/doctrine-fixtures-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/doctrine-fixtures-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/doctrine-migrations-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/doctrine-migrations-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/event-manager/lib/Doctrine/Common">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/event-manager/lib/Doctrine/Common">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/inflector/lib/Doctrine/Inflector">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/inflector/lib/Doctrine/Inflector">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/instantiator/src/Doctrine/Instantiator">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/instantiator/src/Doctrine/Instantiator">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/lexer/lib/Doctrine/Common/Lexer">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/lexer/lib/Doctrine/Common/Lexer">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/migrations/lib/Doctrine/Migrations">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/migrations/lib/Doctrine/Migrations">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/orm/lib/Doctrine/ORM">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/orm/lib/Doctrine/ORM">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/persistence/lib/Doctrine/Common">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/persistence/lib/Doctrine/Common">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/persistence/lib/Doctrine/Persistence">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/persistence/lib/Doctrine/Persistence">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/doctrine/sql-formatter/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/doctrine/sql-formatter/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/egulias/email-validator/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/egulias/email-validator/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/egyg33k/csv-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/egyg33k/csv-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/friendsofphp/proxy-manager-lts/src/ProxyManager">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/friendsofphp/proxy-manager-lts/src/ProxyManager">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/fzaninotto/faker/src/Faker">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/fzaninotto/faker/src/Faker">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/laminas/laminas-code/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/laminas/laminas-code/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/laminas/laminas-eventmanager/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/laminas/laminas-eventmanager/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/laminas/laminas-zendframework-bridge/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/laminas/laminas-zendframework-bridge/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/league/csv/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/league/csv/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/monolog/monolog/src/Monolog">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/monolog/monolog/src/Monolog">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/nikic/php-parser/lib/PhpParser">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/nikic/php-parser/lib/PhpParser">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/ninsuo/symfony-collection">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/ninsuo/symfony-collection">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/phpdocumentor/reflection-common/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/phpdocumentor/reflection-common/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/phpdocumentor/reflection-docblock/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/phpdocumentor/reflection-docblock/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/phpdocumentor/type-resolver/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/phpdocumentor/type-resolver/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/psr/cache/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/phpmailer/phpmailer/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/psr/container/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/portphp/csv/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/psr/link/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/portphp/portphp/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/psr/log/Psr/Log">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/psr/cache/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/sensio/framework-extra-bundle/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/psr/container/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/asset">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/psr/link/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/browser-kit">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/psr/log/Psr/Log">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/cache">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/sensio/framework-extra-bundle/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/cache-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/asset">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/config">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/browser-kit">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/console">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/cache">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/css-selector">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/cache-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/debug">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/config">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/debug-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/console">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/dependency-injection">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/css-selector">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/deprecation-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/debug">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/doctrine-bridge">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/debug-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/dom-crawler">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/dependency-injection">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/dotenv">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/deprecation-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/error-handler">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/doctrine-bridge">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/event-dispatcher">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/dom-crawler">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/event-dispatcher-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/dotenv">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/expression-language">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/error-handler">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/filesystem">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/event-dispatcher">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/finder">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/event-dispatcher-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/flex/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/expression-language">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/form">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/filesystem">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/framework-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/finder">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/http-client">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/flex/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/http-client-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/form">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/http-foundation">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/framework-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/http-kernel">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/http-client">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/inflector">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/http-client-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/intl">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/http-foundation">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/intl/Resources/stubs">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/http-kernel">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/mailer">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/inflector">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/maker-bundle/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/stubs/" kind="src" path="vendor/symfony/intl">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/mime">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/intl/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/monolog-bridge">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/mailer">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/monolog-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/maker-bundle/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/options-resolver">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/mime">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/phpunit-bridge">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/monolog-bridge">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-intl-icu">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/monolog-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-intl-icu/Resources/stubs">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/options-resolver">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-intl-idn">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/phpunit-bridge">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-intl-normalizer">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/stubs/" kind="src" path="vendor/symfony/polyfill-intl-icu">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-intl-normalizer/Resources/stubs">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-intl-icu/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-mbstring">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-intl-idn">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-php72">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/stubs/" kind="src" path="vendor/symfony/polyfill-intl-normalizer">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php73">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-intl-normalizer/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-php73/Resources/stubs">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-mbstring">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php80">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-php72">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/polyfill-php80/Resources/stubs">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php73">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/process">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-php73/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/property-access">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/stubs/" kind="src" path="vendor/symfony/polyfill-php80">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/property-info">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/polyfill-php80/Resources/stubs">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/proxy-manager-bridge">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/process">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/routing">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/property-access">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/security-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/property-info">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/security-core">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/proxy-manager-bridge">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/security-csrf">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/routing">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/security-guard">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/security-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/security-http">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/security-core">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/serializer">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/security-csrf">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/service-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/security-guard">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/stopwatch">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/security-http">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/translation">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/serializer">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/translation-contracts">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/service-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/twig-bridge">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/stopwatch">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/twig-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/translation">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/validator">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/translation-contracts">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry excluding="Resources/functions/" kind="src" path="vendor/symfony/var-dumper">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/twig-bridge">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/var-dumper/Resources/functions">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/twig-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/var-exporter">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/validator">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/web-link">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/|Resources/functions/" kind="src" path="vendor/symfony/var-dumper">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/web-profiler-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/var-dumper/Resources/functions">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/web-server-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/var-exporter">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/symfony/yaml">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/web-link">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/twig/extra-bundle">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/web-profiler-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/twig/twig/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/web-server-bundle">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>
 	</buildpathentry>
-	<buildpathentry kind="src" path="vendor/webmozart/assert/src">
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/symfony/yaml">
+		<attributes>
+			<attribute name="composer" value="vendor"/>
+		</attributes>
+	</buildpathentry>
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/twig/extra-bundle">
+		<attributes>
+			<attribute name="composer" value="vendor"/>
+		</attributes>
+	</buildpathentry>
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/twig/twig/src">
+		<attributes>
+			<attribute name="composer" value="vendor"/>
+		</attributes>
+	</buildpathentry>
+	<buildpathentry excluding="**/skeleton/|**/Test*/|**/CG/**/Fixture/" kind="src" path="vendor/webmozart/assert/src">
 		<attributes>
 			<attribute name="composer" value="vendor"/>
 		</attributes>

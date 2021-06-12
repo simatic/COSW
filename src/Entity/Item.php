@@ -33,11 +33,11 @@ class Item
      * @ORM\ManyToOne(targetEntity=Rubrique::class, inversedBy="items")
      */
     private $rubrique;
-
+    
     /**
-     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="items")
+     * @ORM\ManyToMany(targetEntity=Modele::class, mappedBy="items")
      */
-    private $evaluations;
+    private $modeles;
 
     public function __construct()
     {
@@ -119,4 +119,32 @@ class Item
     {
         return $this->getNom();
     }
+    
+    /**
+     * @return Collection|Modele[]
+     */
+    public function getModeles(): Collection
+    {
+        return $this->modeles;
+    }
+    
+    public function addModele(Modele $modele): self
+    {
+        if (!$this->modeles->contains($modele)) {
+            $this->modeles[] = $modele;
+            $modele->addRubrique($this);
+        }
+        
+        return $this;
+    }
+    
+    public function removeModele(Modele $modele): self
+    {
+        if ($this->modeles->removeElement($modele)) {
+            $modele->removeRubrique($this);
+        }
+        
+        return $this;
+    }
+    
 }

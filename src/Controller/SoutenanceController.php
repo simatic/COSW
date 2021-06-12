@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Commentaire;
 use League\Csv\Reader;
+use App\Entity\Evaluation;
+use App\Entity\Item;
 use App\Entity\Modele;
 use App\Entity\Session;
 use App\Entity\Soutenance;
+use League\Csv\Writer;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
 use App\Repository\SoutenanceRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +24,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Upload;
 use App\Form\UploadType;
 use App\Entity\Rubrique;
@@ -59,7 +65,7 @@ class SoutenanceController extends AbstractController
      * @Route("/Soutenance/{id}/edit", name="soutenance_edit")
      */
     public function form(Request $request, EntityManagerInterface $manager, Soutenance $soutenance = null){
-
+        
         if(!$soutenance){
             $soutenance = new Soutenance();
             $soutenance->setNote(0);
@@ -68,7 +74,9 @@ class SoutenanceController extends AbstractController
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
             'choice_label'=>'nom'
         ])->add('description')->add('image')->add('dateSoutenance')
-        ->getForm();
+        ->add('modele', EntityType::class,['class'=> Modele::class,
+            'choice_label'=>'Modele'
+        ])->getForm();
         
         $formSoutenance->handleRequest($request);
         
@@ -84,6 +92,7 @@ class SoutenanceController extends AbstractController
             'editMode' => $soutenance->getId() !== null
         ]);
     }
+    
     
     /**
      * @isGranted("ROLE_USER")
@@ -123,10 +132,9 @@ class SoutenanceController extends AbstractController
     
     /**
      * @isGranted("ROLE_USER")
-     * @Route("/test", name="test")
+     * @Route("/modele/upload", name="upload_modele")
      */
-    public function test( Request $request, EntityManagerInterface $manager){
-        
+    public function test( Request $request, EntityManagerInterface $manager, UserRepository $userRepository){
         $file = new Upload();
         $form = $this->createForm(UploadType::class, $file);
         $form->handleRequest($request);
@@ -136,12 +144,30 @@ class SoutenanceController extends AbstractController
             //$fileName = md5(uniqid()).'.'.$file->guessExtension();
             $files = $form->get('name')->getData();
             $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
-            
+            $rubrique = new Rubrique();
+            $modele = new Modele();
             foreach ($reader as $row) {
-                $rubrique = (new Rubrique())->setNom($row['rubrique_name']);
-                $rubrique->setCommentaire('');
-                $modele = (new Modele())->addRubrique($rubrique);
-                $modele->setName($row['modele_name']);
+                if($row['modele_name'] != $modele->getName()){
+                    $modele = new Modele();
+                    $modele->setName($row['modele_name']);
+                }
+                if($row['rubrique_name'] != $rubrique->getNom()){
+                    $rubrique = new Rubrique();
+                    $rubrique->setNom($row['rubrique_name']);
+                    $rubrique->setCommentaire('');
+                    $modele->addRubrique($rubrique);
+                    $item = (new Item())->setNom($row['item_name']);
+                    $item->setNote($row['item_note']);
+                    $modele->addItem($item);
+                    $rubrique->addItem($item);
+                }
+                else{
+                    $item = (new Item())->setNom($row['item_name']);
+                    $item->setNote($row['item_note']);
+                    $modele->addItem($item);
+                    $rubrique->addItem($item);
+                }
+                $manager->persist($item);
                 $manager->persist($rubrique);
                 $manager->persist($modele);
                 $manager->flush();
@@ -154,7 +180,6 @@ class SoutenanceController extends AbstractController
             'form_fiche'=> $form->createView()
         ]);
     }
-    
 
     
     /**
@@ -174,7 +199,130 @@ class SoutenanceController extends AbstractController
             );
     }
     
+    
+    /**
+     *
+     * @Route("/evaluer/{id}",name="evaluer_soutenance")
+     */
+    public function evaluation_soutenance(Soutenance $soutenance, EntityManagerInterface $manager,Request $request)
+    {
+        $evaluations = $manager->getRepository(Evaluation::class)->findBy([
+            'Soutenance'=>$soutenance,
+            'User'=>$this->getUser()
+        ]);
+        
+        $edit = !empty($evaluations);
+        $modele =  $soutenance->getModele();
+        
+        $items = $modele->getItems();
+        $rubriques = $modele->getRubriques();
+        $form = $this->createFormBuilder();
+        foreach($items as $item){
+            if($edit){
+                $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
+                    'Soutenance'=>$soutenance,
+                    'User'=>$this->getUser(),
+                    'item'=>$item
+                ]);
+                $form = $form->add($item->getId(), IntegerType::class,[
+                    'attr'=>[
+                        'label'=>$item->getNom(),
+                        'value'=>($evaluation->getNote()/20)*100/($item->getNote()/100)
+                    ]
+                ]);
+            }else{
+                $form = $form->add($item->getId(), IntegerType::class,[
+                    'attr'=>[
+                        'label'=>$item->getNom()
+                    ]
+                    
+                ]);
+            }
+        }
+        if($edit){
+            $form = $form->add('Modifier', SubmitType::class)
+            ->getForm();
+        }else{
+            $form = $form->add('Evaluer', SubmitType::class)
+            ->getForm();
+        }
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+            $data = $form->getData();
+            $i = 0;
+            if(!$edit){
+                foreach($data as $itemId => $note){
+                    $evaluation = new Evaluation();
+                    $item=  $manager->getRepository(Item::class)->findOneBy([
+                        'id'=>$itemId
+                    ]);
+                    $evaluation->setItem($item);
+                    $evaluation->setUser($this->getUser());
+                    $evaluation->setSoutenance($soutenance);
+                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $i++;
+                    $manager->persist($evaluation);
+                }
+            }else{
+                foreach($data as $itemId => $note){
+                    $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
+                        'Soutenance'=>$soutenance,
+                        'User'=>$this->getUser(),
+                        'item'=>$itemId
+                    ]);
+                    $item = $manager->getRepository(Item::class)->findOneBy([
+                        'id'=>$itemId
+                    ]);
+                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $i++;
+                    $manager->persist($evaluation);
+                }
+            }
+            $manager->flush();
+            return $this->redirectToRoute('session_show',['id'=>$soutenance->getSession()->getId()]);
+        }
+        
+        return $this->render('soutenance/evaluation.html.twig',[
+            'form'=> $form->createView(),
+            'items'=>$items,
+            'rubriques'=>$rubriques,
+            'soutenance'=>$soutenance,
+            'editMode' => !empty($manager->getRepository(Evaluation::class)->findBy([
+                'Soutenance'=>$soutenance,
+                'User'=>$this->getUser()
+            ]))
+        ]
+            );
+    }
 
+    
+    /**
+     * @Route("/export_soutenance/{id}", name="export_soutenance")
+     */
+    public function export(EntityManagerInterface $manager, Session $session){
+        $soutenances = $manager->getRepository(Soutenance::class)->findBy([
+            'session'=>$session
+        ]);
+        $csv = writer::createFromFileObject(new \SplTempFileObject());
+        $csv->insertOne(['titre_soutenance','utilisateur','nom_item','note']);
+        foreach($soutenances as $soutenance){
+            $evaluations = $manager->getRepository(Evaluation::class)->findBy([
+                'Soutenance'=>$soutenance
+            ]);
+            foreach($evaluations as $evaluation){
+                $csv->insertOne([$soutenance->getTitre(),$evaluation->getUser()->getFirstName() .' '. $evaluation->getUser()->getLastName() , $evaluation->getItem()->getNom(), $evaluation->getNote()]);
+                
+            }
+        }
+        
+        $csv->output($session->getNom().'.csv');
+        die('');
+        return $this->redirectToRoute('session_show', ['id'=>1]);
+        
+    }
     
 
 }

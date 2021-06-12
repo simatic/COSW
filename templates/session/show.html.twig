@@ -5,28 +5,18 @@
 {% block body %}
     <article>
         <div class="jumbotron">
-
             <h2 class="display-4">{{ session.nom }} : du {{ session.dateDebut | date ('d/m/Y') }} au {{ session.dateFin | date ('d/m/Y') }}</h2>
+     
+            {% if is_granted('ROLE_ADMIN') %}
+    		<a href={{ path('export_soutenance',{'id': session.id} ) }}><button type="button" class="btn btn-light">Upload notes</button></a>
+            {% endif %}
             <h5>{{ session.description }}</h5>
 
             <ul>
             {% for soutenance in session.soutenances %}
-                    <li><a href="{{ path('soutenance_show', {'id': soutenance.id}) }}">{{ soutenance.titre }}</a></li>
+                    <li><a href="{{ path('soutenance_show', {'id': soutenance.id}) }}">{{ soutenance.titre }}
+                    </a></li> <a href={{ path('evaluer_soutenance',{'id': soutenance.id} ) }}"><button type="button" class="btn btn-primary">Evaluer</button></a>
             {% endfor %}
-            </ul>
-
-            <ul>
-                <li style="margin-bottom: 30px"><h5>Liste des étudiants invités</h5>
-            {{ session.listeEtudiant |nl2br }}</li>
-
-                <li style="margin-bottom: 30px"><h5>Liste des jurys invités</h5>
-            {{ session.listeJury  |nl2br }}</li>
-
-                <li style="margin-bottom: 30px"><h5>Texte du mail envoyé aux étudiants</h5>
-            {{ session.texteMailEtudiant }}</li>
-
-                <li style="margin-bottom: 30px"><h5>Texte du mail envoyé aux jurys</h5>
-            {{ session.texteMailJury }}</li>
             </ul>
 
         </div>

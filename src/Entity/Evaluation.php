@@ -25,7 +25,7 @@ class Evaluation
     private $Soutenance;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="evaluations")
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $User;
 

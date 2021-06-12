@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 31 mai 2021 à 19:31
--- Version du serveur :  10.4.14-MariaDB
--- Version de PHP : 7.4.11
+-- Hôte : 127.0.0.1:3306
+-- Généré le : sam. 12 juin 2021 à 18:17
+-- Version du serveur :  5.7.31
+-- Version de PHP : 7.2.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,13 +27,16 @@ SET time_zone = "+00:00";
 -- Structure de la table `account_request`
 --
 
-CREATE TABLE `account_request` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `account_request`;
+CREATE TABLE IF NOT EXISTS `account_request` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_F2BC9BD7E7927C74` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `account_request`
@@ -49,12 +52,15 @@ INSERT INTO `account_request` (`id`, `first_name`, `last_name`, `email`, `status
 -- Structure de la table `commentaire`
 --
 
-CREATE TABLE `commentaire` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `commentaire`;
+CREATE TABLE IF NOT EXISTS `commentaire` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `soutenance_id` int(11) NOT NULL,
   `auteur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contenu` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` double NOT NULL
+  `note` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_67F068BCA59B3775` (`soutenance_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -63,10 +69,12 @@ CREATE TABLE `commentaire` (
 -- Structure de la table `doctrine_migration_versions`
 --
 
-CREATE TABLE `doctrine_migration_versions` (
+DROP TABLE IF EXISTS `doctrine_migration_versions`;
+CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
   `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL
+  `execution_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -83,13 +91,36 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 -- Structure de la table `evaluation`
 --
 
-CREATE TABLE `evaluation` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `evaluation`;
+CREATE TABLE IF NOT EXISTS `evaluation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `soutenance_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `item_id` int(11) NOT NULL,
-  `note` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` double DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_1323A575A59B3775` (`soutenance_id`),
+  KEY `IDX_1323A575A76ED395` (`user_id`),
+  KEY `IDX_1323A575126F525E` (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `evaluation`
+--
+
+INSERT INTO `evaluation` (`id`, `soutenance_id`, `user_id`, `item_id`, `note`) VALUES
+(1, 3, 14, 2, 3),
+(2, 3, 14, 3, 3),
+(3, 3, 14, 4, 3),
+(4, 3, 14, 5, 3),
+(5, 3, 14, 6, 6),
+(6, 3, 14, 7, 6),
+(7, 7, 14, 2, 4),
+(8, 7, 14, 3, 3.5),
+(9, 7, 14, 4, 3),
+(10, 7, 14, 5, 2.5),
+(11, 7, 14, 6, 5),
+(12, 7, 14, 7, 9);
 
 -- --------------------------------------------------------
 
@@ -97,13 +128,18 @@ CREATE TABLE `evaluation` (
 -- Structure de la table `eval_item`
 --
 
-CREATE TABLE `eval_item` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `eval_item`;
+CREATE TABLE IF NOT EXISTS `eval_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `soutenance_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `item_id` int(11) NOT NULL,
-  `note` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` double NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_4C29623A126F525E` (`item_id`),
+  KEY `IDX_4C29623AA59B3775` (`soutenance_id`),
+  KEY `IDX_4C29623AA76ED395` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `eval_item`
@@ -118,14 +154,18 @@ INSERT INTO `eval_item` (`id`, `soutenance_id`, `user_id`, `item_id`, `note`) VA
 -- Structure de la table `fiche_evaluation`
 --
 
-CREATE TABLE `fiche_evaluation` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `fiche_evaluation`;
+CREATE TABLE IF NOT EXISTS `fiche_evaluation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `evaluateur_id` int(11) DEFAULT NULL,
   `soutenance_id` int(11) DEFAULT NULL,
   `note_final` double NOT NULL,
   `ponderation` double NOT NULL,
-  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_BD75A182231F139` (`evaluateur_id`),
+  KEY `IDX_BD75A182A59B3775` (`soutenance_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `fiche_evaluation`
@@ -140,35 +180,32 @@ INSERT INTO `fiche_evaluation` (`id`, `evaluateur_id`, `soutenance_id`, `note_fi
 -- Structure de la table `item`
 --
 
-CREATE TABLE `item` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `item`;
+CREATE TABLE IF NOT EXISTS `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `rubrique_id` int(11) DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_1F1B251E3BD38833` (`rubrique_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `item`
 --
 
 INSERT INTO `item` (`id`, `rubrique_id`, `nom`, `note`) VALUES
-(1, 1, 'Qualité', 20),
-(2, 4, 'Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli', 5),
-(3, 4, 'Est-ce que l’objet et l’appli répondent à la problématique?', 5),
-(4, 4, 'Originalité de l’objet l’appli', 5),
-(5, 4, 'Facilité d’utilisation de l\'objet de l’appli', 5),
-(6, 6, 'Fond', 10),
-(7, 6, 'Forme', 10),
-(8, 2, 'Pitch', 20),
-(10, 3, 'vidéo', 20),
-(11, 7, 'item1', 10),
-(12, 7, 'item2', 10),
-(13, 8, 'LOL1', 5),
-(14, 8, 'LOL2', 5),
-(15, 9, 'LOL1', 5),
-(16, 9, 'LOL2', 5),
-(17, 10, 'LOL1', 5),
-(18, 10, 'LOL2', 5),
+(1, 1, 'Qualité', 100),
+(2, 4, 'Qualité intrinsèque de la conceptualisation finition de l\'obje l’appli', 25),
+(3, 4, 'Est-ce que l’objet et l’appli répondent à la problématique?', 25),
+(4, 4, 'Originalité de l’objet l’appli', 25),
+(5, 4, 'Facilité d’utilisation de l\'objet de l’appli', 25),
+(6, 6, 'Fond', 50),
+(7, 6, 'Forme', 50),
+(8, 2, 'Pitch', 100),
+(10, 3, 'vidéo', 100),
+(11, 7, 'item1', 50),
+(12, 7, 'item2', 50),
 (19, 13, 'haha', 10),
 (20, 13, 'lul', 10),
 (21, 14, 'iteeems', 20),
@@ -181,10 +218,12 @@ INSERT INTO `item` (`id`, `rubrique_id`, `nom`, `note`) VALUES
 -- Structure de la table `modele`
 --
 
-CREATE TABLE `modele` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+DROP TABLE IF EXISTS `modele`;
+CREATE TABLE IF NOT EXISTS `modele` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `modele`
@@ -221,9 +260,13 @@ INSERT INTO `modele` (`id`, `name`) VALUES
 -- Structure de la table `modele_item`
 --
 
-CREATE TABLE `modele_item` (
+DROP TABLE IF EXISTS `modele_item`;
+CREATE TABLE IF NOT EXISTS `modele_item` (
   `modele_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL
+  `item_id` int(11) NOT NULL,
+  PRIMARY KEY (`modele_id`,`item_id`),
+  KEY `IDX_D99C5139AC14B70A` (`modele_id`),
+  KEY `IDX_D99C5139126F525E` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -283,9 +326,13 @@ INSERT INTO `modele_item` (`modele_id`, `item_id`) VALUES
 -- Structure de la table `modele_rubrique`
 --
 
-CREATE TABLE `modele_rubrique` (
+DROP TABLE IF EXISTS `modele_rubrique`;
+CREATE TABLE IF NOT EXISTS `modele_rubrique` (
   `modele_id` int(11) NOT NULL,
-  `rubrique_id` int(11) NOT NULL
+  `rubrique_id` int(11) NOT NULL,
+  PRIMARY KEY (`modele_id`,`rubrique_id`),
+  KEY `IDX_E77C377EAC14B70A` (`modele_id`),
+  KEY `IDX_E77C377E3BD38833` (`rubrique_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -351,11 +398,13 @@ INSERT INTO `modele_rubrique` (`modele_id`, `rubrique_id`) VALUES
 -- Structure de la table `rubrique`
 --
 
-CREATE TABLE `rubrique` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `rubrique`;
+CREATE TABLE IF NOT EXISTS `rubrique` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `commentaire` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `rubrique`
@@ -383,8 +432,9 @@ INSERT INTO `rubrique` (`id`, `commentaire`, `nom`) VALUES
 -- Structure de la table `session`
 --
 
-CREATE TABLE `session` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE IF NOT EXISTS `session` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `date_debut` datetime NOT NULL,
   `date_fin` datetime NOT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -392,8 +442,9 @@ CREATE TABLE `session` (
   `liste_etudiant` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `liste_jury` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `texte_mail_etudiant` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `texte_mail_jury` longtext COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `texte_mail_jury` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `session`
@@ -408,9 +459,13 @@ INSERT INTO `session` (`id`, `date_debut`, `date_fin`, `nom`, `description`, `li
 -- Structure de la table `session_user`
 --
 
-CREATE TABLE `session_user` (
+DROP TABLE IF EXISTS `session_user`;
+CREATE TABLE IF NOT EXISTS `session_user` (
   `session_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`session_id`,`user_id`),
+  KEY `IDX_4BE2D663613FECDF` (`session_id`),
+  KEY `IDX_4BE2D663A76ED395` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -419,28 +474,33 @@ CREATE TABLE `session_user` (
 -- Structure de la table `soutenance`
 --
 
-CREATE TABLE `soutenance` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `soutenance`;
+CREATE TABLE IF NOT EXISTS `soutenance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
   `modele_id` int(11) NOT NULL,
   `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_soutenance` datetime NOT NULL,
-  `note` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` double NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_4D59FF6E613FECDF` (`session_id`),
+  KEY `IDX_4D59FF6EAC14B70A` (`modele_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `soutenance`
 --
 
 INSERT INTO `soutenance` (`id`, `session_id`, `modele_id`, `titre`, `description`, `image`, `date_soutenance`, `note`) VALUES
-(1, 1, 1, 'Soutenance 1', 'Soutenance', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
-(2, 1, 11, 'Soutenance 2', 'Test', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
+(1, 1, 15, 'Soutenance 1', 'Soutenance', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
+(2, 1, 15, 'Soutenance 2', 'Test', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
 (3, 1, 15, 'Soutenance 3', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
 (4, NULL, 15, 'Soutenance 4', 'dd', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
 (5, NULL, 16, 'Soutenance 5', 'bla bla', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
-(6, NULL, 17, 'Soutenance 6', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0);
+(6, NULL, 17, 'Soutenance 6', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0),
+(7, 1, 15, 'Soutenance test 4', 'Description', 'http://www.science-du-numerique.fr/wp-content/uploads/2019/02/url2-768x618.jpg', '2016-01-01 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -448,9 +508,11 @@ INSERT INTO `soutenance` (`id`, `session_id`, `modele_id`, `titre`, `description
 -- Structure de la table `upload`
 --
 
-CREATE TABLE `upload` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+DROP TABLE IF EXISTS `upload`;
+CREATE TABLE IF NOT EXISTS `upload` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -459,16 +521,19 @@ CREATE TABLE `upload` (
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `username` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `username` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_D5428AEDE7927C74` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `users`
@@ -484,202 +549,6 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `roles`, `type`, 
 (12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL),
 (13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL),
 (14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL);
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `account_request`
---
-ALTER TABLE `account_request`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_F2BC9BD7E7927C74` (`email`);
-
---
--- Index pour la table `commentaire`
---
-ALTER TABLE `commentaire`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_67F068BCA59B3775` (`soutenance_id`);
-
---
--- Index pour la table `doctrine_migration_versions`
---
-ALTER TABLE `doctrine_migration_versions`
-  ADD PRIMARY KEY (`version`);
-
---
--- Index pour la table `evaluation`
---
-ALTER TABLE `evaluation`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_1323A575A59B3775` (`soutenance_id`),
-  ADD KEY `IDX_1323A575A76ED395` (`user_id`),
-  ADD KEY `IDX_1323A575126F525E` (`item_id`);
-
---
--- Index pour la table `eval_item`
---
-ALTER TABLE `eval_item`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_4C29623A126F525E` (`item_id`),
-  ADD KEY `IDX_4C29623AA59B3775` (`soutenance_id`),
-  ADD KEY `IDX_4C29623AA76ED395` (`user_id`);
-
---
--- Index pour la table `fiche_evaluation`
---
-ALTER TABLE `fiche_evaluation`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_BD75A182231F139` (`evaluateur_id`),
-  ADD KEY `IDX_BD75A182A59B3775` (`soutenance_id`);
-
---
--- Index pour la table `item`
---
-ALTER TABLE `item`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_1F1B251E3BD38833` (`rubrique_id`);
-
---
--- Index pour la table `modele`
---
-ALTER TABLE `modele`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `modele_item`
---
-ALTER TABLE `modele_item`
-  ADD PRIMARY KEY (`modele_id`,`item_id`),
-  ADD KEY `IDX_D99C5139AC14B70A` (`modele_id`),
-  ADD KEY `IDX_D99C5139126F525E` (`item_id`);
-
---
--- Index pour la table `modele_rubrique`
---
-ALTER TABLE `modele_rubrique`
-  ADD PRIMARY KEY (`modele_id`,`rubrique_id`),
-  ADD KEY `IDX_E77C377EAC14B70A` (`modele_id`),
-  ADD KEY `IDX_E77C377E3BD38833` (`rubrique_id`);
-
---
--- Index pour la table `rubrique`
---
-ALTER TABLE `rubrique`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `session`
---
-ALTER TABLE `session`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `session_user`
---
-ALTER TABLE `session_user`
-  ADD PRIMARY KEY (`session_id`,`user_id`),
-  ADD KEY `IDX_4BE2D663613FECDF` (`session_id`),
-  ADD KEY `IDX_4BE2D663A76ED395` (`user_id`);
-
---
--- Index pour la table `soutenance`
---
-ALTER TABLE `soutenance`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_4D59FF6E613FECDF` (`session_id`),
-  ADD KEY `IDX_4D59FF6EAC14B70A` (`modele_id`);
-
---
--- Index pour la table `upload`
---
-ALTER TABLE `upload`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_D5428AEDE7927C74` (`email`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `account_request`
---
-ALTER TABLE `account_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT pour la table `commentaire`
---
-ALTER TABLE `commentaire`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `evaluation`
---
-ALTER TABLE `evaluation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `eval_item`
---
-ALTER TABLE `eval_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT pour la table `fiche_evaluation`
---
-ALTER TABLE `fiche_evaluation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT pour la table `item`
---
-ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT pour la table `modele`
---
-ALTER TABLE `modele`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
---
--- AUTO_INCREMENT pour la table `rubrique`
---
-ALTER TABLE `rubrique`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT pour la table `session`
---
-ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT pour la table `soutenance`
---
-ALTER TABLE `soutenance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT pour la table `upload`
---
-ALTER TABLE `upload`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Contraintes pour les tables déchargées
