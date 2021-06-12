@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : sam. 12 juin 2021 à 18:17
+-- Généré le : sam. 12 juin 2021 à 19:46
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.2.33
 
@@ -83,7 +83,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20210525114254', '2021-05-25 11:43:27', 24253),
-('DoctrineMigrations\\Version20210530124412', '2021-05-30 12:44:15', 331);
+('DoctrineMigrations\\Version20210530124412', '2021-05-30 12:44:15', 331),
+('DoctrineMigrations\\Version20210612192104', '2021-06-12 19:21:20', 598);
 
 -- --------------------------------------------------------
 
@@ -531,6 +532,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `username` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D5428AEDE7927C74` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -539,16 +541,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `roles`, `type`, `password`, `username`) VALUES
-(1, 'Gibril', 'Gunder', 'gibril.gunder@telecom-sudparis.eu', '{\"0\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E', NULL),
-(2, 'Michel', 'Simatic', 'michel.simatic@telecom-sudparis.eu', '{\"0\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM', NULL),
-(7, 'John', 'Doe', 'john.doe@gmail.com', '{\"0\": \"ROLE_USER\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$aDlFMkdhN1IvUW9YUjhJcA$xO7gBGxpers0D/ppTD3t3MrddJAvhzQaxQOTR5iiMtA', NULL),
-(9, 'Hello', 'World', 'hello.world@gmail.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$VVRjcUF0cFBJYXJHdEpsRg$vdaD8mMOCjFUvmuhBT1aKPQUObKlAJWQJ1+Q/RZRe+0', NULL),
-(10, 'Zaki', 'Biroum', 'zaki.biroum@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$WW1JUmZraHQ4a3huZ1h5bA$uweXy9doHQKoTDn4Flne2VjZLHqoLPgVx1L9yotS728', NULL),
-(11, 'Khalil Mehdi', 'Meziou', 'khalil.meziou@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$UGJzYkhyajRxYmVENGs2bQ$1dD52WNy7+RJBcouaAnVSQgo1Q7qKA4HP4bf+xG3yQA', NULL),
-(12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL),
-(13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL),
-(14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `roles`, `type`, `password`, `username`, `uid`) VALUES
+(1, 'Gibril', 'Gunder', 'gibril.gunder@telecom-sudparis.eu', '{\"0\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E', NULL, '56fdbd37c81c67aed9c050f42f63127efc850b4a'),
+(2, 'Michel', 'Simatic', 'michel.simatic@telecom-sudparis.eu', '{\"0\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM', NULL, '0211139c0788b55b6ce872f820540b7a22806ed9'),
+(7, 'John', 'Doe', 'john.doe@gmail.com', '{\"0\": \"ROLE_USER\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$aDlFMkdhN1IvUW9YUjhJcA$xO7gBGxpers0D/ppTD3t3MrddJAvhzQaxQOTR5iiMtA', NULL, '1bd5dccb8e2fcb241545cb3c51fe6122bc0ef2e1'),
+(9, 'Hello', 'World', 'hello.world@gmail.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$VVRjcUF0cFBJYXJHdEpsRg$vdaD8mMOCjFUvmuhBT1aKPQUObKlAJWQJ1+Q/RZRe+0', NULL, 'ccef04e22881628e142bd0f3624321f933915419'),
+(10, 'Zaki', 'Biroum', 'zaki.biroum@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$WW1JUmZraHQ4a3huZ1h5bA$uweXy9doHQKoTDn4Flne2VjZLHqoLPgVx1L9yotS728', NULL, '8527a27c20658cb7f723e3956200a7250eb5807a'),
+(11, 'Khalil Mehdi', 'Meziou', 'khalil.meziou@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$UGJzYkhyajRxYmVENGs2bQ$1dD52WNy7+RJBcouaAnVSQgo1Q7qKA4HP4bf+xG3yQA', NULL, '6db1a4a95c90b817c01c9717822c7fbec0f3df33'),
+(12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL, '1992f66d6891095643ab40b2520ebecd3e8c5096'),
+(13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL, 'dbfb78495f9e9af4193a96703b25b67a3c72b570'),
+(14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL, '6d2f1ae10a81558f27284f9623c3915237362c04');
 
 --
 -- Contraintes pour les tables déchargées
