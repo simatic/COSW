@@ -17,6 +17,7 @@ class UploadType extends AbstractType
         $builder
             ->add('name', FileType::class, [
                 'label' => 'Choisir un fichier',
+                'required' => false,
                 'mapped' => false,
                 'constraints' => [
                     new File([

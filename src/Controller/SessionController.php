@@ -21,13 +21,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Form;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\File\File;
 
+use League\Csv\Writer;
 
 
 //Mailing
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 class SessionController extends AbstractController
@@ -82,8 +86,9 @@ class SessionController extends AbstractController
     public function show(Session $session, EntityManagerInterface $manager, SessionInterface $sessionInterface)
     {
         
-        dump($sessionInterface->get("emailbagetudiant"));
-        dump($sessionInterface->get("emailbagjury"));
+        
+        //dump($sessionInterface->get("emailbagetudiant"));
+        //dump($sessionInterface->get("emailbagjury"));
         return $this->render('session/show.html.twig',[
                 'session'=>$session
             ]
@@ -102,11 +107,14 @@ class SessionController extends AbstractController
      */
     public function edit(Request $request, EntityManagerInterface $manager, SoutenanceRepository $repo, Session $session, SessionInterface $sessionInterface)
     {
-        $session->setListeEtudiant("");
-        $session->setListeJury("");
-        dump($session);
+
+        //dump($sessionInterface->get("emailbagetudiant"));
         $soutenances = $repo->findAll();
-        $formSession = $this->createForm(SessionType::class, $session, ['soutenances' => $soutenances]);
+        $formSession = $this->createForm(SessionType::class, $session, ['soutenances' => $soutenances])
+            ->add('saveAndModify', SubmitType::class, ['label' => 'Valider les modifications sur la soutenance et passer au résumé'])
+            ->add('modifyetudiant', SubmitType::class, ['label' => 'Valider les modifications et modifier la liste des étudiants'])
+            ->add('modifyjury', SubmitType::class, ['label' => 'Valider les modifications et modifier la liste des jurys'])
+            ->add('skip', SubmitType::class, ['label' => 'Aller au résumé sans modifier la soutenance']);
         $formSession->handleRequest($request);
 
 
@@ -114,7 +122,46 @@ class SessionController extends AbstractController
         $sessionInterface->set("emailbagetudiant", []);
         $emailbag = $sessionInterface->get("emailbagetudiant", []);
 
-        if ($formSession->isSubmitted() && $formSession->isValid()) {
+        //si l'utilisateur ne souhaite pas modifier la soutenance et passer au résumé
+        if($formSession->get('skip')->isClicked()){
+            return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        }
+
+        //Si l'utilisateur souhaite modifier la soutenance sans modifier les listes de mailing
+        if ($formSession->isSubmitted() && $formSession->isValid() && $formSession->get('saveAndModify')->isClicked()) {
+
+            $manager->persist($session);
+            $manager->flush();
+           
+
+            //Objet mail Etudiant
+            $objet = $formSession->get("texteMailEtudiant")->getData();
+            $objet = explode("{{Debut_objet_courriel}}", $objet)[1];
+            $objet = explode("{{Fin_objet_courriel}}", $objet)[0];
+            $sessionInterface->set("objetetudiant", $objet);
+
+            //Texte mail etudiant
+            $texte_mail_etudiant= $formSession->get("texteMailEtudiant")->getData();
+            $texte_mail_etudiant = explode("{{Fin_objet_courriel}}", $formSession->get("texteMailEtudiant")->getData())[1];
+            $sessionInterface->set("textemailetudiant", $texte_mail_etudiant);
+
+            //Objet mail Jury 
+            $objet = $formSession->get("texteMailJury")->getData();
+            $objet = explode("{{Debut_objet_courriel}}", $objet)[1];
+            $objet = explode("{{Fin_objet_courriel}}", $objet)[0];
+            $sessionInterface->set("objetjury", $objet);
+
+            //Texte mail Jury
+            $texte_mail_Jury = $formSession->get("texteMailJury")->getData();
+            $texte_mail_Jury = explode("{{Fin_objet_courriel}}", $formSession->get("texteMailJury")->getData())[1];
+            $sessionInterface->set("textemailjury", $texte_mail_Jury);
+
+            return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        }
+
+
+        //si l'utilisateur souhaite modifier la soutenance puis passer à la modification de la liste des étudiants
+        if ($formSession->isSubmitted() && $formSession->isValid() && $formSession->get('modifyetudiant')->isClicked()) {
 
             $manager->persist($session);
             $manager->flush();
@@ -145,6 +192,48 @@ class SessionController extends AbstractController
             return $this->redirectToRoute('session_edit_etudiant', ['id' => $session->getId()]);
         }
 
+        //si l'utilisateur souhaite modifier la soutenance puis passer à la modification de la liste des jurys
+        if ($formSession->isSubmitted() && $formSession->isValid() && $formSession->get('modifyjury')->isClicked()) {
+
+            $manager->persist($session);
+            $manager->flush();
+           
+
+            //Objet mail Etudiant
+            $objet = $formSession->get("texteMailEtudiant")->getData();
+            $objet = explode("{{Debut_objet_courriel}}", $objet)[1];
+            $objet = explode("{{Fin_objet_courriel}}", $objet)[0];
+            $sessionInterface->set("objetetudiant", $objet);
+
+            //Texte mail etudiant
+            $texte_mail_etudiant= $formSession->get("texteMailEtudiant")->getData();
+            $texte_mail_etudiant = explode("{{Fin_objet_courriel}}", $formSession->get("texteMailEtudiant")->getData())[1];
+            $sessionInterface->set("textemailetudiant", $texte_mail_etudiant);
+
+            //Objet mail Jury 
+            $objet = $formSession->get("texteMailJury")->getData();
+            $objet = explode("{{Debut_objet_courriel}}", $objet)[1];
+            $objet = explode("{{Fin_objet_courriel}}", $objet)[0];
+            $sessionInterface->set("objetjury", $objet);
+
+            //Texte mail Jury
+            $texte_mail_Jury = $formSession->get("texteMailJury")->getData();
+            $texte_mail_Jury = explode("{{Fin_objet_courriel}}", $formSession->get("texteMailJury")->getData())[1];
+            $sessionInterface->set("textemailjury", $texte_mail_Jury);
+
+            return $this->redirectToRoute('session_edit_jury', ['id' => $session->getId()]);
+        }
+        
+
+
+
+        //si l'utilisateur ne souhaite pas modifier la soutenance
+        if ($formSession->isSubmitted() && $formSession->isValid() && $formSession->get('save')->isClicked()){
+            $manager->persist($session);
+            $manager->flush();
+            return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        }
+
 
         return $this->render('session/edit.html.twig', [
             'formSession' => $formSession->createView(),
@@ -164,20 +253,62 @@ class SessionController extends AbstractController
 
 
         //Upload listeEtudiant
-        dump($sessionInterface->get("objetetudiant"));
-        dump($sessionInterface->get("textemailetudiant"));
         $sessionInterface->set("emailbagetudiant", []);
         $emailbag = $sessionInterface->get("emailbagetudiant", []);
 
         $fileEtudiant = new Upload();
-        $formUploadListeEtudiant = $this->createForm(UploadType::class, $fileEtudiant);
+        $formUploadListeEtudiant = $this->createForm(UploadType::class, $fileEtudiant)
+        ->add('download', SubmitType::class, ['label' => 'Télécharger la liste des étudiants au format csv'])
+        ->add('modifyetudiant', SubmitType::class, ['label' => 'Modifier la liste des étudiants et revenir au résumé'])
+        ->add('modifyetudiant_into_modifyjury', SubmitType::class, ['label' => 'Modifier la liste des étudiants et passer à la modification de la liste des jurys'])
+        ->add('modifyjury', SubmitType::class, ['label' => 'Passer à la modification de liste des jurys sans modifier la liste des étudiants'])
+        ->add('skip', SubmitType::class, ['label' => 'Revenir au résumé']);
         $formUploadListeEtudiant->handleRequest($request);
         $row = '';
-        if ($formUploadListeEtudiant->isSubmitted() && $formUploadListeEtudiant->isValid()) {
+
+
+        // Si l'utilisateur se ravise et souhaite passer au résumé
+        if($formUploadListeEtudiant->get('skip')->isClicked()){
+            return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        }
+
+        if($formUploadListeEtudiant->get('download')->isClicked()){
+            $csv = writer::createFromFileObject(new \SplTempFileObject());
+            $csv->insertOne(["nom","prenom","courriel", "groupe"]);
+            $filecontent = $session->getListeEtudiant();
+            $filecontent = explode("\n", $filecontent);
+            $filecontent = array_reverse($filecontent);
+            array_pop($filecontent);
+            $filecontent = array_reverse($filecontent);
+            array_pop($filecontent);
+
+            foreach($filecontent as $tmp){
+
+                $vide = "";
+                $tab = explode(",",$tmp);
+                $nom = $tab[0];
+
+                $prenom = $tab[1];
+                $prenom = str_replace(array(chr(34),chr(39)), $vide, $prenom);
+                $courriel = $tab[2];
+                $courriel = str_replace(array(chr(34),chr(39)), $vide, $courriel);
+
+                $groupe = $tab[3];
+
+                
+
+                $csv->insertOne([$nom, $prenom, $courriel, $groupe]);
+            }
+            $csv->output('ListeEtudiant.csv');
+            die('');
+        }
+
+        // si l'utilsateur souhaite modifier la liste des jurys après avoir modifié la liste des étudiants
+        if ($formUploadListeEtudiant->isSubmitted() && $formUploadListeEtudiant->isValid() && $formUploadListeEtudiant->get('modifyetudiant_into_modifyjury')->isClicked() ) {
             $fileEtudiant->getName(); // file etudiant à des champs null 
             $sessionInterface->set("fileetudiant", $fileEtudiant->getName());
             $files = $formUploadListeEtudiant->get('name')->getData();
-            dump($files);
+            //dump($files);
 
             $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
 
@@ -186,7 +317,7 @@ class SessionController extends AbstractController
             foreach ($reader as $row) {
                 $session->setListeEtudiant($session->getListeEtudiant() . $row['nom'] . ",");
                 $session->setListeEtudiant($session->getListeEtudiant() . $row['prenom'] . ",");
-                $session->setListeEtudiant($session->getListeEtudiant() . $row['courriel'] . "," . " Groupe n°");
+                $session->setListeEtudiant($session->getListeEtudiant() . $row['courriel'] . ",");
                 $session->setListeEtudiant($session->getListeEtudiant() . $row['groupe'] . "\n");
 
                 array_push($emailbag, $row['courriel']);
@@ -196,6 +327,38 @@ class SessionController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('session_edit_jury', ['id' => $session->getId()]);
         }
+
+        // si l'utilisateur souhaite uniquement changer la liste des étudiants et passer au résumé
+        if ($formUploadListeEtudiant->isSubmitted() && $formUploadListeEtudiant->isValid() && $formUploadListeEtudiant->get('modifyetudiant')->isClicked() ) {
+            $fileEtudiant->getName(); // file etudiant à des champs null 
+            $sessionInterface->set("fileetudiant", $fileEtudiant->getName());
+            $files = $formUploadListeEtudiant->get('name')->getData();
+            //dump($files);
+
+            $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
+
+            $session->setListeEtudiant("Nom, Prénom, Courriel, Groupe : " . "\n");
+
+            foreach ($reader as $row) {
+                $session->setListeEtudiant($session->getListeEtudiant() . $row['nom'] . ",");
+                $session->setListeEtudiant($session->getListeEtudiant() . $row['prenom'] . ",");
+                $session->setListeEtudiant($session->getListeEtudiant() . $row['courriel'] . ",");
+                $session->setListeEtudiant($session->getListeEtudiant() . $row['groupe'] . "\n");
+
+                array_push($emailbag, $row['courriel']);
+            }
+            $sessionInterface->set("emailbagetudiant", $emailbag);
+            $manager->persist($session);
+            $manager->flush();
+            return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        }
+
+        // si l'utilisateur souhaite changer la liste des jurys sans changer la liste des étudiants
+        if($formUploadListeEtudiant->get('modifyjury')->isClicked()){
+            return $this->redirectToRoute('session_edit_jury', ['id' => $session->getId()]);
+        }
+
+
         return $this->render('session/editetudiant.html.twig', [
             'formUploadListeEtudiant' => $formUploadListeEtudiant->createView()
         ]);
@@ -214,15 +377,54 @@ class SessionController extends AbstractController
      */
     public function editJury(Request $request, EntityManagerInterface $manager, SoutenanceRepository $repo, Session $session, SessionInterface $sessionInterface){
 
-        
-        dump($sessionInterface->get("textemailjury"));
-        $sessionInterface->set("emailbagjury", []);
+        //$sessionInterface->set("emailbagjury", []);
         $emailbag = $sessionInterface->get("emailbagjury", []);
             //Upload listeJury
             $fileJury = new Upload();
-            $formUploadListeJury = $this->createForm(UploadType::class, $fileJury);
+            $formUploadListeJury = $this->createForm(UploadType::class, $fileJury)
+            ->add('download', SubmitType::class, ['label' => 'Télécharger la liste du jury au format csv'])
+            ->add('modifyjury', SubmitType::class, ['label' => 'Modifier la liste des jurys et revenir au résumé'])
+            ->add('modifyjury_into_modifyetudiant', SubmitType::class, ['label' => 'Modifier la liste des jurys et passer à la modification de la liste des étudiants'])
+            ->add('modifyetudiant', SubmitType::class, ['label' => 'Passer à la modification de liste des étudiants sans modifier la liste des jurys'])
+            ->add('skip', SubmitType::class, ['label' => 'Revenir au résumé']);
             $formUploadListeJury->handleRequest($request);
-            if ($formUploadListeJury->isSubmitted() && $formUploadListeJury->isValid()) {
+
+            // Si l'utilisateur se ravise et souhaite passer au résumé
+            if($formUploadListeJury->get('skip')->isClicked()){
+                return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+            }
+
+            if($formUploadListeJury->get('download')->isClicked()){
+                $csv = writer::createFromFileObject(new \SplTempFileObject());
+                $csv->insertOne(["nom","prenom","courriel"]);
+                $filecontent = $session->getListeJury();
+                $filecontent = explode("\n", $filecontent);
+                $filecontent = array_reverse($filecontent);
+                array_pop($filecontent);
+                $filecontent = array_reverse($filecontent);
+                array_pop($filecontent);
+
+                foreach($filecontent as $tmp){
+
+                    $vide = "";
+                    $tab = explode(",",$tmp);
+                    $nom = $tab[0];
+
+                    $prenom = $tab[1];
+                    $prenom = str_replace(array(chr(34),chr(39)), $vide, $prenom);
+                    $courriel = $tab[2];
+                    $courriel = str_replace(array(chr(34),chr(39)), $vide, $courriel);
+
+                    
+
+                    $csv->insertOne([$nom, $prenom, $courriel]);
+                }
+                $csv->output('ListeJury.csv');
+                die('');
+            }
+
+            // si l'utilisateur souhaite uniquement changer la liste des jurys et passer au résumé
+            if ($formUploadListeJury->isSubmitted() && $formUploadListeJury->isValid() && $formUploadListeJury->get('modifyjury')->isClicked()) {
                 $fileJury->getName(); // champs nulls ici aussi 
                 $files = $formUploadListeJury->get('name')->getData();
     
@@ -240,6 +442,33 @@ class SessionController extends AbstractController
                 $manager->flush();
                 return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
             }
+
+            // si l'utilisateur souhaite changer la liste des jurys et puis modifier la liste des étudiants
+            if ($formUploadListeJury->isSubmitted() && $formUploadListeJury->isValid() && $formUploadListeJury->get('modifyjury_into_modifyetudiant')->isClicked()) {
+                $fileJury->getName(); // champs nulls ici aussi 
+                $files = $formUploadListeJury->get('name')->getData();
+
+                $reader = Reader::createFromPath($files->getRealPath())->setHeaderOffset(0);
+
+                $session->setListeJury("Nom, Prénom, Courriel : \n");
+                foreach ($reader as $row) {
+                    $session->setListeJury($session->getListeJury() . $row['nom'] . ",");
+                    $session->setListeJury($session->getListeJury() . $row['prenom'] . ",");
+                    $session->setListeJury($session->getListeJury() . $row['courriel'] . "\n");
+                    array_push($emailbag, $row['courriel']);
+                }
+                $sessionInterface->set("emailbagjury", $emailbag);
+                $manager->persist($session);
+                $manager->flush();
+                return $this->redirectToRoute('session_edit_etudiant', ['id' => $session->getId()]);
+            }
+            // si l'utilisateur souhaite la liste des étudiants sans modifier la liste des jurys
+            if ($formUploadListeJury->get('modifyetudiant')->isClicked()) {
+                return $this->redirectToRoute('session_edit_etudiant', ['id' => $session->getId()]);
+            }
+
+
+            //dump($session->getListeJury());
             return $this->render('session/editjury.html.twig', [
                 //'formSession' => $formSession->createView(),
                 //'formUploadListeEtudiant' => $formUploadListeEtudiant->createView(),
@@ -258,7 +487,7 @@ class SessionController extends AbstractController
      */
     public function mail(Request $request, EntityManagerInterface $manager, SoutenanceRepository $repo, Session $session, SessionInterface $sessionInterface){
 
-        dump($sessionInterface->get("emailbagetudiant"));
+        //dump($sessionInterface->get("emailbagetudiant"));
         $form = $this->createForm(FormMailType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
