@@ -20,6 +20,7 @@ use App\Form\AccountRequestType;
 use App\Repository\AccountRequestRepository;
 use App\Security\Status;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 /**
 * Ce contrôleur gère les routes suivantes : (toutes les routes commençant par "/register")
@@ -65,7 +66,7 @@ class RegistrationController extends AbstractController {
     /**
      * @Route("/complete-registration/{id}", name="complete_registration")
      */
-    public function completeRegistration(Request $request, AccountRequest $accountRequest, UserPasswordEncoderInterface $encoder) {
+    public function completeRegistration(Request $request, AccountRequest $accountRequest, UserPasswordEncoderInterface $encoder, GuardAuthenticatorHandler $gard) {
         
         if($accountRequest->getStatus() != Status::VALIDATED) {
 

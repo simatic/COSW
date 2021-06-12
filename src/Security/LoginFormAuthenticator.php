@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\Session;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -88,7 +89,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         // Gérer les redirections après login ici.
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $request->request->get('email')]);
-
+        if(!$user){
+            return new RedirectResponse($this->urlGenerator->generate('session'));   }
         if(in_array(Role::ADMIN, $user->getRoles())) {return new RedirectResponse($this->urlGenerator->generate('admin'));}
         else if(in_array(Role::CREATOR, $user->getRoles())) {return new RedirectResponse($this->urlGenerator->generate('creator'));}
 

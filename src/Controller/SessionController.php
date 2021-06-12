@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Session;
+use App\Entity\User;
 use App\Repository\SoutenanceRepository;
 use League\Csv\Reader;
 use App\Entity\Upload;
@@ -38,8 +39,9 @@ class SessionController extends AbstractController
      * @param SessionRepository $repo
      * @return Response
      */
-    public function index(SessionRepository $repo): Response
+    public function index(SessionRepository $repo,EntityManagerInterface $manager): Response
     {
+        dump($this->getUser()->getEmail());
         $sessions = $repo->findAll();
         return $this->render('session/index.html.twig', [
             'controller_name' => 'SessionController',

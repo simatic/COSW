@@ -6,11 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\RegistrationType;
+use App\Entity\Session;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Repository\UserRepository;
+use App\Security\LoginFormAuthenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
@@ -65,4 +68,21 @@ class SecurityController extends AbstractController
         ]);
         
     }
+    
+    /**
+     * @Route("/login/{uid}", name="login_with_uid")
+     */
+    public function test(String $uid,EntityManagerInterface $manager, LoginFormAuthenticator $login, GuardAuthenticatorHandler $guard, Request $request){
+        dump($uid);
+        $user = $manager->getRepository(User::class)->findOneBy([
+            'uid'=>$uid
+        ]);
+        $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
+        $sessions = $manager->getRepository(Session::class)->findAll();
+        return $this->render('session/index.html.twig', [
+            'controller_name' => 'SessionController',
+            'sessions' => $sessions,
+        ]);
+    }
+    
 }
