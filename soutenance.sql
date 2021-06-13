@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : sam. 12 juin 2021 à 19:46
+-- Généré le : Dim 13 juin 2021 à 14:54
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.2.33
 
@@ -84,7 +84,8 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20210525114254', '2021-05-25 11:43:27', 24253),
 ('DoctrineMigrations\\Version20210530124412', '2021-05-30 12:44:15', 331),
-('DoctrineMigrations\\Version20210612192104', '2021-06-12 19:21:20', 598);
+('DoctrineMigrations\\Version20210612192104', '2021-06-12 19:21:20', 598),
+('DoctrineMigrations\\Version20210613112945', '2021-06-13 11:29:50', 431);
 
 -- --------------------------------------------------------
 
@@ -103,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
   KEY `IDX_1323A575A59B3775` (`soutenance_id`),
   KEY `IDX_1323A575A76ED395` (`user_id`),
   KEY `IDX_1323A575126F525E` (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `evaluation`
@@ -121,7 +122,31 @@ INSERT INTO `evaluation` (`id`, `soutenance_id`, `user_id`, `item_id`, `note`) V
 (9, 7, 14, 4, 3),
 (10, 7, 14, 5, 2.5),
 (11, 7, 14, 6, 5),
-(12, 7, 14, 7, 9);
+(12, 7, 14, 7, 9),
+(13, 1, 9, 2, 3),
+(14, 1, 9, 3, 3),
+(15, 1, 9, 4, 3),
+(16, 1, 9, 5, 3),
+(17, 1, 9, 6, 6),
+(18, 1, 9, 7, 6),
+(19, 1, 10, 2, 4.5),
+(20, 1, 10, 3, 4.5),
+(21, 1, 10, 4, 4.5),
+(22, 1, 10, 5, 4.5),
+(23, 1, 10, 6, 9),
+(24, 1, 10, 7, 9),
+(25, 1, 2, 2, 2.5),
+(26, 1, 2, 3, 2.5),
+(27, 1, 2, 4, 2.5),
+(28, 1, 2, 5, 2.5),
+(29, 1, 2, 6, 5),
+(30, 1, 2, 7, 5),
+(31, 1, 14, 2, 2.5),
+(32, 1, 14, 3, 2.5),
+(33, 1, 14, 4, 2.5),
+(34, 1, 14, 5, 2.5),
+(35, 1, 14, 6, 5),
+(36, 1, 14, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -444,6 +469,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   `liste_jury` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `texte_mail_etudiant` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `texte_mail_jury` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -451,8 +477,8 @@ CREATE TABLE IF NOT EXISTS `session` (
 -- Déchargement des données de la table `session`
 --
 
-INSERT INTO `session` (`id`, `date_debut`, `date_fin`, `nom`, `description`, `liste_etudiant`, `liste_jury`, `texte_mail_etudiant`, `texte_mail_jury`) VALUES
-(1, '2016-01-01 00:00:00', '2016-01-01 00:00:00', 'Session 1', 'Description', 'nom,prenom,courriel,groupe\r\nNom1,Prenom1,Courriel1,Groupe1\r\nNom2,Prenom2,Courriel2,Groupe1\r\nNom3,Prenom3,Courriel3,Groupe2\r\nNom4,Prenom4,Courriel4,Groupe2\r\n', '\r\n', '{{Balise 1}} exemple de mail', '');
+INSERT INTO `session` (`id`, `date_debut`, `date_fin`, `nom`, `description`, `liste_etudiant`, `liste_jury`, `texte_mail_etudiant`, `texte_mail_jury`, `uid`) VALUES
+(1, '2016-01-01 00:00:00', '2016-01-01 00:00:00', 'Session 1', 'Description', 'nom,prenom,courriel,groupe\r\nNom1,Prenom1,Courriel1,Groupe1\r\nNom2,Prenom2,Courriel2,Groupe1\r\nNom3,Prenom3,Courriel3,Groupe2\r\nNom4,Prenom4,Courriel4,Groupe2\r\n', '\r\n', '{{Balise 1}} exemple de mail', '', '3692ad5a1948713f3ea98179984fe34ffb30bc64');
 
 -- --------------------------------------------------------
 
@@ -542,15 +568,15 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `roles`, `type`, `password`, `username`, `uid`) VALUES
-(1, 'Gibril', 'Gunder', 'gibril.gunder@telecom-sudparis.eu', '{\"0\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E', NULL, '56fdbd37c81c67aed9c050f42f63127efc850b4a'),
-(2, 'Michel', 'Simatic', 'michel.simatic@telecom-sudparis.eu', '{\"0\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM', NULL, '0211139c0788b55b6ce872f820540b7a22806ed9'),
-(7, 'John', 'Doe', 'john.doe@gmail.com', '{\"0\": \"ROLE_USER\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$aDlFMkdhN1IvUW9YUjhJcA$xO7gBGxpers0D/ppTD3t3MrddJAvhzQaxQOTR5iiMtA', NULL, '1bd5dccb8e2fcb241545cb3c51fe6122bc0ef2e1'),
-(9, 'Hello', 'World', 'hello.world@gmail.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$VVRjcUF0cFBJYXJHdEpsRg$vdaD8mMOCjFUvmuhBT1aKPQUObKlAJWQJ1+Q/RZRe+0', NULL, 'ccef04e22881628e142bd0f3624321f933915419'),
-(10, 'Zaki', 'Biroum', 'zaki.biroum@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$WW1JUmZraHQ4a3huZ1h5bA$uweXy9doHQKoTDn4Flne2VjZLHqoLPgVx1L9yotS728', NULL, '8527a27c20658cb7f723e3956200a7250eb5807a'),
-(11, 'Khalil Mehdi', 'Meziou', 'khalil.meziou@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$UGJzYkhyajRxYmVENGs2bQ$1dD52WNy7+RJBcouaAnVSQgo1Q7qKA4HP4bf+xG3yQA', NULL, '6db1a4a95c90b817c01c9717822c7fbec0f3df33'),
-(12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL, '1992f66d6891095643ab40b2520ebecd3e8c5096'),
-(13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL, 'dbfb78495f9e9af4193a96703b25b67a3c72b570'),
-(14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL, '6d2f1ae10a81558f27284f9623c3915237362c04');
+(1, 'Gibril', 'Gunder', 'gibril.gunder@telecom-sudparis.eu', '{\"0\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$SWZjc3h5N2VlSEhpR0FhMg$YzWvqpFOwS2ebtIOcBkdgYKnkCD/XbJBnSy3pBI1W3E', NULL, 'f48e0d32ecfc030cb4199e5d6cbee13ce235f3bd'),
+(2, 'Michel', 'Simatic', 'michel.simatic@telecom-sudparis.eu', '{\"0\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$dGUvMjVhNXJNaVk5dUFxcg$Rd1xjawBLtY2GbdNxT1mjZiR7WHkrqGY5EF68vJWoTM', NULL, '8b80abf6b2064894fae6b47cfe5fc718b2c162b5'),
+(7, 'John', 'Doe', 'john.doe@gmail.com', '{\"0\": \"ROLE_USER\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$aDlFMkdhN1IvUW9YUjhJcA$xO7gBGxpers0D/ppTD3t3MrddJAvhzQaxQOTR5iiMtA', NULL, '86867d90eb86ab3d74247b60e52ba331d8058d46'),
+(9, 'Hello', 'World', 'hello.world@gmail.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$VVRjcUF0cFBJYXJHdEpsRg$vdaD8mMOCjFUvmuhBT1aKPQUObKlAJWQJ1+Q/RZRe+0', NULL, '912f30bf082c10368bba2ec23a94c36019fc013e'),
+(10, 'Zaki', 'Biroum', 'zaki.biroum@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$WW1JUmZraHQ4a3huZ1h5bA$uweXy9doHQKoTDn4Flne2VjZLHqoLPgVx1L9yotS728', NULL, 'efe0b0e16b8e1d4e3266c05083b4f1922b0d0646'),
+(11, 'Khalil Mehdi', 'Meziou', 'khalil.meziou@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$UGJzYkhyajRxYmVENGs2bQ$1dD52WNy7+RJBcouaAnVSQgo1Q7qKA4HP4bf+xG3yQA', NULL, '7244b14c8a9a12fd1438a87b0ce612bb032bb130'),
+(12, 'Maxime', 'Verchain', 'maxime.verchain@telecom-sudparis.eu', '{\"0\": \"ROLE_USER\", \"1\": \"ROLE_ADMIN\"}', 'admin', '$argon2id$v=19$m=65536,t=4,p=1$RG5tVjk3UVhqT28yWGxRbw$DYNFBDJwuHBU1xc8obK0wMhfPEpktEsl27l1s2BaTOc', NULL, 'e9d0f5d7e974102872ac042051f9848b605fd235'),
+(13, 'a', 'b', 'a.b@hello.com', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_CREATOR\"}', 'creator', '$argon2id$v=19$m=65536,t=4,p=1$bVM4cHZlVWZZb1Q4N3pBdg$f0wbACFFZqLhjTV1jkMFNpaHx8kvELFw2HWAFa5XShY', NULL, '140d9aaa6cf184e164d2b2e64437dba0522a67a1'),
+(14, 'khalil', 'meziou', 'khalilmeziou@yahoo.fr', '{\"0\": \"ROLE_USER\", \"2\": \"ROLE_ADMIN\"}', 'creator', '$argon2i$v=19$m=65536,t=4,p=1$YWF0Lnhvd1pRa0pWeHp0Sw$RjGVi6Ps6e/HSMvyhxpZjh2apqyf9RY2bPCcSNVsob8', NULL, '1d4fa90c600fb390b37409e2651e404de6049a01');
 
 --
 -- Contraintes pour les tables déchargées
