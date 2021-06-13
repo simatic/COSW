@@ -134,7 +134,7 @@ class SoutenanceController extends AbstractController
      * @isGranted("ROLE_USER")
      * @Route("/modele/upload", name="upload_modele")
      */
-    public function test( Request $request, EntityManagerInterface $manager, UserRepository $userRepository){
+    public function uploadModele( Request $request, EntityManagerInterface $manager, UserRepository $userRepository){
         $file = new Upload();
         $form = $this->createForm(UploadType::class, $file);
         $form->handleRequest($request);
@@ -299,12 +299,14 @@ class SoutenanceController extends AbstractController
             );
     }
     
+    
     /**
      *
-     * @Route("/evaluer/{id}",name="evaluer_soutenance")
+     * @Route("/session/cosv5/{uid}/{uidSession}/soutenance/{id}/evaluer" ,name="evaluer_soutenance")
      */
-    public function evaluation_soutenance(Soutenance $soutenance, EntityManagerInterface $manager,Request $request)
+    public function evaluation_soutenance(String $uid,String $id,String $uidSession, EntityManagerInterface $manager,Request $request)
     {
+        $soutenance = $manager->getRepository(Soutenance::class)->findOneBy(['id'=>$id]);
         $evaluations = $manager->getRepository(Evaluation::class)->findBy([
             'Soutenance'=>$soutenance,
             'User'=>$this->getUser()
@@ -381,7 +383,7 @@ class SoutenanceController extends AbstractController
                 }
             }
             $manager->flush();
-            return $this->redirectToRoute('session_show',['id'=>$soutenance->getSession()->getId()]);
+            return $this->redirectToRoute('session_user',['uid'=>$soutenance->getSession()->getUid()]);
         }
         
         return $this->render('soutenance/evaluation.html.twig',[

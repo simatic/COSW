@@ -73,8 +73,6 @@ class SecurityController extends AbstractController
      * @Route("/login/{uid}/{uidSession}", name="login_with_uid")
      */
     public function login_pair(String $uidSession, String $uid,EntityManagerInterface $manager, LoginFormAuthenticator $login, GuardAuthenticatorHandler $guard, Request $request){
-        dump("HELOO");
-        dump($uid);
         $user = $manager->getRepository(User::class)->findOneBy([
             'uid'=>$uid
         ]);

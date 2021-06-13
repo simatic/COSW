@@ -3,6 +3,7 @@
 {% block title %}Session{% endblock %}
 
 {% block body %}
+<h1>Bonjour {{ user.firstName}}</h1>
     <article>
         <div class="jumbotron">
             <h2 class="display-4">{{ session.nom }} : du {{ session.dateDebut | date ('d/m/Y') }} au {{ session.dateFin | date ('d/m/Y') }}</h2>
@@ -14,8 +15,8 @@
 
             <ul>
             {% for soutenance in session.soutenances %}
-                    <li><a href="{{ path('soutenance_show', {'id': soutenance.id}) }}">{{ soutenance.titre }}
-                    </a></li> <a href={{ path('evaluer_soutenance',{'id': soutenance.id} ) }}"><button type="button" class="btn btn-primary">Evaluer</button></a>
+                    <li><a href={{ path('soutenance_show', {'id': soutenance.id, uid:user.uid}) }}>{{ soutenance.titre }}
+                    </a></li> <a href={{ path('evaluer_soutenance',{'id': soutenance.id, 'uid':user.uid,'uidSession':session.uid} ) }}><button type="button" class="btn btn-primary">Evaluer</button></a>
             {% endfor %}
             </ul>
 
