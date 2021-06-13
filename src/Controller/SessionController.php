@@ -61,7 +61,7 @@ class SessionController extends AbstractController
         $formSession->handleRequest($request);
 
         if($formSession->isSubmitted() && $formSession->isValid()){
-
+            $session->setUid(sha1(random_bytes(10)));
             $manager->persist($session);
             $manager->flush();
 
