@@ -8,6 +8,7 @@ use App\Entity\Evaluation;
 use App\Entity\Item;
 use App\Entity\Modele;
 use App\Entity\Session;
+use App\Entity\User;
 use App\Entity\Soutenance;
 use League\Csv\Writer;
 use App\Form\SessionType;
@@ -200,106 +201,6 @@ class SoutenanceController extends AbstractController
     }
     
     
-    
-    /**
-     *
-     * @Route("/evaluer/cosv5/{id}",name="evaluer_pair")
-     */
-    public function evaluation_pair(Soutenance $soutenance, EntityManagerInterface $manager,Request $request)
-    {
-        $evaluations = $manager->getRepository(Evaluation::class)->findBy([
-            'Soutenance'=>$soutenance,
-            'User'=>$this->getUser()
-        ]);
-        
-        $edit = !empty($evaluations);
-        $modele =  $soutenance->getModele();
-        
-        $items = $modele->getItems();
-        $rubriques = $modele->getRubriques();
-        $form = $this->createFormBuilder();
-        foreach($items as $item){
-            if($edit){
-                $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
-                    'Soutenance'=>$soutenance,
-                    'User'=>$this->getUser(),
-                    'item'=>$item
-                ]);
-                $form = $form->add($item->getId(), IntegerType::class,[
-                    'attr'=>[
-                        'label'=>$item->getNom(),
-                        'value'=>($evaluation->getNote()/20)*100/($item->getNote()/100)
-                    ]
-                ]);
-            }else{
-                $form = $form->add($item->getId(), IntegerType::class,[
-                    'attr'=>[
-                        'label'=>$item->getNom()
-                    ]
-                    
-                ]);
-            }
-        }
-        if($edit){
-            $form = $form->add('Modifier', SubmitType::class)
-            ->getForm();
-        }else{
-            $form = $form->add('Evaluer', SubmitType::class)
-            ->getForm();
-        }
-        
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            // data is an array with "name", "email", and "message" keys
-            $data = $form->getData();
-            $i = 0;
-            if(!$edit){
-                foreach($data as $itemId => $note){
-                    $evaluation = new Evaluation();
-                    $item=  $manager->getRepository(Item::class)->findOneBy([
-                        'id'=>$itemId
-                    ]);
-                    $evaluation->setItem($item);
-                    $evaluation->setUser($this->getUser());
-                    $evaluation->setSoutenance($soutenance);
-                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
-                    $i++;
-                    $manager->persist($evaluation);
-                }
-            }else{
-                foreach($data as $itemId => $note){
-                    $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
-                        'Soutenance'=>$soutenance,
-                        'User'=>$this->getUser(),
-                        'item'=>$itemId
-                    ]);
-                    $item = $manager->getRepository(Item::class)->findOneBy([
-                        'id'=>$itemId
-                    ]);
-                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
-                    $i++;
-                    $manager->persist($evaluation);
-                }
-            }
-            $manager->flush();
-            return $this->redirectToRoute('session_user',['uid'=>$soutenance->getSession()->getUid()]);
-        }
-        
-        return $this->render('soutenance/evaluation.html.twig',[
-            'form'=> $form->createView(),
-            'items'=>$items,
-            'rubriques'=>$rubriques,
-            'soutenance'=>$soutenance,
-            'editMode' => !empty($manager->getRepository(Evaluation::class)->findBy([
-                'Soutenance'=>$soutenance,
-                'User'=>$this->getUser()
-            ]))
-        ]
-            );
-    }
-    
-    
     /**
      *
      * @Route("/session/cosv5/{uid}/{uidSession}/soutenance/{id}/evaluer" ,name="evaluer_soutenance")
@@ -307,6 +208,17 @@ class SoutenanceController extends AbstractController
     public function evaluation_soutenance(String $uid,String $id,String $uidSession, EntityManagerInterface $manager,Request $request)
     {
         $soutenance = $manager->getRepository(Soutenance::class)->findOneBy(['id'=>$id]);
+        if(is_null($soutenance)){
+            dump("Erreur Soutenance");
+        }
+        $session = $manager->getRepository(Session::class)->findOneBy(['uid'=>$uidSession]);
+        if(is_null($session)){
+            dump("Erreur Session");
+        }
+        $user = $manager->getRepository(User::class)->findOneBy(['uid'=>$uid]);
+        if(is_null($user)){
+            dump("Erreur Utilisateur");
+        }
         $evaluations = $manager->getRepository(Evaluation::class)->findBy([
             'Soutenance'=>$soutenance,
             'User'=>$this->getUser()
