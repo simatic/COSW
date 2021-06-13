@@ -88,7 +88,7 @@ class SessionController extends AbstractController
         
         
         //dump($sessionInterface->get("emailbagetudiant"));
-        //dump($sessionInterface->get("emailbagjury"));
+        dump($sessionInterface->get("emailbagjury"));
         return $this->render('session/show.html.twig',[
                 'session'=>$session
             ]
@@ -377,7 +377,7 @@ class SessionController extends AbstractController
      */
     public function editJury(Request $request, EntityManagerInterface $manager, SoutenanceRepository $repo, Session $session, SessionInterface $sessionInterface){
 
-        //$sessionInterface->set("emailbagjury", []);
+        $sessionInterface->set("emailbagjury", []);
         $emailbag = $sessionInterface->get("emailbagjury", []);
             //Upload listeJury
             $fileJury = new Upload();
@@ -497,6 +497,8 @@ class SessionController extends AbstractController
             $objetetudiant = $sessionInterface->get("objetetudiant");
             $texte_mail_etudiant = $sessionInterface->get("textemailetudiant");
 
+
+
             foreach ($emailbagetudiant as $email){
 
 
@@ -537,6 +539,51 @@ class SessionController extends AbstractController
             }
 
             //Envoi mail Jury
+
+            $emailbagjury = $sessionInterface->get("emailbagjury");
+            $objetjury = $sessionInterface->get("objetjury");
+            $texte_mail_jury = $sessionInterface->get("textemailjury");
+
+            foreach ($emailbagjury as $email){
+
+
+
+                //traitement du mail à envoyer pour les étudiants
+                $tmp = $email;
+                $prenom = explode(".",$tmp)[0];
+                $nom = explode(".",explode("@",$tmp)[0])[1];
+                $body = $texte_mail_jury;
+                $body = str_replace("{{Prenom}}", $prenom, $body);
+                $body = str_replace("{{Nom}}", $nom, $body);
+
+                $mail = new PHPMailer(true);
+                $mail->Encoding = 'base64';
+                $mail->CharSet = "UTF-8";
+
+                //Server settings
+                $mail->isSMTP();                                            
+                $mail->Host       = 'z.mines-telecom.fr';                   
+                $mail->SMTPAuth   = true;                                  
+
+                $mail->Username = $form->get('email')->getData();
+                $mail->Password = $form->get('password')->getData();
+
+
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        
+                $mail->Port       = 587;
+
+
+                $mail->setFrom('ne-pas-repondre@COS.com', 'Soutenance COS');
+                $mail->addAddress($email);
+
+
+                $mail->Subject = $objetjury;
+                $mail->Body = $body;
+
+                $mail->send();
+            }
+
+
 
             
             return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
