@@ -53,4 +53,13 @@ class HomeController extends AbstractController {
         
     }
 
+    /**
+     * @Route("reset-password", name="password_reset_request")
+     */
+    public function resetRequest() {
+
+
+
+    }
+
 }
