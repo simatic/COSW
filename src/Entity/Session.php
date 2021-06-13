@@ -69,6 +69,11 @@ class Session
      * @ORM\Column(type="text")
      */
     private $texteMailJury;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $uid;
     
     
     public function setNom(string $nom): self
@@ -229,6 +234,18 @@ class Session
     public function setTexteMailJury(?string $texteMailJury): self
     {
         $this->texteMailJury = $texteMailJury;
+
+        return $this;
+    }
+
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    public function setUid(?string $uid): self
+    {
+        $this->uid = $uid;
 
         return $this;
     }

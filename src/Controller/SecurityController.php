@@ -70,19 +70,26 @@ class SecurityController extends AbstractController
     }
     
     /**
-     * @Route("/login/{uid}", name="login_with_uid")
+     * @Route("/login/{uid}/{uidSession}", name="login_with_uid")
      */
-    public function test(String $uid,EntityManagerInterface $manager, LoginFormAuthenticator $login, GuardAuthenticatorHandler $guard, Request $request){
+    public function login_pair(String $uidSession, String $uid,EntityManagerInterface $manager, LoginFormAuthenticator $login, GuardAuthenticatorHandler $guard, Request $request){
+        dump("HELOO");
         dump($uid);
         $user = $manager->getRepository(User::class)->findOneBy([
             'uid'=>$uid
         ]);
         $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
-        $sessions = $manager->getRepository(Session::class)->findAll();
-        return $this->render('session/index.html.twig', [
-            'controller_name' => 'SessionController',
-            'sessions' => $sessions,
-        ]);
+        
+        $session = $manager->getRepository(Session::class)->findBy(['uid'=>$uidSession]);
+        
+        if(isset($session)){
+            return $this->redirect($this->generateUrl('session_user', array('uid' => $uidSession)));
+        }
+        return $this->render('session/show.html.twig',[
+            'session'=>$session
+        ]
+            );
+        
     }
     
 }

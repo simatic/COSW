@@ -200,6 +200,105 @@ class SoutenanceController extends AbstractController
     }
     
     
+    
+    /**
+     *
+     * @Route("/evaluer/cosv5/{id}",name="evaluer_pair")
+     */
+    public function evaluation_pair(Soutenance $soutenance, EntityManagerInterface $manager,Request $request)
+    {
+        $evaluations = $manager->getRepository(Evaluation::class)->findBy([
+            'Soutenance'=>$soutenance,
+            'User'=>$this->getUser()
+        ]);
+        
+        $edit = !empty($evaluations);
+        $modele =  $soutenance->getModele();
+        
+        $items = $modele->getItems();
+        $rubriques = $modele->getRubriques();
+        $form = $this->createFormBuilder();
+        foreach($items as $item){
+            if($edit){
+                $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
+                    'Soutenance'=>$soutenance,
+                    'User'=>$this->getUser(),
+                    'item'=>$item
+                ]);
+                $form = $form->add($item->getId(), IntegerType::class,[
+                    'attr'=>[
+                        'label'=>$item->getNom(),
+                        'value'=>($evaluation->getNote()/20)*100/($item->getNote()/100)
+                    ]
+                ]);
+            }else{
+                $form = $form->add($item->getId(), IntegerType::class,[
+                    'attr'=>[
+                        'label'=>$item->getNom()
+                    ]
+                    
+                ]);
+            }
+        }
+        if($edit){
+            $form = $form->add('Modifier', SubmitType::class)
+            ->getForm();
+        }else{
+            $form = $form->add('Evaluer', SubmitType::class)
+            ->getForm();
+        }
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+            $data = $form->getData();
+            $i = 0;
+            if(!$edit){
+                foreach($data as $itemId => $note){
+                    $evaluation = new Evaluation();
+                    $item=  $manager->getRepository(Item::class)->findOneBy([
+                        'id'=>$itemId
+                    ]);
+                    $evaluation->setItem($item);
+                    $evaluation->setUser($this->getUser());
+                    $evaluation->setSoutenance($soutenance);
+                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $i++;
+                    $manager->persist($evaluation);
+                }
+            }else{
+                foreach($data as $itemId => $note){
+                    $evaluation = $manager->getRepository(Evaluation::class)->findOneBy([
+                        'Soutenance'=>$soutenance,
+                        'User'=>$this->getUser(),
+                        'item'=>$itemId
+                    ]);
+                    $item = $manager->getRepository(Item::class)->findOneBy([
+                        'id'=>$itemId
+                    ]);
+                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $i++;
+                    $manager->persist($evaluation);
+                }
+            }
+            $manager->flush();
+            return $this->redirectToRoute('session_user',['uid'=>$soutenance->getSession()->getUid()]);
+        }
+        
+        return $this->render('soutenance/evaluation.html.twig',[
+            'form'=> $form->createView(),
+            'items'=>$items,
+            'rubriques'=>$rubriques,
+            'soutenance'=>$soutenance,
+            'editMode' => !empty($manager->getRepository(Evaluation::class)->findBy([
+                'Soutenance'=>$soutenance,
+                'User'=>$this->getUser()
+            ]))
+        ]
+            );
+    }
+    
     /**
      *
      * @Route("/evaluer/{id}",name="evaluer_soutenance")
@@ -300,7 +399,7 @@ class SoutenanceController extends AbstractController
 
     
     /**
-     * @Route("/export_soutenance/{id}", name="export_soutenance")
+     * @Route("/export_soutenance?={id}", name="export_soutenance")
      */
     public function export(EntityManagerInterface $manager, Session $session){
         $soutenances = $manager->getRepository(Soutenance::class)->findBy([
@@ -323,6 +422,5 @@ class SoutenanceController extends AbstractController
         return $this->redirectToRoute('session_show', ['id'=>1]);
         
     }
-    
 
 }

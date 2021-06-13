@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Session;
-use App\Entity\User;
 use App\Repository\SoutenanceRepository;
 use League\Csv\Reader;
 use App\Entity\Upload;
@@ -39,9 +38,8 @@ class SessionController extends AbstractController
      * @param SessionRepository $repo
      * @return Response
      */
-    public function index(SessionRepository $repo,EntityManagerInterface $manager): Response
+    public function index(SessionRepository $repo): Response
     {
-        dump($this->getUser()->getEmail());
         $sessions = $repo->findAll();
         return $this->render('session/index.html.twig', [
             'controller_name' => 'SessionController',
@@ -74,6 +72,22 @@ class SessionController extends AbstractController
         ]);
     }
 
+    /**
+     *
+     * @Route("/session/cosv5/{uid}",name="session_user")
+     * @param Session $session
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function show_user(Session $session, EntityManagerInterface $manager)
+    {
+        dump($this->getUser()->getEmail());
+        return $this->render('session/showUser.html.twig',[
+            'session'=>$session
+        ]
+            );
+    }
+    
     /**
      *
      * @Route("/session/{id}",name="session_show")
@@ -318,8 +332,6 @@ class SessionController extends AbstractController
             'formmail'=>$form->createView()
         ]);
     }
-    
-    
     
     
 
