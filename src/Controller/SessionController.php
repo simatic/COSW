@@ -83,6 +83,7 @@ class SessionController extends AbstractController
     {
         dump($this->getUser()->getEmail());
         return $this->render('session/showUser.html.twig',[
+            'user'=>$this->getUser(),
             'session'=>$session
         ]
             );
@@ -101,6 +102,7 @@ class SessionController extends AbstractController
         dump($sessionInterface->get("emailbagetudiant"));
         dump($sessionInterface->get("emailbagjury"));
         return $this->render('session/show.html.twig',[
+                'user'=>$this->getUser(),
                 'session'=>$session
             ]
         );
