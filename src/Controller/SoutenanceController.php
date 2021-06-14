@@ -70,7 +70,7 @@ class SoutenanceController extends AbstractController
         if(!$soutenance){
             $soutenance = new Soutenance();
             $soutenance->setNote(0);
-            $soutenance->setUid(sha1(random_bytes(10)));
+            //$soutenance->setUid(sha1(random_bytes(10)));
         }
         $formSoutenance = $this->createFormBuilder($soutenance)
         ->add('titre')->add('session', EntityType::class,['class'=> Session::class,
