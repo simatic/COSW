@@ -65,7 +65,7 @@ class SoutenanceController extends AbstractController
      * @Route("/Soutenance/new", name="soutenance_new")
      * @Route("/Soutenance/{id}/edit", name="soutenance_edit")
      */
-    public function form(Request $request, EntityManagerInterface $manager, Soutenance $soutenance = null){
+    public function SoutenanceAdd(Request $request, EntityManagerInterface $manager, Soutenance $soutenance = null){
         
         if(!$soutenance){
             $soutenance = new Soutenance();
@@ -98,15 +98,26 @@ class SoutenanceController extends AbstractController
     
     /**
      * @isGranted("ROLE_USER")
-     * @Route("/Soutenance/{id}/commentaire/new", name="add_commentaire")
+     * @Route("/session/cosv5/{uid}/{uidSession}/soutenance/{id}/commenter", name="add_commentaire")
      */
-    public function form2(Soutenance $soutenance , Request $request, EntityManagerInterface $manager, Security $security){
-
+    public function Commentaire(String $uid,String $id,String $uidSession, EntityManagerInterface $manager,Request $request){
+        $soutenance = $manager->getRepository(Soutenance::class)->findOneBy(['id'=>$id]);
+        if(is_null($soutenance)){
+            dump("Erreur Soutenance");
+        }
+        $session = $manager->getRepository(Session::class)->findOneBy(['uid'=>$uidSession]);
+        if(is_null($session)){
+            dump("Erreur Session");
+        }
+        $user = $manager->getRepository(User::class)->findOneBy(['uid'=>$uid]);
+        if(is_null($user)){
+            dump("Erreur Utilisateur");
+        }
         $commentaire = new Commentaire();
         $formCommentaire = $this->createFormBuilder($commentaire)
-        ->add('Contenu')->add('note')->getForm();
+        ->add('Contenu')->getForm();
         $commentaire->setSoutenance($soutenance);
-        $commentaire->setAuteur($security->getUser()->getUsername());
+        $commentaire->setAuteur($this->getUser()->getFirstName(). ' ' .$this->getUser()->getLastName());
         $formCommentaire->handleRequest($request);
         
         if($formCommentaire->isSubmitted() && $formCommentaire->isValid()){
@@ -114,18 +125,7 @@ class SoutenanceController extends AbstractController
             $manager->persist($commentaire);
             $manager->flush();
             
-            $repo = $manager->getRepository(Commentaire::class)->findBy([
-                'soutenance'=>$soutenance
-            ]);
-            $sum=0;
-            foreach ($repo as $comment){
-                $sum=$sum+$comment->getNote();
-            }
-            $soutenance->setNote($sum/count($repo));
-            $manager->persist($commentaire);
-            $manager->persist($soutenance);
-            $manager->flush();
-            return $this->redirectToRoute('soutenance_show',['id'=>$soutenance->getId()]);
+            return $this->redirectToRoute('session_user',['uid'=>$soutenance->getSession()->getUid()]);
         }
         return $this->render('soutenance/newComment.html.twig',[
             'formCommentaire'=> $formCommentaire->createView()

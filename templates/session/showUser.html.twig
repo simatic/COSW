@@ -17,6 +17,7 @@
             {% for soutenance in session.soutenances %}
                     <li><a href={{ path('soutenance_show', {'id': soutenance.id, uid:user.uid}) }}>{{ soutenance.titre }}
                     </a></li> <a href={{ path('evaluer_soutenance',{'id': soutenance.id, 'uid':user.uid,'uidSession':session.uid} ) }}><button type="button" class="btn btn-primary">Evaluer</button></a>
+                    </a></li> <a href={{ path('add_commentaire',{'uid':user.uid, 'uidSession':session.uid,'id': soutenance.id} ) }}><button type="button" class="btn btn-primary">Commenter</button></a>
             {% endfor %}
             </ul>
 

@@ -29,11 +29,6 @@ class Commentaire
     private $Contenu;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $note;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Soutenance::class, inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
      */

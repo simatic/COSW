@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>	
+			Ajout
+			d'un Commentaire</h1>
+
+{{ form_start(formCommentaire) }}
+
+{{ form_widget(formCommentaire) }}
+
+		<button type="submit" class="btn btn-success">
+			Ajouter le commentaire
+		</button>
+{{ form_end(formCommentaire) }}
+
+{% endblock %}
