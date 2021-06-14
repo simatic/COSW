@@ -61,7 +61,7 @@ class SoutenanceController extends AbstractController
 
     
     /**
-     * @isGranted("ROLE_ADMIN")
+     * 
      * @Route("/Soutenance/new", name="soutenance_new")
      * @Route("/Soutenance/{id}/edit", name="soutenance_edit")
      */

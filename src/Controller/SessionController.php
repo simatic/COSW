@@ -8,6 +8,8 @@ use League\Csv\Reader;
 use App\Entity\Upload;
 use App\Form\SessionType;
 use App\Form\UploadType;
+use App\Entity\Peer;
+use App\Entity\User;
 use App\Form\FormMailType;
 use App\Repository\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,6 +67,8 @@ class SessionController extends AbstractController
         $formSession->handleRequest($request);
 
         if($formSession->isSubmitted() && $formSession->isValid()){
+            $session->setListeEtudiant("");
+            $session->setListeJury("");
             $session->setUid(sha1(random_bytes(10)));
             $manager->persist($session);
             $manager->flush();
@@ -104,7 +108,7 @@ class SessionController extends AbstractController
     {
         
         
-        //dump($sessionInterface->get("emailbagetudiant"));
+        dump($sessionInterface->get("emailbagetudiant"));
         //dump($sessionInterface->get("emailbagjury"));
         return $this->render('session/show.html.twig',[
                 'user'=>$this->getUser(),
@@ -115,7 +119,7 @@ class SessionController extends AbstractController
 
 
     /**
-     * @isGranted("ROLE_ADMIN")
+     * @isGranted("ROLE_CREATOR", "ROLE_ADMIN")
      * @Route("/session/{id}/edit", name="session_edit")
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -259,7 +263,7 @@ class SessionController extends AbstractController
     }
 
     /**
-     * @isGranted("ROLE_ADMIN")
+     * @isGranted("ROLE_CREATOR", "ROLE_ADMIN")
      * @Route("/session/{id}/edit_etudiant", name="session_edit_etudiant")
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -385,7 +389,7 @@ class SessionController extends AbstractController
 
 
     /**
-     * @isGranted("ROLE_ADMIN")
+     * @isGranted("ROLE_CREATOR", "ROLE_ADMIN")
      * @Route("/session/{id}/edit_jury", name="session_edit_jury")
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -495,7 +499,7 @@ class SessionController extends AbstractController
         }
 
         /**
-     * @isGranted("ROLE_ADMIN")
+     * @isGranted("ROLE_CREATOR", "ROLE_ADMIN")
      * @Route("/session/{id}/mail", name="session_mail")
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -514,18 +518,39 @@ class SessionController extends AbstractController
             $emailbagetudiant = $sessionInterface->get("emailbagetudiant");
             $objetetudiant = $sessionInterface->get("objetetudiant");
             $texte_mail_etudiant = $sessionInterface->get("textemailetudiant");
+            $manager = $this->getDoctrine()->getManager();
+
 
             foreach ($emailbagetudiant as $email){
 
 
 
-                //traitement du mail à envoyer pour les étudiants
+                //traitement du mail à envoyer pour les étudiants   
+                // Début Création de lien pour soutenance
+                
                 $tmp = $email;
                 $prenom = explode(".",$tmp)[0];
                 $nom = explode(".",explode("@",$tmp)[0])[1];
                 $body = $texte_mail_etudiant;
                 $body = str_replace("{{Prenom}}", $prenom, $body);
                 $body = str_replace("{{Nom}}", $nom, $body);
+
+                $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
+                if(!$user){
+                    $user = new Peer();
+                    $user->setEmail($email);
+                    $user->setFirstName($prenom);
+                    $user->setLastName($nom);
+                    $user->setUid(sha1(random_bytes(10)));
+                    $manager->persist($user);
+                    $manager->flush();
+                }
+
+                $route = $this->generateUrl("login_with_uid", ['uid' => $user->getUid(), 'uidSession' => $session->getUid() ], false);
+
+                $body = str_replace("{{Lien}}", $route, $body);
+
+                
 
                 $mail = new PHPMailer(true);
                 $mail->Encoding = 'base64';
@@ -555,6 +580,66 @@ class SessionController extends AbstractController
             }
 
             //Envoi mail Jury
+
+            $emailbagjury = $sessionInterface->get("emailbagjury");
+            $objetjury = $sessionInterface->get("objetjury");
+            $texte_mail_jury = $sessionInterface->get("textemailjury");
+
+            foreach ($emailbagjury as $email){
+
+
+
+                //traitement du mail à envoyer pour les étudiants
+                $tmp = $email;
+                $prenom = explode(".",$tmp)[0];
+                $nom = explode(".",explode("@",$tmp)[0])[1];
+                $body = $texte_mail_jury;
+                $body = str_replace("{{Prenom}}", $prenom, $body);
+                $body = str_replace("{{Nom}}", $nom, $body);
+
+                $user = $manager->getRepository(User::class)->findOneBy(['email' => $email]);
+                if(!$user){
+                    $user = new Peer();
+                    $user->setEmail($email);
+                    $user->setFirstName($prenom);
+                    $user->setLastName($nom);
+                    $user->setUid(sha1(random_bytes(10)));
+                    $manager->persist($user);
+                    $manager->flush();
+                }
+
+                $route = $this->generateUrl("login_with_uid", ['uid' => $user->getUid(), 'uidSession' => $session->getUid() ], false);
+
+                $body = str_replace("{{Lien}}", $route, $body);
+
+                $mail = new PHPMailer(true);
+                $mail->Encoding = 'base64';
+                $mail->CharSet = "UTF-8";
+
+                //Server settings
+                $mail->isSMTP();                                            
+                $mail->Host       = 'z.mines-telecom.fr';                   
+                $mail->SMTPAuth   = true;                                  
+
+                $mail->Username = $form->get('email')->getData();
+                $mail->Password = $form->get('password')->getData();
+
+
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        
+                $mail->Port       = 587;
+
+
+                $mail->setFrom('ne-pas-repondre@COS.com', 'Soutenance COS');
+                $mail->addAddress($email);
+
+
+                $mail->Subject = $objetjury;
+                $mail->Body = $body;
+
+                $mail->send();
+            }
+
+
 
             
             return $this->redirectToRoute('session_show', ['id' => $session->getId()]);

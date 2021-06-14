@@ -39,7 +39,7 @@
 
 
 
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CREATOR') %}
             <a class="btn btn-success" href="{{ path('session_edit', {'id': session.id}) }}">
                 Modifier
             </a>
