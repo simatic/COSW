@@ -113,11 +113,16 @@ class SoutenanceController extends AbstractController
         if(is_null($user)){
             dump("Erreur Utilisateur");
         }
-        $commentaire = new Commentaire();
+        $commentaire = $manager->getRepository(Commentaire::class)->findOneBy(['auteur'=>$this->getUser()->getEmail(),
+            'soutenance'=>$soutenance]);
+        if(!$commentaire){
+            $commentaire = new Commentaire();
+        }
+        dump($commentaire);
         $formCommentaire = $this->createFormBuilder($commentaire)
         ->add('Contenu')->getForm();
         $commentaire->setSoutenance($soutenance);
-        $commentaire->setAuteur($this->getUser()->getFirstName(). ' ' .$this->getUser()->getLastName());
+        $commentaire->setAuteur($this->getUser()->getEmail());
         $formCommentaire->handleRequest($request);
         
         if($formCommentaire->isSubmitted() && $formCommentaire->isValid()){
@@ -195,6 +200,7 @@ class SoutenanceController extends AbstractController
         ]);
         
         return $this->render('soutenance/show.html.twig',[
+            'user'=>$this->getUser(),
             'soutenance'=> $soutenance,
             'commentaires'=> $repo
         ]
@@ -314,7 +320,7 @@ class SoutenanceController extends AbstractController
 
     
     /**
-     * @Route("/export_soutenance?={id}", name="export_soutenance")
+     * @Route("/export_session?={id}", name="export_session")
      */
     public function export(EntityManagerInterface $manager, Session $session){
         $soutenances = $manager->getRepository(Soutenance::class)->findBy([
@@ -337,5 +343,8 @@ class SoutenanceController extends AbstractController
         return $this->redirectToRoute('session_show', ['id'=>1]);
         
     }
+    
+    
+    
 
 }

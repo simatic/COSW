@@ -9,7 +9,7 @@
             <h2 class="display-4">{{ session.nom }} : du {{ session.dateDebut | date ('d/m/Y') }} au {{ session.dateFin | date ('d/m/Y') }}</h2>
      
             {% if is_granted('ROLE_ADMIN') %}
-    		<a href={{ path('export_soutenance',{'id': session.id} ) }}><button type="button" class="btn btn-light">Upload notes</button></a>
+    		<a href={{ path('export_session',{'id': session.id} ) }}><button type="button" class="btn btn-light">Upload notes</button></a>
             {% endif %}
             <h5>{{ session.description }}</h5>
 
@@ -17,7 +17,7 @@
             {% for soutenance in session.soutenances %}
                     <li><a href={{ path('soutenance_show', {'id': soutenance.id, uid:user.uid}) }}>{{ soutenance.titre }}
                     </a></li> <a href={{ path('evaluer_soutenance',{'id': soutenance.id, 'uid':user.uid,'uidSession':session.uid} ) }}><button type="button" class="btn btn-primary">Evaluer</button></a>
-                    </a></li> <a href={{ path('add_commentaire',{'uid':user.uid, 'uidSession':session.uid,'id': soutenance.id} ) }}><button type="button" class="btn btn-primary">Commenter</button></a>
+                    </a></li> <a href={{ path('add_commentaire',{'uid':user.uid, 'uidSession':session.uid,'id': soutenance.id} ) }}><button type="button" class="btn btn-info">Commenter</button></a>
             {% endfor %}
             </ul>
 

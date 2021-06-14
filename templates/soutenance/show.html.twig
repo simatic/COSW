@@ -19,7 +19,7 @@
 		<a href="{{ path('soutenance_edit', {'id': soutenance.id}) }}" class="btn btn-warning">Modifier</a>
 		{% endif %}
 		<p>Note Final : {{ soutenance.note |round(2, 'floor') }}</p>
-				<a href="{{ path('add_commentaire', {'id': soutenance.id}) }}" class="btn btn-primary">Ajouter un commentaire</a>
+				<a href="{{ path('add_commentaire' ,{'uid':user.uid, 'uidSession':soutenance.session.uid,'id': soutenance.id} ) }}" class="btn btn-primary">Ajouter un commentaire</a>
 		
 		{% for commentaire in commentaires %}
 		<div class="card text-white bg-success mb-3">
