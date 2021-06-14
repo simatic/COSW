@@ -63,18 +63,6 @@ class Commentaire
         return $this;
     }
 
-    public function getNote(): ?float
-    {
-        return $this->note;
-    }
-
-    public function setNote(float $note): self
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
     public function getSoutenance(): ?Soutenance
     {
         return $this->soutenance;
