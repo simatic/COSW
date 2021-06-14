@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : Dim 13 juin 2021 à 14:54
+-- Généré le : lun. 14 juin 2021 à 09:45
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.2.33
 
@@ -58,10 +58,16 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   `soutenance_id` int(11) NOT NULL,
   `auteur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contenu` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_67F068BCA59B3775` (`soutenance_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `commentaire`
+--
+
+INSERT INTO `commentaire` (`id`, `soutenance_id`, `auteur`, `contenu`) VALUES
+(1, 1, 'khalil meziou', 'Très bonne présentation');
 
 -- --------------------------------------------------------
 
@@ -85,7 +91,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20210525114254', '2021-05-25 11:43:27', 24253),
 ('DoctrineMigrations\\Version20210530124412', '2021-05-30 12:44:15', 331),
 ('DoctrineMigrations\\Version20210612192104', '2021-06-12 19:21:20', 598),
-('DoctrineMigrations\\Version20210613112945', '2021-06-13 11:29:50', 431);
+('DoctrineMigrations\\Version20210613112945', '2021-06-13 11:29:50', 431),
+('DoctrineMigrations\\Version20210614093232', '2021-06-14 09:32:41', 331),
+('DoctrineMigrations\\Version20210614093311', '2021-06-14 09:33:22', 412);
 
 -- --------------------------------------------------------
 
@@ -147,58 +155,6 @@ INSERT INTO `evaluation` (`id`, `soutenance_id`, `user_id`, `item_id`, `note`) V
 (34, 1, 14, 5, 2.5),
 (35, 1, 14, 6, 5),
 (36, 1, 14, 7, 5);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `eval_item`
---
-
-DROP TABLE IF EXISTS `eval_item`;
-CREATE TABLE IF NOT EXISTS `eval_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `soutenance_id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `item_id` int(11) NOT NULL,
-  `note` double NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_4C29623A126F525E` (`item_id`),
-  KEY `IDX_4C29623AA59B3775` (`soutenance_id`),
-  KEY `IDX_4C29623AA76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `eval_item`
---
-
-INSERT INTO `eval_item` (`id`, `soutenance_id`, `user_id`, `item_id`, `note`) VALUES
-(1, 6, 11, 12, 2);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `fiche_evaluation`
---
-
-DROP TABLE IF EXISTS `fiche_evaluation`;
-CREATE TABLE IF NOT EXISTS `fiche_evaluation` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `evaluateur_id` int(11) DEFAULT NULL,
-  `soutenance_id` int(11) DEFAULT NULL,
-  `note_final` double NOT NULL,
-  `ponderation` double NOT NULL,
-  `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_BD75A182231F139` (`evaluateur_id`),
-  KEY `IDX_BD75A182A59B3775` (`soutenance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `fiche_evaluation`
---
-
-INSERT INTO `fiche_evaluation` (`id`, `evaluateur_id`, `soutenance_id`, `note_final`, `ponderation`, `nom`) VALUES
-(1, 11, 1, 0, 1, 'Fiche 1');
 
 -- --------------------------------------------------------
 
@@ -595,21 +551,6 @@ ALTER TABLE `evaluation`
   ADD CONSTRAINT `FK_1323A575126F525E` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`),
   ADD CONSTRAINT `FK_1323A575A59B3775` FOREIGN KEY (`soutenance_id`) REFERENCES `soutenance` (`id`),
   ADD CONSTRAINT `FK_1323A575A76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
--- Contraintes pour la table `eval_item`
---
-ALTER TABLE `eval_item`
-  ADD CONSTRAINT `FK_4C29623A126F525E` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`),
-  ADD CONSTRAINT `FK_4C29623AA59B3775` FOREIGN KEY (`soutenance_id`) REFERENCES `soutenance` (`id`),
-  ADD CONSTRAINT `FK_4C29623AA76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
--- Contraintes pour la table `fiche_evaluation`
---
-ALTER TABLE `fiche_evaluation`
-  ADD CONSTRAINT `FK_BD75A182231F139` FOREIGN KEY (`evaluateur_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `FK_BD75A182A59B3775` FOREIGN KEY (`soutenance_id`) REFERENCES `soutenance` (`id`);
 
 --
 -- Contraintes pour la table `item`
