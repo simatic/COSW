@@ -10,7 +10,22 @@
             {% if is_granted('ROLE_ADMIN') %}
     		<a href={{ path('export_soutenance',{'id': session.id} ) }}><button type="button" class="btn btn-light">Upload notes</button></a>
             {% endif %}
-            <h5>{{ session.description }}</h5>
+            <div style="margin-left:1em">
+            <h3>Description</h3>
+            <p>{{ session.description }}</p>
+            </br>
+            <h3>Liste des étudiants</h3>
+            <p>{{ session.listeEtudiant | nl2br }}</p>
+            </br>
+            <h3>Liste des jurys</h3>
+            <p>{{ session.listeJury | nl2br }}</p>
+            </br>
+            <h3>Mail aux étudiants</h3>
+            <p>{{ session.texteMailEtudiant | nl2br }}</p>
+            </br>
+            <h3>Mail aux jurys</h3>
+            <p>{{ session.texteMailJury | nl2br }}</p>
+            </div>
 
             <ul>
             {% for soutenance in session.soutenances %}
@@ -33,4 +48,5 @@
             </a>
         {% endif %}
     </article>
+    
 {% endblock %}
