@@ -25,11 +25,6 @@ class Rubrique
     private $items;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $commentaire;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $nom;
@@ -76,18 +71,6 @@ class Rubrique
                 $item->setRubrique(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCommentaire(): ?string
-    {
-        return $this->commentaire;
-    }
-
-    public function setCommentaire(string $commentaire): self
-    {
-        $this->commentaire = $commentaire;
 
         return $this;
     }

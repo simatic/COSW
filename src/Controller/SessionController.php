@@ -13,23 +13,14 @@ use App\Entity\User;
 use App\Form\FormMailType;
 use App\Repository\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use phpDocumentor\Reflection\Types\Integer;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Form;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\File\File;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Routing\Annotation\Route;
 use League\Csv\Writer;
-
-
 //Mailing
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -38,6 +29,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SessionController extends AbstractController
 {
+    /*Cette route est la route permettant de voir toutes les sessions sous la forme d'un tableau,
+     * à partir de cette route vous pouvez ajouter une session ou bien la modifier etc... */
     /**
      * @isGranted("ROLE_USER")
      * @Route("/session", name="session")
@@ -53,6 +46,7 @@ class SessionController extends AbstractController
         ]);
     }
 
+    /* Création d'une nouvelle session */
     /**
      * @isGranted("ROLE_USER")
      * @Route("/session/new", name="session_new")
@@ -79,7 +73,9 @@ class SessionController extends AbstractController
             'formSession'=> $formSession->createView()
         ]);
     }
-
+    
+    /* lorsque le pair va cliquer sur le lien ça va le rediriger vers ce lien où il pourra
+     * voir toutes les soutenances pour les évaluer etc.. */
     /**
      *
      * @Route("/session/cosv5/{uid}",name="session_user")
@@ -97,6 +93,7 @@ class SessionController extends AbstractController
             );
     }
     
+    /* Ce chemin est plutot dédié aux admins pour vérifier les sessions */
     /**
      *
      * @Route("/session/{id}",name="session_show")
@@ -118,6 +115,7 @@ class SessionController extends AbstractController
     }
 
 
+    /* Edifier une session ou bien ajouter la liste des jurys/ étudiants */
     /**
      * @isGranted("ROLE_CREATOR", "ROLE_ADMIN")
      * @Route("/session/{id}/edit", name="session_edit")

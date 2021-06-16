@@ -69,6 +69,10 @@ class SecurityController extends AbstractController
         
     }
     
+    /* ça sera ce lien qui sera envoyé au pairs,
+     * Il permets de trouver l'utilisateuer avec le uid puis de le connecter
+     * ensuite de trouver la session avec uidSession et de le rediriger vers 
+     * la page de la session*/
     /**
      * @Route("/login/{uid}/{uidSession}", name="login_with_uid")
      */
@@ -76,6 +80,9 @@ class SecurityController extends AbstractController
         $user = $manager->getRepository(User::class)->findOneBy([
             'uid'=>$uid
         ]);
+        if(isset($user)){
+            dump("Erreur finding user");
+        }
         $guard->authenticateUserAndHandleSuccess($user, $request, $login, 'main');
         
         $session = $manager->getRepository(Session::class)->findBy(['uid'=>$uidSession]);

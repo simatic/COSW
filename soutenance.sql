@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 14 juin 2021 à 09:45
+-- Généré le : mer. 16 juin 2021 à 09:47
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.2.33
 
@@ -60,14 +60,14 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   `contenu` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_67F068BCA59B3775` (`soutenance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `commentaire`
 --
 
 INSERT INTO `commentaire` (`id`, `soutenance_id`, `auteur`, `contenu`) VALUES
-(1, 1, 'khalil meziou', 'Très bonne présentation');
+(4, 1, 'khalilmeziou@yahoo.fr', 'Bien');
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20210612192104', '2021-06-12 19:21:20', 598),
 ('DoctrineMigrations\\Version20210613112945', '2021-06-13 11:29:50', 431),
 ('DoctrineMigrations\\Version20210614093232', '2021-06-14 09:32:41', 331),
-('DoctrineMigrations\\Version20210614093311', '2021-06-14 09:33:22', 412);
+('DoctrineMigrations\\Version20210614093311', '2021-06-14 09:33:22', 412),
+('DoctrineMigrations\\Version20210616093738', '2021-06-16 09:37:49', 575);
 
 -- --------------------------------------------------------
 
@@ -170,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `item` (
   `note` double NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_1F1B251E3BD38833` (`rubrique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `item`
@@ -188,11 +189,11 @@ INSERT INTO `item` (`id`, `rubrique_id`, `nom`, `note`) VALUES
 (10, 3, 'vidéo', 100),
 (11, 7, 'item1', 50),
 (12, 7, 'item2', 50),
-(19, 13, 'haha', 10),
-(20, 13, 'lul', 10),
-(21, 14, 'iteeems', 20),
-(22, 15, 'iteeems', 10),
-(23, 15, 'tezst', 10);
+(24, 16, 'Adéquation entre le sujet du projet et la réponse des étudiants :', 50),
+(25, 16, 'Maîtrise technique sur les points clés', 50),
+(26, 17, 'Fond', 35),
+(27, 17, 'Forme', 35),
+(28, 17, 'Support', 30);
 
 -- --------------------------------------------------------
 
@@ -205,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `modele` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `modele`
@@ -214,18 +215,7 @@ CREATE TABLE IF NOT EXISTS `modele` (
 INSERT INTO `modele` (`id`, `name`) VALUES
 (1, 'Classique'),
 (2, 'Iot'),
-(3, 'Modele_test'),
-(4, 'Hello'),
-(5, 'Modele_test7'),
-(6, 'Modele_test4'),
-(7, 'teste'),
-(8, 'testeee'),
-(9, 'eeeeeeee'),
 (10, 'Modele_testde'),
-(11, 'Modele_test8'),
-(12, 'Modele_test8'),
-(13, 'Modele_test8222'),
-(14, 'Modele_test8222'),
 (15, 'Modele_test_final'),
 (16, 'modeletoto'),
 (17, 'Modèle 1'),
@@ -233,8 +223,7 @@ INSERT INTO `modele` (`id`, `name`) VALUES
 (21, 'modelcsv20'),
 (22, 'csv'),
 (23, 'mdele'),
-(24, 'amaaaaan'),
-(25, 'trah');
+(24, 'modele_soutenance');
 
 -- --------------------------------------------------------
 
@@ -256,18 +245,6 @@ CREATE TABLE IF NOT EXISTS `modele_item` (
 --
 
 INSERT INTO `modele_item` (`modele_id`, `item_id`) VALUES
-(13, 2),
-(13, 3),
-(13, 4),
-(13, 5),
-(13, 6),
-(13, 7),
-(14, 2),
-(14, 3),
-(14, 4),
-(14, 5),
-(14, 6),
-(14, 7),
 (15, 2),
 (15, 3),
 (15, 4),
@@ -296,11 +273,11 @@ INSERT INTO `modele_item` (`modele_id`, `item_id`) VALUES
 (23, 1),
 (23, 8),
 (23, 10),
-(24, 2),
-(24, 3),
-(24, 4),
-(24, 5),
-(24, 10);
+(24, 24),
+(24, 25),
+(24, 26),
+(24, 27),
+(24, 28);
 
 -- --------------------------------------------------------
 
@@ -328,32 +305,9 @@ INSERT INTO `modele_rubrique` (`modele_id`, `rubrique_id`) VALUES
 (2, 1),
 (2, 4),
 (2, 6),
-(3, 1),
-(3, 2),
-(3, 4),
-(4, 4),
-(4, 6),
-(5, 4),
-(5, 6),
-(6, 4),
-(6, 6),
-(7, 4),
-(7, 6),
-(8, 4),
-(9, 4),
 (10, 3),
 (10, 4),
 (10, 6),
-(11, 3),
-(11, 4),
-(11, 6),
-(12, 3),
-(12, 4),
-(12, 6),
-(13, 4),
-(13, 6),
-(14, 4),
-(14, 6),
 (15, 4),
 (15, 6),
 (16, 3),
@@ -361,18 +315,13 @@ INSERT INTO `modele_rubrique` (`modele_id`, `rubrique_id`) VALUES
 (16, 6),
 (17, 4),
 (17, 7),
-(20, 11),
-(21, 12),
 (22, 4),
 (22, 6),
 (23, 1),
 (23, 2),
 (23, 3),
-(23, 12),
-(24, 3),
-(24, 4),
-(25, 2),
-(25, 3);
+(24, 16),
+(24, 17);
 
 -- --------------------------------------------------------
 
@@ -383,30 +332,23 @@ INSERT INTO `modele_rubrique` (`modele_id`, `rubrique_id`) VALUES
 DROP TABLE IF EXISTS `rubrique`;
 CREATE TABLE IF NOT EXISTS `rubrique` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `commentaire` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `rubrique`
 --
 
-INSERT INTO `rubrique` (`id`, `commentaire`, `nom`) VALUES
-(1, '', 'Code'),
-(2, '', 'Pitch'),
-(3, '', 'Vidéo'),
-(4, '', 'Objet connecté'),
-(6, '', 'Présentation oral'),
-(7, '', 'Rubrique'),
-(8, '', 'LOOl'),
-(9, '', 'LOOl'),
-(10, '', 'LOOl'),
-(11, '', 'rubrique111'),
-(12, '', 'rubrique111'),
-(13, '', 'LOOL'),
-(14, '', 'HAHAAHHAHAHA'),
-(15, '', 'HAHAAHHAHAHAHEHEHEHEHEH');
+INSERT INTO `rubrique` (`id`, `nom`) VALUES
+(1, 'Code'),
+(2, 'Pitch'),
+(3, 'Vidéo'),
+(4, 'Objet connecté'),
+(6, 'Présentation oral'),
+(7, 'Rubrique'),
+(16, 'Appréciation du résultat du projet (sur la base de la soutenance orale finale)'),
+(17, 'Appréciation de la soutenance orale finale');
 
 -- --------------------------------------------------------
 
