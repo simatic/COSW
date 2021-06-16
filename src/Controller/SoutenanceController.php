@@ -285,7 +285,7 @@ class SoutenanceController extends AbstractController
                     $evaluation->setItem($item);
                     $evaluation->setUser($this->getUser());
                     $evaluation->setSoutenance($soutenance);
-                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $evaluation->setNote($note);
                     $i++;
                     $manager->persist($evaluation);
                 }
@@ -299,7 +299,7 @@ class SoutenanceController extends AbstractController
                     $item = $manager->getRepository(Item::class)->findOneBy([
                         'id'=>$itemId
                     ]);
-                    $evaluation->setNote(($note/100)*($item->getNote()/100)*20);
+                    $evaluation->setNote($note);
                     $i++;
                     $manager->persist($evaluation);
                 }
